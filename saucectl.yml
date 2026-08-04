@@ -1,0 +1,105 @@
+apiVersion: v1alpha
+kind: playwright
+
+nodeVersion: v22
+
+sauce:
+  region: us-west-1
+  # Parallel execution: run up to 3 suites/shards at the same time.
+  # Keep this >= the number of spec files you want running concurrently.
+  concurrency: 3
+  # Groups all jobs from one run under a single build in the Sauce dashboard,
+  # so you can see pass/fail for every test together.
+  metadata:
+    build: ai-native-pw-$TEST_ENV-$BUILD_TAG
+    tags:
+      - ai-native
+      - saucedemo
+      - $TEST_ENV
+  # Make the job results page, video, and logs viewable.
+  visibility: public
+  # Retry a failed suite once (helps with transient cloud/network flakiness).
+  retries: 1
+
+# Credentials are sourced from environment variables:
+# SAUCE_USERNAME / SAUCE_ACCESS_KEY
+
+rootDir: ./
+
+env:
+  TEST_ENV: $TEST_ENV
+  BASE_URL: $BASE_URL
+  APP_USERNAME: $APP_USERNAME
+  APP_PASSWORD: $APP_PASSWORD
+  # Opt-in Sauce Visual. Forwarded from the local shell ($VISUAL) so snapshots are
+  # captured on the VM. SAUCE_USERNAME/SAUCE_ACCESS_KEY are passed (as references, not
+  # literals) so the Visual SDK in global-setup can authenticate and create the build.
+  VISUAL: $VISUAL
+  SAUCE_USERNAME: $SAUCE_USERNAME
+  SAUCE_ACCESS_KEY: $SAUCE_ACCESS_KEY
+
+playwright:
+  version: package.json
+  configFile: playwright.config.ts
+
+# Extra npm packages the Sauce VM runner must install (it does NOT auto-install
+# devDependencies). The Sauce Visual SDK is imported by global-setup/teardown, so
+# it must be present on the VM for the visual build to be created.
+npm:
+  dependencies:
+    - "@saucelabs/visual-playwright"
+
+suites:
+  - name: login-$TEST_ENV
+    platformName: Windows 11
+    screenResolution: 1440x900
+    testMatch:
+      - login\.spec\.ts$
+    params:
+      browserName: chrome
+      project: desktop-chrome
+      headless: false
+
+  - name: add-to-cart-$TEST_ENV
+    platformName: Windows 11
+    screenResolution: 1440x900
+    testMatch:
+      - add-to-cart\.spec\.ts$
+    params:
+      browserName: chrome
+      project: desktop-chrome
+      headless: false
+
+  - name: checkout-$TEST_ENV
+    platformName: Windows 11
+    screenResolution: 1440x900
+    testMatch:
+      - checkout\.spec\.ts$
+    params:
+      browserName: chrome
+      project: desktop-chrome
+      headless: false
+
+  - name: inventory-$TEST_ENV
+    platformName: Windows 11
+    screenResolution: 1440x900
+    testMatch:
+      - inventory\.spec\.ts$
+    params:
+      browserName: chrome
+      project: desktop-chrome
+      headless: false
+
+reporters:
+  # Prints a console summary of failed/interesting jobs after the run.
+  spotlight:
+    enabled: true
+
+artifacts:
+  # Clear the previous download folder before fetching new artifacts.
+  cleanup: true
+  download:
+    when: always
+    match:
+      - "*"
+    directory: ./test-results/sauce

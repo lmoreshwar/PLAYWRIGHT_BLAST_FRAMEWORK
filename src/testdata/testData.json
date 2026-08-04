@@ -1,0 +1,51 @@
+{
+  "products": {
+    "backpack": "Sauce Labs Backpack",
+    "bikeLight": "Sauce Labs Bike Light",
+    "boltTShirt": "Sauce Labs Bolt T-Shirt",
+    "fleeceJacket": "Sauce Labs Fleece Jacket",
+    "onesie": "Sauce Labs Onesie",
+    "redTShirt": "Test.allTheThings() T-Shirt (Red)"
+  },
+  "checkoutInfo": {
+    "firstName": "Demo",
+    "lastName": "User",
+    "postalCode": "94105"
+  },
+  "invalidLogins": [
+    {
+      "description": "Locked out user",
+      "username": "locked_out_user",
+      "password": "secret_sauce",
+      "expectedError": "Epic sadface: Sorry, this user has been locked out."
+    },
+    {
+      "description": "Wrong password",
+      "username": "standard_user",
+      "password": "wrong_password",
+      "expectedError": "Epic sadface: Username and password do not match any user in this service"
+    }
+  ],
+  "messages": {
+    "orderComplete": "Thank you for your order!",
+    "productsTitle": "Products",
+    "usernameRequired": "Epic sadface: Username is required",
+    "passwordRequired": "Epic sadface: Password is required",
+    "sessionRequired": "Epic sadface: You can only access '/inventory.html' when you are logged in."
+  },
+  "sqlInjectionPayload": "' OR 1=1 --",
+  "sortOptions": {
+    "nameAsc": "Name (A to Z)",
+    "nameDesc": "Name (Z to A)",
+    "priceAsc": "Price (low to high)",
+    "priceDesc": "Price (high to low)"
+  },
+  "urls": {
+    "baseUrl": "https://www.saucedemo.com",
+    "loginUrl": "/",
+    "inventoryUrl": "/inventory.html",
+    "cartUrl": "/cart.html",
+    "checkoutStepOneUrl": "/checkout-step-one.html",
+    "checkoutCompleteUrl": "/checkout-complete.html"
+  }
+}
