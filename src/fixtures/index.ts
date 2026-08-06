@@ -2,6 +2,8 @@ import { test as base, type Page, type TestInfo } from '@playwright/test';
 import { SmartLocator } from '../utils/SmartLocator';
 import { LoginPage } from '../pages/LoginPage';
 import { LoginModule } from '../modules/LoginModule';
+import { InventoryPage } from '../pages/InventoryPage';
+import { InventoryModule } from '../modules/InventoryModule';
 import { Actions } from '../utils/Actions';
 import { WorkflowActions } from '../utils/WorkflowActions';
 
@@ -12,6 +14,8 @@ import { WorkflowActions } from '../utils/WorkflowActions';
 export type TestFixtures = {
     loginPage: LoginPage;
     loginModule: LoginModule;
+    inventoryPage: InventoryPage;
+    inventoryModule: InventoryModule;
     actions: Actions;
     workflowActions: WorkflowActions;
 };
@@ -129,6 +133,14 @@ export const test = base.extend<TestFixtures>({
 
     loginModule: async ({ page }, use) => {
         await use(new LoginModule(page));
+    },
+
+    inventoryPage: async ({ page }, use) => {
+        await use(new InventoryPage(page));
+    },
+
+    inventoryModule: async ({ page }, use) => {
+        await use(new InventoryModule(page));
     },
 
     actions: async ({ page }, use) => {

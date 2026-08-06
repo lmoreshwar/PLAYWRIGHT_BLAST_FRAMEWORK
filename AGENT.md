@@ -47,6 +47,33 @@ env('ANY_KEY')       // any other .env value
 
 ---
 
+## 🤖 Unattended / Command-Free Runs (B.L.A.S.T. → Copilot)
+
+When a job is launched from the B.L.A.S.T. UI ("Run with GitHub Copilot"), NO human is at the
+editor to click Allow/Skip. Follow these rules so the run completes end-to-end with zero manual
+intervention, and only surfaces to the UI when it genuinely needs input.
+
+- **Auto-approved command lane only.** `.vscode/settings.json` auto-approves the exact commands a
+  job needs (`npx playwright test`, `npx tsc`, `npm run lint`, `npm run index`, `node`, log
+  appends) and HARD-BLOCKS destructive ones (`rm -rf`, `Remove-Item -Recurse`, `git push`,
+  `git reset --hard`, `shutdown`, …). Do NOT rely on a global auto-approve switch — the deny-list
+  and the human gate for anything unexpected are intentional safety backstops. Stay inside the
+  allow-listed commands; if a step needs something outside it, treat that as NEEDS-INPUT.
+- **Never use the interactive shared browser in an unattended run.** `open_browser_page` / the
+  shared-browser tools require a manual share click that CANNOT be auto-approved and will stall the
+  job. Capture evidence headlessly instead: a terminal-run Playwright / `@playwright/cli` script
+  (auto-approved lane), or reuse existing `.playwright-cli/*.yml` / trace / `error-context.md`
+  snapshots. Evidence-first for locators still fully applies — only the capture mechanism changes.
+- **Never fail on missing info — ask via the log, not a modal.** When blocked, APPEND
+  `[copilot] NEEDS-INPUT <question>` to `.blast-runs/<jobId>.log`, then read `.blast-runs/<jobId>.inbox`
+  for the user's `[user] ...` reply; resume and log `[copilot] RESUMED`. Questions must reach the
+  UI, never a VS Code dialog.
+- **Stream progress + status markers.** Heartbeat each milestone to `.blast-runs/<jobId>.log`; end
+  with exactly one of `[copilot] DONE PASSED` / `[copilot] DONE FAILED <reason>` / `[copilot] ERROR
+  <reason>`. Keep secrets out of the log.
+
+---
+
 ## 🏗️ 3-Layer Architecture (STRICT)
 
 ```
@@ -80,6 +107,12 @@ fixtures/roles/global-setup. Rule of thumb: "same page + same entry flow, differ
 - **Hard limits**: max 3 strategies; no two fallbacks of the same handle type; no "just in case" fallbacks;
   collections (≥2 elements) use PLAIN Playwright locators (not `SmartLocator`); no format/regex assumptions on
   domain data (product codes, case IDs). A locator with 4–6 strategies is a code smell — refactor it down.
+
+> **A single generated locator is CORRECT, not a bug.** Tier 1 (one strategy) is the default for ~80% of
+> elements, so most Page locators will be a single line — do not "fix" that by adding fallbacks. `SmartLocator`
+> fallback chains are the Tier-2/3 OPT-IN only, and runtime self-healing stays dormant until a Page actually
+> feeds `SmartLocator.resolve()` a chain. To ACTIVATE it correctly (when + the 3-layer wiring pattern), use the
+> [`pw-self-healing`](./.github/skills/pw-self-healing/SKILL.md) skill.
 
 ### 🛑 Evidence-First Locator Workflow (the standard for every requirement)
 Never guess a locator from memory or "typical" behavior. For ANY new or changed locator:

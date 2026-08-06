@@ -25,7 +25,37 @@ standard live in [README.md](../../README.md); this skill is the how-to.
   locally, uploaded as a CI artifact): `DEBUG_REPORT.md` (failures + AI-healable categories),
   `SELF_HEALING_REPORT.md` (healing telemetry summary), `self-healing.json` (dashboards/CI).
 
-## Using SmartLocator in Pages/Modules
+> **Current state (know this before "fixing" it):** the healing SESSION + reporting are wired in
+> `fixtures/index.ts`, but by design **most Page objects use a single Tier-1 locator and do NOT call
+> `SmartLocator.resolve()`.** Seeing "only one locator" generated is CORRECT per the Locator Standard
+> — it is NOT a bug. `SmartLocator.resolve()` is an intentional Tier-2/3 OPT-IN; until a Page feeds it
+> a fallback chain, the runtime healing simply never needs to fire. Do not blanket-wrap every locator.
+
+## When to ACTIVATE SmartLocator (decision checklist)
+Add a fallback chain ONLY when at least one is true (otherwise keep the single Tier-1 locator):
+- The control is **icon-only** / has no stable accessible name.
+- The element is on the **pre-approved known-flaky list** for this app.
+- A **captured run/trace has actually proven** the primary flaps between two real DOM shapes.
+If none apply → single locator. Never add a "just in case" fallback. Max 3 strategies, each fallback a `// reason:`.
+
+## Wiring SmartLocator across the 3 layers (canonical pattern)
+Pages stay "locators only": the Page exposes the ordered strategy array; the Module resolves + acts.
+```ts
+// PAGE (src/pages/*Page.ts) — expose strategies, no resolution/logic here
+import type { LocatorStrategy } from '../utils';
+submitButtonStrategies = (): LocatorStrategy[] => [
+  { name: 'role',   locator: this.page.getByRole('button', { name: /submit|save/i }) },
+  { name: 'testid', locator: this.page.getByTestId('submit-btn') }, // reason: role-name is localized in UAT
+];
+
+// MODULE (src/modules/*Module.ts) — resolve the healing chain, then act via Actions
+const submit = await SmartLocator.resolve('Submit Button', this.page_.submitButtonStrategies());
+await this.actions.click(submit);
+```
+This keeps the split intact (Page = locators, Module = workflow, Spec = assertions) AND makes runtime
+self-healing genuinely active for the chosen element — instead of leaving `resolve()` dormant.
+
+## Direct use in a Module (simple case)
 ```ts
 import { SmartLocator } from '../utils/SmartLocator';
 

@@ -70,13 +70,11 @@ test.describe('Authentication — Login & Session', () => {
     });
 
     test('TC_008 Multiple Login Attempts with Invalid Credentials @Regression @Automation @Critical', async ({ loginModule, loginPage }) => {
-        for (let attempt = 1; attempt <= 3; attempt++) {
-            await loginModule.login('invalid_user', 'wrong_password');
-            await expect(loginPage.errorMessage()).toBeVisible();
-        }
+        await loginModule.attemptInvalidLogins('invalid_user', 'wrong_password', testData.loginAttemptCount);
 
-        // Account is NOT locked: the error stays the credentials-mismatch message, never the locked-out one.
+        await expect(loginPage.errorMessage()).toBeVisible();
         await expect(loginPage.errorMessage()).toContainText('do not match any user');
+        // Repeated bad logins must NOT lock the account (SauceDemo has no attempt-based lockout).
         await expect(loginPage.errorMessage()).not.toContainText('locked out');
     });
 
@@ -90,6 +88,7 @@ test.describe('Authentication — Login & Session', () => {
         await loginModule.login('invalid_user', 'wrong_password');
 
         await expect(loginPage.errorMessage()).toBeVisible();
-        await expect(loginPage.errorMessage()).toContainText('Epic sadface');
+        await expect(loginPage.errorMessage()).toContainText('do not match any user');
     });
-});
+
+    });

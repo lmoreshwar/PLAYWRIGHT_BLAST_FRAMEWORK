@@ -37,6 +37,13 @@ export class LoginModule {
         await this.actions.click(this.loginPage.loginButton());
     }
 
+    async attemptInvalidLogins(username: string, password: string, attempts: number): Promise<void> {
+        this.logger.step(2, `Attempt ${attempts} invalid login(s) as "${username}"`);
+        for (let i = 1; i <= attempts; i++) {
+            await this.login(username, password);
+        }
+    }
+
     async logout(): Promise<void> {
         this.logger.step(3, 'Open the burger menu and log out');
         await this.actions.click(this.loginPage.menuButton());

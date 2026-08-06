@@ -49,6 +49,14 @@ If no evidence exists for the screen: STOP — capture via `playwright-cli` if r
 the user to paste a snapshot. Never guess a locator. This gate applies to locators only — not
 to test data, assertions, renames, or timing.
 
+> **Unattended / command-free runs (B.L.A.S.T.):** when the job is launched from the UI with no
+> human at the editor, capture evidence HEADLESSLY — a terminal-run Playwright / `@playwright/cli`
+> script (auto-approved command lane) or existing `.playwright-cli/*.yml` / trace / `error-context.md`
+> snapshots. NEVER use the interactive shared browser (`open_browser_page`): its share prompt cannot
+> be auto-approved and stalls the run. If truly blocked, append `[copilot] NEEDS-INPUT <question>`
+> to `.blast-runs/<jobId>.log` and wait for the `[user]` reply in `.blast-runs/<jobId>.inbox` — never
+> fail on missing info, and never pop a VS Code modal. See AGENT.md → Unattended / Command-Free Runs.
+
 ## Step 3 — Build across the 3 layers
 - **Page (`src/pages/[Feature]Page.ts`)** — locators + locator helpers ONLY. Format:
   `elementName = () => this.page.getByRole(...)`. No business logic, no assertions.

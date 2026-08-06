@@ -35,3 +35,9 @@ ai-debug-report/
 
 # Live recovery mailbox — runtime only, never commit
 .recovery/
+
+# BLAST local-agent file backups
+.blast-backups/
+.blast-tmp/
+.blast-jobs/
+.blast-runs/
