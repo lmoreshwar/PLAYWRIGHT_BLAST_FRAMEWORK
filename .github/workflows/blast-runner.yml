@@ -30,11 +30,10 @@ jobs:
       - name: Checkout framework repo
         uses: actions/checkout@v4
 
-      - name: Checkout B.L.A.S.T. engine (private app repo)
+      - name: Checkout B.L.A.S.T. engine (public app repo)
         uses: actions/checkout@v4
         with:
           repository: lmoreshwar/my-ai-projects
-          token: ${{ secrets.BLAST_ENGINE_TOKEN }}
           path: .blast-engine
 
       - name: Setup Node
