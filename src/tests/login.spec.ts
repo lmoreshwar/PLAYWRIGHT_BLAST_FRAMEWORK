@@ -3,7 +3,7 @@ import { credentials } from '../config';
 import testData from '../testdata/testData.json';
 
 /**
- * Authentication — Login & Session (SauceDemo)
+ * Authentication — Login & Session
  * Covers TC_001–TC_010 from TestCases_SD-2. Valid credentials come from `.env.<env>`
  * via credentials('app'); negative data comes from testData.json / the source sheet.
  */
@@ -91,4 +91,16 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.errorMessage()).toContainText('do not match any user');
     });
 
+    test('TC_011 Logout Returns to Login Page @Sanity @Regression @Automation @Critical', async ({ loginModule, loginPage }) => {
+        // Perform a valid login
+        await loginModule.login(valid.username, valid.password);
+
+        // Logout via the module workflow
+        await loginModule.logout();
+
+        // Verify we are back on the login screen
+        await expect(loginPage.usernameInput()).toBeVisible();
+        await expect(loginPage.passwordInput()).toBeVisible();
+        await expect(loginPage.loginButton()).toBeVisible();
     });
+});
