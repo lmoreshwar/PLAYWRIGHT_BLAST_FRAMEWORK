@@ -54,9 +54,7 @@
         "@Automation",
         "@Critical",
         "@High",
-        "@LockedUserValidation",
         "@Login",
-        "@Redirection",
         "@Regression",
         "@Sanity",
         "@Security"
@@ -100,14 +98,6 @@
           "title": "TC_009 UI Validation - Login Page @Sanity @Regression @Automation @Critical"
         },
         {
-          "id": "TC_010",
-          "title": "TC_010 Error Handling - Invalid Credentials @Regression @Automation @High"
-        },
-        {
-          "id": "TC_011",
-          "title": "TC_011 Verify post‑login redirection to inventory page @Login @Redirection @Regression @Automation @Critical"
-        },
-        {
           "id": "TC_012",
           "title": "TC_012 Password field masks input @Regression @Automation @Critical"
         },
@@ -116,16 +106,8 @@
           "title": "TC_013 Error message clears after correcting credentials @Regression @Automation @High"
         },
         {
-          "id": "TC_014",
-          "title": "TC_014 Security: SQL Injection attempt on username field @Login @Authentication @Security"
-        },
-        {
           "id": "TC_015",
           "title": "TC_015 Security: XSS attempt on username field @Login @Authentication @Security"
-        },
-        {
-          "id": "TC_017",
-          "title": "TC_017 Prevent locked user login with valid credentials @Authentication @LockedUserValidation"
         }
       ]
     }

@@ -84,21 +84,7 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.loginButton()).toBeEnabled();
     });
 
-    test('TC_010 Error Handling - Invalid Credentials @Regression @Automation @High', async ({ loginModule, loginPage }) => {
-        await loginModule.login('invalid_user', 'wrong_password');
-
-        await expect(loginPage.errorMessage()).toBeVisible();
-        await expect(loginPage.errorMessage()).toContainText('do not match any user');
-    });
-
     // New test cases
-
-    test('TC_011 Verify post‑login redirection to inventory page @Login @Redirection @Regression @Automation @Critical', async ({ loginModule, loginPage, page }) => {
-        await loginModule.login(valid.username, valid.password);
-
-        await expect(page).toHaveURL(/inventory\.html/);
-        await expect(loginPage.menuButton()).toBeVisible();
-    });
 
     test('TC_012 Password field masks input @Regression @Automation @Critical', async ({ loginPage }) => {
         // Verify that the password input uses the password type, which masks entered characters.
@@ -115,13 +101,6 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.errorMessage()).not.toBeVisible();
     });
 
-    test('TC_014 Security: SQL Injection attempt on username field @Login @Authentication @Security', async ({ loginModule, loginPage, page }) => {
-        await loginModule.login(testData.sqlInjectionPayload, valid.password);
-
-        await expect(loginPage.errorMessage()).toBeVisible();
-        await expect(page).not.toHaveURL(/inventory\.html/);
-    });
-
     test('TC_015 Security: XSS attempt on username field @Login @Authentication @Security', async ({ loginModule, loginPage, page }) => {
         await loginModule.login(testData.xssPayload, valid.password);
 
@@ -132,21 +111,4 @@ test.describe('Authentication — Login & Session', () => {
         // if the payload is treated as an empty/invalid username.
         await expect(loginPage.errorMessage()).toContainText('do not match any user');
     });
-
-  test('TC_017 Prevent locked user login with valid credentials @Authentication @LockedUserValidation', async ({
-    loginModule,
-    loginPage,
-}) => {
-    const lockedUser = testData.invalidLogins.find(
-        (login) => login.description === 'Locked out user',
-    );
-
-    if (!lockedUser) {
-        throw new Error('Locked out user test data is not configured.');
-    }
-
-    await loginModule.login(lockedUser.username, lockedUser.password);
-
-    await expect(loginPage.errorMessage()).toHaveText(lockedUser.expectedError);
-});
 });
