@@ -58,7 +58,7 @@ test.describe('Authentication — Login & Session', () => {
         await expect(page).not.toHaveURL(/inventory\.html/);
     });
 
-    test('TC_007 Session Expiration After Logout @Regression @Automation @High', async ({ loginModule, loginPage }) => {
+    test('TC_007 Session Expiration After Logout @Regression @Automation @High', async ({ loginModule, loginPage, page }) => {
         await loginModule.login(valid.username, valid.password);
         await loginModule.logout();
 
@@ -92,6 +92,13 @@ test.describe('Authentication — Login & Session', () => {
     });
 
     // New test cases
+
+    test('TC_011 Verify post‑login redirection to inventory page @Login @Redirection @Regression @Automation @Critical', async ({ loginModule, loginPage, page }) => {
+        await loginModule.login(valid.username, valid.password);
+
+        await expect(page).toHaveURL(/inventory\.html/);
+        await expect(loginPage.menuButton()).toBeVisible();
+    });
 
     test('TC_012 Password field masks input @Regression @Automation @Critical', async ({ loginPage }) => {
         // Verify that the password input uses the password type, which masks entered characters.
