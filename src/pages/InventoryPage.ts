@@ -31,7 +31,13 @@ export class InventoryPage {
     backToProductsButton = (): Locator => this.page.getByRole('button', { name: 'Back to products' });
 
     // --- Common Locators (Inventory List & Detail) ---
-    shoppingCartLink = (): Locator => this.page.getByRole('link', { name: /shopping cart/i });
+    // Shopping cart badge (shows number of items)
+    shoppingCartBadge = (): Locator => this.page.getByTestId('shopping_cart_badge');
 
-    shoppingCartBadge = (): Locator => this.page.locator('.shopping_cart_badge');
+    // --- Logout related locators (added for TC_017) ---
+    /** Menu (burger) button that opens the side navigation */
+    menuButton = (): Locator => this.page.getByLabel('Open menu');
+
+    /** Logout link inside the side navigation */
+    logoutLink = (): Locator => this.page.getByRole('link', { name: 'Logout' });
 }
