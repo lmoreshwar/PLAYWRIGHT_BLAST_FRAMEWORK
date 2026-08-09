@@ -14,6 +14,11 @@ on:
         description: 'Full job JSON (jobId, url, environment, skill, testCases, comments, executionMode)'
         required: true
         type: string
+      browser:
+        description: 'Browser to install/run (Chrome, Edge, Firefox, Safari, All)'
+        required: false
+        default: 'Chrome'
+        type: string
 
 permissions:
   contents: write
@@ -45,7 +50,17 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        shell: bash
+        run: |
+          case "${{ inputs.browser }}" in
+            Firefox) TARGETS="firefox" ;;
+            Safari)  TARGETS="webkit" ;;
+            Edge)    TARGETS="msedge" ;;
+            All)     TARGETS="chromium firefox webkit" ;;
+            *)       TARGETS="chromium" ;;
+          esac
+          echo "Installing Playwright browser(s): $TARGETS"
+          npx playwright install --with-deps $TARGETS
 
       - name: Install engine dependencies
         working-directory: .blast-engine/AI_Agents
