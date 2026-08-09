@@ -29,6 +29,20 @@ export default defineConfig({
         ['./src/utils/AiDebugReporter.ts'],
         ['html', { open: 'never' }],
         ['json', { outputFile: 'test-results/results.json' }],
+        [
+            'allure-playwright',
+            {
+                resultsDir: 'allure-results',
+                detail: true,
+                suiteTitle: true,
+                environmentInfo: {
+                    Environment: testEnv,
+                    Base_URL: process.env.BASE_URL || 'https://www.saucedemo.com',
+                    Node: process.version,
+                    CI: process.env.CI ? 'true' : 'false',
+                },
+            },
+        ],
         ['list'],
     ],
 

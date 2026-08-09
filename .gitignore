@@ -23,6 +23,8 @@ log/
 tta-report/
 playwright-report/
 test-results/
+allure-results/
+allure-report/
 
 # Temp files
 *.log
