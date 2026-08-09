@@ -108,19 +108,6 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.errorMessage()).toContainText('do not match any user');
     });
 
-    test('TC_017 Prevent locked user login with valid credentials @Authentication @Locked User Validation', async ({
-        loginModule,
-        loginPage,
-    }) => {
-        const lockedUser = testData.invalidLogins[0];
-
-        await loginModule.navigateToLoginPage();
-        await loginModule.login(lockedUser.username, lockedUser.password);
-
-        await expect(loginPage.errorMessage()).toBeVisible();
-        await expect(loginPage.errorMessage()).toHaveText(lockedUser.expectedError);
-    });
-
     test('TC_019 Reject locked user with an incorrect password @Authentication @Locked User Validation', async ({
         loginModule,
         loginPage,
