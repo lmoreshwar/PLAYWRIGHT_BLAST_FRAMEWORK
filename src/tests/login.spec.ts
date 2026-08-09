@@ -100,12 +100,17 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.menuButton()).toBeVisible();
     });
 
-    test('TC_012 Password field masks input @Regression @Automation @Critical', async ({ loginPage }) => {
+    test('TC_012 Verify locked user cannot login @Login @Authentication @Validation', async ({ loginModule, loginPage }) => {
+        await loginModule.login(locked.username, locked.password);
+        await expect(loginPage.errorMessage()).toHaveText(locked.expectedError);
+    });
+
+    test('TC_013 Password field masks input @Regression @Automation @Critical', async ({ loginPage }) => {
         // Verify that the password input uses the password type, which masks entered characters.
         await expect(loginPage.passwordInput()).toHaveAttribute('type', 'password');
     });
 
-    test('TC_013 Error message clears after correcting credentials @Regression @Automation @High', async ({ loginModule, loginPage }) => {
+    test('TC_014 Error message clears after correcting credentials @Regression @Automation @High', async ({ loginModule, loginPage }) => {
         // Trigger an error with invalid credentials.
         await loginModule.login('invalid_user', 'wrong_password');
         await expect(loginPage.errorMessage()).toBeVisible();
@@ -115,14 +120,14 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.errorMessage()).not.toBeVisible();
     });
 
-    test('TC_014 Security: SQL Injection attempt on username field @Login @Authentication @Security', async ({ loginModule, loginPage, page }) => {
+    test('TC_015 Security: SQL Injection attempt on username field @Login @Authentication @Security', async ({ loginModule, loginPage, page }) => {
         await loginModule.login(testData.sqlInjectionPayload, valid.password);
 
         await expect(loginPage.errorMessage()).toBeVisible();
         await expect(page).not.toHaveURL(/inventory\.html/);
     });
 
-    test('TC_015 Security: XSS attempt on username field @Login @Authentication @Security', async ({ loginModule, loginPage, page }) => {
+    test('TC_016 Security: XSS attempt on username field @Login @Authentication @Security', async ({ loginModule, loginPage, page }) => {
         await loginModule.login(testData.xssPayload, valid.password);
 
         await expect(loginPage.errorMessage()).toBeVisible();
