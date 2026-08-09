@@ -132,4 +132,21 @@ test.describe('Authentication — Login & Session', () => {
         // if the payload is treated as an empty/invalid username.
         await expect(loginPage.errorMessage()).toContainText('do not match any user');
     });
+
+  test('TC_017 Prevent locked user login with valid credentials @Authentication @LockedUserValidation', async ({
+    loginModule,
+    loginPage,
+}) => {
+    const lockedUser = testData.invalidLogins.find(
+        (login) => login.description === 'Locked out user',
+    );
+
+    if (!lockedUser) {
+        throw new Error('Locked out user test data is not configured.');
+    }
+
+    await loginModule.login(lockedUser.username, lockedUser.password);
+
+    await expect(loginPage.errorMessage()).toHaveText(lockedUser.expectedError);
+});
 });

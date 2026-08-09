@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-09T13:26:16.293Z",
+  "generatedAt": "2026-08-09T19:09:35.554Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:f1bb8583d85d54b2d9674849997e73129186182e",
+  "sourceHash": "sha1:e5357e49afbd05c8ed5e673b4b2e8791fcdf6cc6",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 3,
     "modules": 3,
     "specs": 3,
-    "tests": 21,
+    "tests": 22,
     "domains": 4
   },
   "fixtures": [
@@ -84,7 +84,7 @@
       "counts": {
         "locators": 6,
         "methods": 6,
-        "tests": 16
+        "tests": 17
       }
     },
     {
@@ -238,6 +238,13 @@
         "domain": "Login",
         "spec": "src/tests/login.spec.ts",
         "title": "TC_015 Security: XSS attempt on username field @Login @Authentication @Security"
+      }
+    ],
+    "TC_017": [
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_017 Prevent locked user login with valid credentials @Authentication @LockedUserValidation"
       }
     ]
   }
