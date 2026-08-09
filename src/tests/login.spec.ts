@@ -4,7 +4,7 @@ import testData from '../testdata/testData.json';
 
 /**
  * Authentication — Login & Session (SauceDemo)
- * Covers TC_001–TC_010 from TestCases_SD-2. Valid credentials come from `.env.<env>`
+ * Covers TC_001–TC_013 from TestCases_SD-2. Valid credentials come from `.env.<env>`
  * via credentials('app'); negative data comes from testData.json / the source sheet.
  */
 test.describe('Authentication — Login & Session', () => {
@@ -91,8 +91,6 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.errorMessage()).toContainText('do not match any user');
     });
 
-    // New test cases
-
     test('TC_011 Verify post‑login redirection to inventory page @Login @Redirection @Regression @Automation @Critical', async ({ loginModule, loginPage, page }) => {
         await loginModule.login(valid.username, valid.password);
 
@@ -115,4 +113,18 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.errorMessage()).not.toBeVisible();
     });
 
+    test('TC_019 Network timeout handling on login request @Login @Timeout @Regression @Automation @Critical', async ({ loginModule, loginPage, page }) => {
+        // Intercept the login request and delay it beyond the default timeout to simulate a network timeout.
+        await page.route('**/login', async (route) => {
+            // Delay for 35 seconds (default timeout is 30s). This forces a timeout scenario.
+            await new Promise((resolve) => setTimeout(resolve, 35000));
+            await route.continue();
+        });
+
+        await loginModule.login(valid.username, valid.password);
+
+        // Expect the UI to surface a timeout‑related error message.
+        await expect(loginPage.errorMessage()).toBeVisible();
+        await expect(loginPage.errorMessage()).toContainText(testData.messages.networkTimeoutError);
+    });
 });
