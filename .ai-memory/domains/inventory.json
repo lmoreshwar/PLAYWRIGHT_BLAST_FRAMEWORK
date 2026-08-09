@@ -1,7 +1,7 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Inventory",
-  "generatedAt": "2026-08-09T11:35:29.997Z",
+  "generatedAt": "2026-08-09T11:44:08.552Z",
   "sourceHash": "sha1:f1bb8583d85d54b2d9674849997e73129186182e",
   "pages": [
     {
@@ -35,5 +35,40 @@
       ]
     }
   ],
-  "specs": []
+  "specs": [
+    {
+      "file": "src/tests/product-detail.spec.ts",
+      "describes": [
+        "Product Detail Page & Cart Interactions"
+      ],
+      "tags": [
+        "@Cart",
+        "@Navigation",
+        "@ProductDetailPage"
+      ],
+      "reuses": [],
+      "tests": [
+        {
+          "id": "TC_001",
+          "title": "TC_001 Click Product Opens Detail Page @ProductDetailPage"
+        },
+        {
+          "id": "TC_002",
+          "title": "TC_002 Detail Page Shows Product Information @ProductDetailPage"
+        },
+        {
+          "id": "TC_003",
+          "title": "TC_003 Add to Cart Button Works @ProductDetailPage @Cart"
+        },
+        {
+          "id": "TC_004",
+          "title": "TC_004 Remove from Cart Button Works @ProductDetailPage @Cart"
+        },
+        {
+          "id": "TC_005",
+          "title": "TC_005 Back to Products Button Works @ProductDetailPage @Navigation"
+        }
+      ]
+    }
+  ]
 }

@@ -27,8 +27,12 @@ information to determine."
 2. SEARCH all usages of the function/locator being changed (grep across `src/`).
 3. LIST every test that will be affected.
 4. Mine reuse-first before asking the user for anything:
-   `.ai-memory/capabilities.json` (FIRST) → only the specific Page/Module/Spec it points to →
-   `.ai-memory/memory.json` → debug artifacts/snapshots/traces.
+   `.ai-memory/capabilities.json` FIRST (scan the global `testIndex` to see if the case already
+   exists in ANY domain), then the matching `.ai-memory/domains/<domain>.json` shard for that
+   area's exact locators/methods → only the specific Page/Module/Spec the shard points to →
+   `.ai-memory/memory.json` → debug artifacts/snapshots/traces. Shards are asset-anchored
+   (a spec lives in the domain of the Page/Module it reuses), so open the shard that owns the
+   Page/Module you're editing, not one named after the spec.
 5. PRESENT the impact analysis. Proceed only after confirming no unintended side effects.
 
 ## Step 2 — Snapshot gate (only if a locator changes)
@@ -67,4 +71,5 @@ Does NOT apply to pure logic/data/assertion/rename work.
    matching suite (`name: <spec-basename>-$TEST_ENV` + `testMatch: - <spec-basename>\.spec\.ts$`) and run
    `npm run index`. An unregistered/stale suite breaks Sauce runs. Verify with `npm run test:sauce:uat -- --dry-run`.
 7. Update **README → "AI Memory & Reuse Index"** by hand if any Page/Module/Spec/fixture changed
-   (`capabilities.json` auto-refreshes via globalSetup; the README index is manual).
+   (`capabilities.json` + `.ai-memory/domains/*.json` shards auto-refresh via globalSetup; the
+   README index is manual).

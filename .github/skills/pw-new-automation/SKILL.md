@@ -26,13 +26,22 @@ If information is unclear, say "Insufficient information to determine."
 
 ## Step 1 — Reuse-first discovery (before writing anything)
 Mine existing knowledge in this order; if an asset exists, REUSE it (do not re-derive):
-1. `.ai-memory/capabilities.json` — the reuse index of every Page, locator method, Module
-   workflow, fixture, util, and spec. **Check FIRST.**
-2. Only the specific `src/pages/*` / `src/modules/*` file the index points to (for exact signatures).
-3. `src/tests/*` coverage (avoid duplicate specs).
-4. `src/fixtures/index.ts` (existing fixtures) and `src/config/index.ts` (`env()` / `credentials()`).
-5. `.ai-memory/memory.json` for history/rationale the index does not capture.
-6. `test-results/**/error-context.md`, traces, screenshots, existing `.playwright-cli` snapshots.
+1. `.ai-memory/capabilities.json` — the **committed reuse manifest**. **Read FIRST.** Scan its
+   global `testIndex` (TC id → array of `{domain, spec, title}`) to check whether a case is
+   already automated in ANY domain (title-first, since TC ids are not globally unique). The
+   manifest also lists every domain and where its Pages/Modules/specs live.
+2. `.ai-memory/domains/<domain>.json` — the per-domain **shard** for the area you're touching.
+   Open ONLY the relevant shard for that domain's exact locators, method signatures, and tests.
+   Shards are asset-anchored: a spec belongs to the domain of the Page/Module it reuses
+   (e.g. a product-detail spec lives in the `Inventory` shard), so never assume one shard per spec.
+3. Only the specific `src/pages/*` / `src/modules/*` file the shard points to (for exact signatures).
+4. `src/tests/*` coverage (avoid duplicate specs).
+5. `src/fixtures/index.ts` (existing fixtures) and `src/config/index.ts` (`env()` / `credentials()`).
+6. `.ai-memory/memory.json` for history/rationale the index does not capture.
+7. `test-results/**/error-context.md`, traces, screenshots, existing `.playwright-cli` snapshots.
+
+The manifest + shards are rebuilt by `npm run index` (and automatically on `playwright test`
+and in CI); never hand-edit them and never create per-scenario shards.
 
 If a locator/method/fixture already exists → use it. Do not re-ask the user for evidence a
 prior validated screen already proves.
@@ -99,8 +108,8 @@ Register new Page/Module fixtures in `src/fixtures/index.ts` (and the relevant b
 1. `npx playwright test <new-spec> --project=desktop-chrome` → passes.
 2. Full suite shows zero regressions; fix before reporting done.
 3. `npm run lint` → 0 problems AND `npx tsc --noEmit` → 0 errors.
-4. `capabilities.json` auto-refreshes on every `playwright test` (globalSetup); run
-   `npm run index` to refresh without running tests.
+4. `capabilities.json` + `.ai-memory/domains/*.json` shards auto-refresh on every `playwright test`
+   (globalSetup) and in CI; run `npm run index` to rebuild the manifest + shards without running tests.
 5. **Sauce registry sync (MANDATORY for a NEW or RENAMED spec file):** add/rename the matching
    `saucectl.yml` suite (`name: <spec-basename>-$TEST_ENV` + `testMatch: - <spec-basename>\.spec\.ts$`)
    in the SAME change — an unregistered spec cannot run on Sauce. Verify with

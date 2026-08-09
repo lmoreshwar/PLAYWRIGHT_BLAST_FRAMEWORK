@@ -35,11 +35,15 @@ Compliance references (README): **Anti-Hallucination Rules**, **@playwright/cli 
 Workflow**, **Locator Standard**. Don't invent. Unclear → "Insufficient information to determine."
 
 ## Step 1 — Debug-first reuse discovery
-1. `.ai-memory/capabilities.json` FIRST (reuse index).
-2. Only the referenced failing spec/module/page the index points to.
-3. `.ai-memory/memory.json` for prior validated fixes or locator decisions.
-4. The failed run artifacts: `error-context.md`, trace, screenshot, console/log output.
-5. Existing `.playwright-cli` snapshots for that screen.
+1. `.ai-memory/capabilities.json` FIRST — the committed manifest; use its `testIndex` to locate
+   which domain/spec owns the failing case.
+2. `.ai-memory/domains/<domain>.json` — the shard for that domain, for the current locator
+   strategies/method signatures (shards are asset-anchored; open the one that owns the failing
+   Page/Module, not one named after the spec).
+3. Only the referenced failing spec/module/page the manifest+shard point to.
+4. `.ai-memory/memory.json` for prior validated fixes or locator decisions.
+5. The failed run artifacts: `error-context.md`, trace, screenshot, console/log output.
+6. Existing `.playwright-cli` snapshots for that screen.
 Reuse validated evidence before asking the user for more.
 
 ## Step 2 — Snapshot gate (only for locator fixes)

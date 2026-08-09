@@ -129,13 +129,19 @@ This gate applies to locators only — not to test data, assertions, renames, or
 Full command set: [README → @playwright/cli Locator Workflow](./README.md#-playwrightcli-locator-workflow).
 
 ### ⚡ Reuse-First Fast Path (do this before anything else)
-- Open `.ai-memory/capabilities.json` FIRST — the authoritative map of every Page, locator,
-  Module workflow, fixture, util, and spec. If the asset is listed, it EXISTS → reuse it; do not
-  re-scan the repo or re-capture a known locator.
+- Open `.ai-memory/capabilities.json` FIRST — the **root manifest**: every domain, the global
+  `testIndex` (each `TC id → an array of {domain, spec, title}` — arrays because TC ids are NOT
+  globally unique, so match title-first — for duplicate detection across ALL domains),
+  fixtures, and utils. If an asset/test is listed, it EXISTS → reuse it; do not re-scan the repo.
+- Then open ONLY the relevant **domain shard** `.ai-memory/domains/<domain>.json` for that feature's
+  locators, module methods, and tests. Load just the domain you are working on — never every shard
+  (this is what keeps it fast and cheap at thousands of tests). Shards are **asset-anchored**: a spec
+  joins the domain of the Page/Module it reuses, so open the shard that owns that Page/Module — never
+  assume one shard per spec, and never hand-create per-scenario shards.
 - Open a specific source file only to get an exact signature/return type — and only that file.
 - Fall through to `.ai-memory/memory.json` and full-file reads only if the index lacks the capability.
 - Full procedure + record schema: [README → AI Memory & Reuse Index](./README.md#-ai-memory--reuse-index).
-  After creating/modifying any Page/Module/Spec, run `npm run index` to keep the map authoritative.
+  After creating/modifying any Page/Module/Spec, run `npm run index` to keep the manifest + shards authoritative.
 
 ### 🔁 Spec ↔ Sauce Registry Sync (MANDATORY on every spec add/rename/delete)
 Any time you **create, rename, or delete** a `src/tests/*.spec.ts`, you MUST mirror it in the

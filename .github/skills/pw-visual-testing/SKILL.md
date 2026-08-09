@@ -41,7 +41,8 @@ the dynamic values to mask, say "Insufficient information to determine" and ask.
 
 ## Step 1 — Reuse-first discovery
 Mine existing assets before adding anything (same order as `pw-new-automation`):
-1. `.ai-memory/capabilities.json` — check for existing visual helpers FIRST.
+1. `.ai-memory/capabilities.json` (manifest) + the relevant `.ai-memory/domains/<domain>.json`
+   shard — check for existing visual helpers/methods FIRST before adding anything.
 2. The reference implementation: [checkout.spec.ts](../../src/tests/checkout.spec.ts)
    (additive visual `test.step`) + `CartModule.prepareFullPageCapture()` and
    `getDynamicVisualIgnoreRegions()` — copy this PATTERN, reuse the helpers when the screen matches.

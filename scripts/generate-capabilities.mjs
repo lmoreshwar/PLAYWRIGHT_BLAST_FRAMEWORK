@@ -1,17 +1,30 @@
 // @ts-check
 /**
- * generate-capabilities.mjs — Reuse Index Generator
+ * generate-capabilities.mjs — Sharded Reuse Index Generator
  *
- * Scans src/pages, src/modules, src/tests, and src/fixtures to produce a single
- * authoritative capability index at `.ai-memory/capabilities.json`.
+ * Scans src/pages, src/modules, src/tests, and src/fixtures to produce a COMMITTED,
+ * sharded reuse index:
+ *   - `.ai-memory/capabilities.json` — the root manifest: counts, fixtures/utils, a list of
+ *     domains (with where each domain's Pages/Modules/specs live), and a global `testIndex`
+ *     (TC id → array of {domain, spec, title}) for cross-domain dedup. TC ids are NOT globally
+ *     unique, so testIndex values are ARRAYS and consumers match title-first.
+ *   - `.ai-memory/domains/<domain>.json` — one shard per domain holding that domain's exact
+ *     locators, method signatures, and tests. Agents read the manifest first, then load ONLY
+ *     the relevant shard — so the index scales to thousands of tests without huge reads.
  *
- * WHY: The AI agent (and humans) can read ONE small file to know exactly which
- * Page Objects, locator methods, Module workflows, fixtures, and spec coverage
- * already exist — instead of re-reading every source file (slow) or re-deriving
- * locators that already exist (wrong). This is the "reuse-first fast path".
+ * SHARDS ARE ASSET-ANCHORED (minimal, no junk files): a spec joins the domain of the Page/Module
+ * it reuses (voted by imports + fixtures; name-prefix fallback). E.g. a product-detail spec folds
+ * into the `Inventory` shard instead of spawning a phantom single-scenario domain. Never create
+ * per-scenario shards by hand.
  *
- * This file is auto-maintained: run `npm run index` after adding/changing any
- * Page, Module, or Spec. Output is deterministic (sorted) so diffs stay clean.
+ * WHY: The AI agent (and humans) read a small manifest + one domain shard to know exactly which
+ * Page Objects, locator methods, Module workflows, fixtures, and spec coverage already exist —
+ * instead of re-reading every source file (slow) or re-deriving locators that already exist
+ * (wrong). This is the "reuse-first fast path" and the FIRST driver for every skill.
+ *
+ * This file is auto-maintained: run `npm run index` after adding/changing any Page, Module, or
+ * Spec (also runs on `playwright test` via globalSetup and in CI). A `sourceHash` skip-guard
+ * no-ops the rebuild when nothing changed. Output is deterministic (sorted) so diffs stay clean.
  *
  * Zero runtime dependencies — pure Node fs + regex (no parser, no install).
  */
@@ -273,8 +286,52 @@ function main() {
         .filter((f) => !f.endsWith('index.ts'))
         .map((f) => ({ ...describeClassFile(f), _domain: domainKey(f, 'module') }));
 
-    const specs = listTsFiles(join(SRC, 'tests'))
-        .map((f) => ({ ...describeSpecFile(f), _domain: domainKey(f, 'spec') }));
+    // Map every Page/Module class → its domain so a spec JOINS the domain of the Page/Module
+    // it reuses. Keeps shards minimal & asset-anchored: InventoryAccess/product-detail specs
+    // fold into Inventory instead of spawning phantom single-scenario domains.
+    /** @type {Record<string, string>} */
+    const classToDomain = {};
+    for (const p of pages) if (p.class) classToDomain[p.class] = p._domain;
+    for (const mo of modules) if (mo.class) classToDomain[mo.class] = mo._domain;
+
+    // Fixture name → domain (specs consume fixtures, not direct imports): inventoryPage→Inventory.
+    /** @type {Record<string, string>} */
+    const fixtureToDomain = {};
+    for (const fx of extractFixtures()) {
+        const m = fx.match(/^(.*?)(Page|Module)$/);
+        if (m && m[1]) fixtureToDomain[fx] = m[1].charAt(0).toUpperCase() + m[1].slice(1);
+    }
+    // Domains anchored by a REAL page or module — the only valid fold targets.
+    const anchorDomains = new Set([...pages, ...modules].map((x) => x._domain));
+
+    const specDomain = (/** @type {{ reuses?: string[] }} */ spec, /** @type {string} */ file, /** @type {string} */ src) => {
+        /** @type {Record<string, number>} */
+        const votes = {};
+        for (const cls of spec.reuses || []) {
+            const d = classToDomain[cls];
+            if (d) votes[d] = (votes[d] || 0) + 1;
+        }
+        for (const [fx, d] of Object.entries(fixtureToDomain)) {
+            if (new RegExp(`\\b${fx}\\b`).test(src)) votes[d] = (votes[d] || 0) + 1;
+        }
+        const ranked = Object.keys(votes).sort((a, b) => votes[b] - votes[a]);
+        if (ranked[0]) return ranked[0];
+        // No import/fixture signal → fold into an anchor domain whose key prefixes this spec's
+        // basename domain (InventoryAccess → Inventory), preferring the longest match.
+        const base = domainKey(file, 'spec');
+        const lower = base.toLowerCase();
+        let fold = '';
+        for (const a of anchorDomains) {
+            const al = a.toLowerCase();
+            if (lower.startsWith(al) && al.length > fold.length) fold = a;
+        }
+        return fold || base;
+    };
+
+    const specs = listTsFiles(join(SRC, 'tests')).map((f) => {
+        const s = describeSpecFile(f);
+        return { ...s, _domain: specDomain(s, f, readFileSync(f, 'utf-8')) };
+    });
 
     // Group page/module/spec of one feature into a single domain shard (case-insensitive key).
     /** @type {Map<string, { domain: string, pages: any[], modules: any[], specs: any[] }>} */
@@ -304,8 +361,11 @@ function main() {
         } catch { /* fall through to full rebuild */ }
     }
 
-    // Build the global test index (TC id → domain/spec/title) for O(1) cross-domain dedup.
-    /** @type {Record<string, { domain: string, spec: string, title: string }>} */
+    // Build the global test index (TC id → [{domain,spec,title}]) for cross-domain dedup.
+    // Value is an ARRAY because TC ids are NOT globally unique (login.spec TC_001 and
+    // product-detail.spec TC_001 coexist) — an id-keyed scalar would silently drop entries
+    // and cause false "new case" verdicts. Consumers match title-first, then id+overlap.
+    /** @type {Record<string, Array<{ domain: string, spec: string, title: string }>>} */
     const testIndex = {};
     let totalTests = 0;
     const domainSummaries = [];
@@ -323,7 +383,8 @@ function main() {
         d.specs.forEach((s) => {
             testCount += (s.tests || []).length;
             (s.tests || []).forEach((/** @type {{ id: string, title: string }} */ t) => {
-                if (t.id) testIndex[t.id] = { domain: d.domain, spec: s.file, title: t.title };
+                if (!t.id) return;
+                (testIndex[t.id] = testIndex[t.id] || []).push({ domain: d.domain, spec: s.file, title: t.title });
             });
         });
         totalTests += testCount;

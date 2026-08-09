@@ -60,7 +60,8 @@ Credentials and URLs live in **`.env.<env>` files only** — never in code, spec
 | `.env.dev` | `TEST_ENV=dev` |
 | `.env.example` | committed template (placeholders only) |
 
-`.env`, `.env.*`, `.ai-memory/`, `.recovery/`, and all reports are gitignored. **Only `.env.example` is committed.**
+`.env`, `.env.*`, `.recovery/`, and all reports are gitignored. The `.ai-memory/` reuse index
+(manifest + domain shards) IS committed; only transient files under it are ignored. **Only `.env.example` is committed.**
 
 **Read values in code:**
 
@@ -175,7 +176,7 @@ npm run lint                    # eslint  → 0 problems
 npx tsc --noEmit                # types   → 0 errors
 npm run lint:fix                # auto-fix lint
 npm run format                  # prettier write
-npm run index                   # regenerate .ai-memory/capabilities.json
+npm run index                   # regenerate .ai-memory/ manifest + domain shards
 ```
 
 ### @playwright/cli (locator discovery)
@@ -484,9 +485,21 @@ On a locator miss, `RecoveryConsole` writes `.recovery/` (`snapshot.yml`, `scree
 
 ## 🧠 AI Memory & Reuse Index
 
-A local-only store at `.ai-memory/` (gitignored, never pushed):
+A **sharded** reuse index under `.ai-memory/` — the index (manifest + domain shards) IS committed
+so a fresh checkout (including the cloud runner) reads it instantly; only transient files under
+`.ai-memory/` are ignored:
 
-- **`capabilities.json`** — the authoritative map of every Page, locator method, Module workflow, fixture, util, and spec. **Check it FIRST** to decide reuse in seconds. Regenerate with `npm run index` after creating/modifying any Page/Module/Spec.
+- **`capabilities.json`** — the small **root manifest**: all domains, a global `testIndex`
+  (`TC id → an array of {domain, spec, title}` — arrays because TC ids are NOT globally unique, so
+  consumers match title-first) for cross-domain duplicate detection, fixtures, utils, and a
+  `sourceHash`. **Read this FIRST.** It stays small even at thousands of tests.
+- **`domains/<domain>.json`** — a **per-domain shard** with that feature's locators, module methods,
+  and tests. Load **only** the domain you are working on (bounded tokens; clean diffs). Shards are
+  **asset-anchored** and minimal: a spec is grouped under the domain of the Page/Module it reuses
+  (e.g. a product-detail spec folds into the `Inventory` shard) — `npm run index` auto-groups, so
+  there are no junk per-scenario shards.
+- Regenerate both with `npm run index` after creating/modifying any Page/Module/Spec. A `sourceHash`
+  skip-guard makes it a no-op when `src/` is unchanged.
 - **`memory.json`** — history/rationale records. Read recent records before generating code; append a record after.
 
 **Current inventory** (regenerate with `npm run index`):

@@ -29,7 +29,7 @@ You are the workspace automation agent for this repository.
 
 ## Required workflow
 
-1. Check `.ai-memory/capabilities.json` first when it exists.
+1. Read the reuse index FIRST: `.ai-memory/capabilities.json` (committed manifest) — scan its global `testIndex` to see if a case is already automated in ANY domain, then open only the relevant `.ai-memory/domains/<domain>.json` shard for that area's existing locators/methods/tests. Shards are asset-anchored (grouped by the Page/Module a spec reuses); never assume one shard per spec.
 2. Read only the minimum relevant source files.
 3. Reuse existing locators and module methods before creating new ones.
 4. If a locator is new or failing, gather UI evidence first with `@playwright/cli` or an existing trace/snapshot.
