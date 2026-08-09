@@ -8,6 +8,12 @@ const envFile = testEnv === 'production' ? '.env' : `.env.${testEnv}`;
 dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 dotenv.config(); // fallback to root .env
 
+// Normalise BASE_URL: strip trailing slash(es) so `${env('BASE_URL')}/path`
+// never produces a double slash (`//`) regardless of how the value/secret is set.
+if (process.env.BASE_URL) {
+    process.env.BASE_URL = process.env.BASE_URL.replace(/\/+$/, '');
+}
+
 // ─── Framework Config (rarely changes) ───────────────────────────────────────
 export interface AppConfig {
     baseUrl: string;
