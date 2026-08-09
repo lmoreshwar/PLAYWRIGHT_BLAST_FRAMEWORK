@@ -115,4 +115,21 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.errorMessage()).not.toBeVisible();
     });
 
+    test('TC_014 Security: SQL Injection attempt on username field @Login @Authentication @Security', async ({ loginModule, loginPage, page }) => {
+        await loginModule.login(testData.sqlInjectionPayload, valid.password);
+
+        await expect(loginPage.errorMessage()).toBeVisible();
+        await expect(page).not.toHaveURL(/inventory\.html/);
+    });
+
+    test('TC_015 Security: XSS attempt on username field @Login @Authentication @Security', async ({ loginModule, loginPage, page }) => {
+        await loginModule.login(testData.xssPayload, valid.password);
+
+        await expect(loginPage.errorMessage()).toBeVisible();
+        await expect(page).not.toHaveURL(/inventory\.html/);
+        // Optionally, verify the error message content if it's specific to XSS or invalid characters.
+        // For SauceDemo, it's likely the generic "Username and password do not match" or "Username is required"
+        // if the payload is treated as an empty/invalid username.
+        await expect(loginPage.errorMessage()).toContainText('do not match any user');
+    });
 });
