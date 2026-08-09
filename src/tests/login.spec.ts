@@ -132,4 +132,12 @@ test.describe('Authentication — Login & Session', () => {
         // if the payload is treated as an empty/invalid username.
         await expect(loginPage.errorMessage()).toContainText('do not match any user');
     });
+
+    test('TC_017 SQL injection attempt in username field @Login @SQL-Injection @Security @Regression', async ({ loginModule, loginPage, page }) => {
+        await loginModule.login(testData.sqlInjectionPayload, valid.password);
+
+        await expect(loginPage.errorMessage()).toBeVisible();
+        await expect(page).not.toHaveURL(/inventory\.html/);
+        await expect(loginPage.errorMessage()).toContainText('do not match any user');
+    });
 });
