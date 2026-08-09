@@ -66,6 +66,12 @@ jobs:
         working-directory: .blast-engine/AI_Agents
         run: npm ci
 
+      # READ-BEFORE contract: .ai-memory/ is gitignored, so a fresh checkout has no reuse
+      # index. Build it from the checked-out src/ so generation can reuse existing
+      # Pages/Modules/Specs instead of re-creating them.
+      - name: Build reuse index (capabilities.json)
+        run: node scripts/generate-capabilities.mjs
+
       - name: Write job payload
         shell: bash
         run: |

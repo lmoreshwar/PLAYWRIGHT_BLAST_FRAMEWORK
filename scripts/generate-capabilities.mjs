@@ -65,27 +65,47 @@ function extractClassName(src) {
     return m ? m[1] : null;
 }
 
+// Control-flow / keyword tokens that must never be captured as class members.
+const RESERVED_MEMBERS = new Set([
+    'if', 'for', 'while', 'switch', 'catch', 'return', 'constructor',
+    'function', 'await', 'do', 'else', 'new', 'typeof', 'super',
+]);
+
 /**
- * Extract PUBLIC async method names from a class source.
- * - Skips `private`/`protected` members (internal helpers).
- * - Skips the constructor.
- * - De-dupes and sorts for deterministic output.
+ * Extract PUBLIC member names from a class source.
+ * Captures three shapes so the reuse map is complete:
+ *   1. Arrow-function properties  — `usernameInput = (): Locator => …` (Page locators).
+ *   2. Async methods              — `async login(…) {` (Module workflows).
+ *   3. Sync methods               — `getCount(…): number {`.
+ * Skips `private`/`protected` members, the constructor, and control-flow keywords.
+ * De-dupes and sorts for deterministic output.
  * @param {string} src
  * @returns {string[]}
  */
-function extractPublicAsyncMethods(src) {
+function extractPublicMembers(src) {
     /** @type {Set<string>} */
-    const methods = new Set();
-    const re = /(^|\n)\s*(public\s+|private\s+|protected\s+)?async\s+([A-Za-z0-9_]+)\s*\(/g;
-    let match;
-    while ((match = re.exec(src)) !== null) {
-        const visibility = (match[2] || '').trim();
-        const name = match[3];
-        if (visibility === 'private' || visibility === 'protected') continue;
-        if (name === 'constructor') continue;
-        methods.add(name);
+    const members = new Set();
+
+    // 1) Arrow-function class properties (locators, handlers): name = (…) => / name = async (…) =>
+    const arrowRe = /(^|\n)([ \t]*(?:public\s+|private\s+|protected\s+|readonly\s+|static\s+)*)([A-Za-z_$][A-Za-z0-9_$]*)\s*=\s*(?:async\s*)?\([^)]*\)\s*(?::[^=]+)?=>/g;
+    let m;
+    while ((m = arrowRe.exec(src)) !== null) {
+        const modifiers = m[2] || '';
+        if (/\b(private|protected)\b/.test(modifiers)) continue;
+        members.add(m[3]);
     }
-    return [...methods].sort();
+
+    // 2/3) Method declarations (async or sync): [vis] [static] [async] name(…)[: type] {
+    const methodRe = /(^|\n)[ \t]*(public\s+|private\s+|protected\s+)?(?:static\s+)?(?:async\s+)?([A-Za-z_$][A-Za-z0-9_$]*)\s*\([^)]*\)\s*(?::[^{;]+)?\{/g;
+    while ((m = methodRe.exec(src)) !== null) {
+        const visibility = (m[2] || '').trim();
+        const name = m[3];
+        if (visibility === 'private' || visibility === 'protected') continue;
+        if (RESERVED_MEMBERS.has(name)) continue;
+        members.add(name);
+    }
+
+    return [...members].sort();
 }
 
 /**
@@ -98,7 +118,7 @@ function describeClassFile(file) {
     return {
         file: rel(file),
         class: extractClassName(src),
-        methods: extractPublicAsyncMethods(src),
+        methods: extractPublicMembers(src),
     };
 }
 
