@@ -34,6 +34,7 @@
     "sessionRequired": "Epic sadface: You can only access '/inventory.html' when you are logged in."
   },
   "sqlInjectionPayload": "' OR 1=1 --",
+  "xssPayload": "<script>alert('XSS')</script>",
   "loginAttemptCount": 3,
   "sortOptions": {
     "nameAsc": "Name (A to Z)",
