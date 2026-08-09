@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-09T11:44:08.566Z",
+  "generatedAt": "2026-08-09T13:18:56.081Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:f1bb8583d85d54b2d9674849997e73129186182e",
+  "sourceHash": "sha1:cad01a38fd9e70901bc2f6912b682a9dc0c5c33c",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 3,
     "modules": 3,
     "specs": 3,
-    "tests": 21,
+    "tests": 25,
     "domains": 4
   },
   "fixtures": [
@@ -83,8 +83,8 @@
       ],
       "counts": {
         "locators": 6,
-        "methods": 6,
-        "tests": 16
+        "methods": 8,
+        "tests": 20
       }
     },
     {
@@ -238,6 +238,34 @@
         "domain": "Login",
         "spec": "src/tests/login.spec.ts",
         "title": "TC_015 Security: XSS attempt on username field @Login @Authentication @Security"
+      }
+    ],
+    "TC_017": [
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_017 SQL injection attempt in username field @Login @SQL-Injection"
+      }
+    ],
+    "TC_018": [
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_018 XSS script injection in password field @Login @XSS-Injection"
+      }
+    ],
+    "TC_019": [
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_019 Server error (HTTP 500) handling on login request @Login @Server-Error-500 @Regression @Automation"
+      }
+    ],
+    "TC_020": [
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_020 Network timeout handling on login request @Login @Timeout @Regression @Automation"
       }
     ]
   }

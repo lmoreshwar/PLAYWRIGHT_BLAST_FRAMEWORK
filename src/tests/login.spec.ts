@@ -4,8 +4,9 @@ import testData from '../testdata/testData.json';
 
 /**
  * Authentication — Login & Session (SauceDemo)
- * Covers TC_001–TC_010 from TestCases_SD-2. Valid credentials come from `.env.<env>`
- * via credentials('app'); negative data comes from testData.json / the source sheet.
+ * Covers TC_001–TC_010, TC_011–TC_015, TC_017, TC_018, TC_019, TC_020.
+ * Valid credentials come from `.env.<env>` via credentials('app');
+ * negative data comes from testData.json / the source sheet.
  */
 test.describe('Authentication — Login & Session', () => {
     const valid = credentials('app');
@@ -91,8 +92,6 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.errorMessage()).toContainText('do not match any user');
     });
 
-    // New test cases
-
     test('TC_011 Verify post‑login redirection to inventory page @Login @Redirection @Regression @Automation @Critical', async ({ loginModule, loginPage, page }) => {
         await loginModule.login(valid.username, valid.password);
 
@@ -127,9 +126,35 @@ test.describe('Authentication — Login & Session', () => {
 
         await expect(loginPage.errorMessage()).toBeVisible();
         await expect(page).not.toHaveURL(/inventory\.html/);
-        // Optionally, verify the error message content if it's specific to XSS or invalid characters.
-        // For SauceDemo, it's likely the generic "Username and password do not match" or "Username is required"
-        // if the payload is treated as an empty/invalid username.
         await expect(loginPage.errorMessage()).toContainText('do not match any user');
+    });
+
+    test('TC_017 SQL injection attempt in username field @Login @SQL-Injection', async ({ loginModule, loginPage, page }) => {
+        await loginModule.login(testData.sqlInjectionPayload, valid.password);
+
+        await expect(loginPage.errorMessage()).toBeVisible();
+        await expect(page).not.toHaveURL(/inventory\.html/);
+    });
+
+    test('TC_018 XSS script injection in password field @Login @XSS-Injection', async ({ loginModule, loginPage, page }) => {
+        await loginModule.login(valid.username, testData.xssPayload);
+
+        await expect(loginPage.errorMessage()).toBeVisible();
+        await expect(page).not.toHaveURL(/inventory\.html/);
+        await expect(loginPage.errorMessage()).toContainText('do not match any user');
+    });
+
+    test('TC_019 Server error (HTTP 500) handling on login request @Login @Server-Error-500 @Regression @Automation', async ({ loginModule, loginPage, page }) => {
+        await loginModule.mockLoginServerError();
+        await loginModule.login(valid.username, valid.password);
+
+        await expect(page).not.toHaveURL(/inventory\.html/);
+    });
+
+    test('TC_020 Network timeout handling on login request @Login @Timeout @Regression @Automation', async ({ loginModule, loginPage, page }) => {
+        await loginModule.mockLoginTimeout();
+        await loginModule.login(valid.username, valid.password);
+
+        await expect(page).not.toHaveURL(/inventory\.html/);
     });
 });

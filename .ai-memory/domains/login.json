@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Login",
-  "generatedAt": "2026-08-09T11:44:08.556Z",
-  "sourceHash": "sha1:f1bb8583d85d54b2d9674849997e73129186182e",
+  "generatedAt": "2026-08-09T13:18:56.081Z",
+  "sourceHash": "sha1:cad01a38fd9e70901bc2f6912b682a9dc0c5c33c",
   "pages": [
     {
       "file": "src/pages/LoginPage.ts",
@@ -26,6 +26,8 @@
         "goto",
         "login",
         "logout",
+        "mockLoginServerError",
+        "mockLoginTimeout",
         "openProtectedPage",
         "submitEmpty"
       ]
@@ -57,8 +59,12 @@
         "@Login",
         "@Redirection",
         "@Regression",
+        "@SQL",
         "@Sanity",
-        "@Security"
+        "@Security",
+        "@Server",
+        "@Timeout",
+        "@XSS"
       ],
       "reuses": [],
       "tests": [
@@ -121,6 +127,22 @@
         {
           "id": "TC_015",
           "title": "TC_015 Security: XSS attempt on username field @Login @Authentication @Security"
+        },
+        {
+          "id": "TC_017",
+          "title": "TC_017 SQL injection attempt in username field @Login @SQL-Injection"
+        },
+        {
+          "id": "TC_018",
+          "title": "TC_018 XSS script injection in password field @Login @XSS-Injection"
+        },
+        {
+          "id": "TC_019",
+          "title": "TC_019 Server error (HTTP 500) handling on login request @Login @Server-Error-500 @Regression @Automation"
+        },
+        {
+          "id": "TC_020",
+          "title": "TC_020 Network timeout handling on login request @Login @Timeout @Regression @Automation"
         }
       ]
     }

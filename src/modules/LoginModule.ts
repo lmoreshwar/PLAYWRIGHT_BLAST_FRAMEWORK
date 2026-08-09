@@ -54,4 +54,36 @@ export class LoginModule {
         this.logger.step(4, `Attempt direct access to protected page: ${path}`);
         await this.page.goto(path);
     }
+
+    async mockLoginServerError(): Promise<void> {
+        this.logger.step(5, 'Mock HTTP 500 server error on login request');
+        await this.page.route('**/*', async (route) => {
+            const request = route.request();
+            if (
+                request.method() === 'POST' ||
+                request.url().includes('login') ||
+                request.url().includes('inventory')
+            ) {
+                await route.abort('failed');
+            } else {
+                await route.continue();
+            }
+        });
+    }
+
+    async mockLoginTimeout(): Promise<void> {
+        this.logger.step(5, 'Mock network timeout on login request');
+        await this.page.route('**/*', async (route) => {
+            const request = route.request();
+            if (
+                request.method() === 'POST' ||
+                request.url().includes('login') ||
+                request.url().includes('inventory')
+            ) {
+                await route.abort('timedout');
+            } else {
+                await route.continue();
+            }
+        });
+    }
 }

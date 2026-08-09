@@ -36,6 +36,10 @@
   "sqlInjectionPayload": "' OR 1=1 --",
   "xssPayload": "<script>alert('XSS')</script>",
   "loginAttemptCount": 3,
+  "serverError": {
+    "status": 500,
+    "message": "Internal Server Error"
+  },
   "sortOptions": {
     "nameAsc": "Name (A to Z)",
     "nameDesc": "Name (Z to A)",
