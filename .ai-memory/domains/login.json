@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Login",
-  "generatedAt": "2026-08-09T13:22:08.216Z",
-  "sourceHash": "sha1:bdfd29bac983d6e72b101a8c191ec03b78688589",
+  "generatedAt": "2026-08-09T13:26:16.289Z",
+  "sourceHash": "sha1:f1bb8583d85d54b2d9674849997e73129186182e",
   "pages": [
     {
       "file": "src/pages/LoginPage.ts",
@@ -57,7 +57,6 @@
         "@Login",
         "@Redirection",
         "@Regression",
-        "@SQL",
         "@Sanity",
         "@Security"
       ],
@@ -122,10 +121,6 @@
         {
           "id": "TC_015",
           "title": "TC_015 Security: XSS attempt on username field @Login @Authentication @Security"
-        },
-        {
-          "id": "TC_017",
-          "title": "TC_017 SQL injection attempt in username field @Login @SQL-Injection @Security @Regression"
         }
       ]
     }
