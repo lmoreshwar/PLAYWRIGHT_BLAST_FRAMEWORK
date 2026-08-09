@@ -91,4 +91,21 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.errorMessage()).toContainText('do not match any user');
     });
 
+    // New test cases
+
+    test('TC_012 Password field masks input @Regression @Automation @Critical', async ({ loginPage }) => {
+        // Verify that the password input uses the password type, which masks entered characters.
+        await expect(loginPage.passwordInput()).toHaveAttribute('type', 'password');
     });
+
+    test('TC_013 Error message clears after correcting credentials @Regression @Automation @High', async ({ loginModule, loginPage }) => {
+        // Trigger an error with invalid credentials.
+        await loginModule.login('invalid_user', 'wrong_password');
+        await expect(loginPage.errorMessage()).toBeVisible();
+
+        // Correct the credentials and ensure the error message disappears.
+        await loginModule.login(valid.username, valid.password);
+        await expect(loginPage.errorMessage()).not.toBeVisible();
+    });
+
+});
