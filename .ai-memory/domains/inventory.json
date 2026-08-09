@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Inventory",
-  "generatedAt": "2026-08-09T19:09:35.553Z",
-  "sourceHash": "sha1:e5357e49afbd05c8ed5e673b4b2e8791fcdf6cc6",
+  "generatedAt": "2026-08-09T20:17:16.702Z",
+  "sourceHash": "sha1:7d78a7efdab0963b1516406e9867eb2cc5c11d66",
   "pages": [
     {
       "file": "src/pages/InventoryPage.ts",

@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-09T19:09:35.554Z",
+  "generatedAt": "2026-08-09T20:17:16.703Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:e5357e49afbd05c8ed5e673b4b2e8791fcdf6cc6",
+  "sourceHash": "sha1:7d78a7efdab0963b1516406e9867eb2cc5c11d66",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 3,
     "modules": 3,
     "specs": 3,
-    "tests": 22,
+    "tests": 20,
     "domains": 4
   },
   "fixtures": [
@@ -83,8 +83,8 @@
       ],
       "counts": {
         "locators": 6,
-        "methods": 6,
-        "tests": 17
+        "methods": 7,
+        "tests": 15
       }
     },
     {
@@ -198,20 +198,6 @@
         "title": "TC_009 UI Validation - Login Page @Sanity @Regression @Automation @Critical"
       }
     ],
-    "TC_010": [
-      {
-        "domain": "Login",
-        "spec": "src/tests/login.spec.ts",
-        "title": "TC_010 Error Handling - Invalid Credentials @Regression @Automation @High"
-      }
-    ],
-    "TC_011": [
-      {
-        "domain": "Login",
-        "spec": "src/tests/login.spec.ts",
-        "title": "TC_011 Verify post‑login redirection to inventory page @Login @Redirection @Regression @Automation @Critical"
-      }
-    ],
     "TC_012": [
       {
         "domain": "Login",
@@ -226,13 +212,6 @@
         "title": "TC_013 Error message clears after correcting credentials @Regression @Automation @High"
       }
     ],
-    "TC_014": [
-      {
-        "domain": "Login",
-        "spec": "src/tests/login.spec.ts",
-        "title": "TC_014 Security: SQL Injection attempt on username field @Login @Authentication @Security"
-      }
-    ],
     "TC_015": [
       {
         "domain": "Login",
@@ -244,7 +223,14 @@
       {
         "domain": "Login",
         "spec": "src/tests/login.spec.ts",
-        "title": "TC_017 Prevent locked user login with valid credentials @Authentication @LockedUserValidation"
+        "title": "TC_017 Prevent locked user login with valid credentials @Authentication @Locked User Validation"
+      }
+    ],
+    "TC_019": [
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_019 Reject locked user with an incorrect password @Authentication @Locked User Validation"
       }
     ]
   }

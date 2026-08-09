@@ -23,6 +23,10 @@ export class LoginModule {
         await this.actions.waitForVisible(this.loginPage.loginButton());
     }
 
+    async navigateToLoginPage(): Promise<void> {
+        await this.goto();
+    }
+
     async login(username: string, password: string): Promise<void> {
         this.logger.step(2, `Log in as "${username || '<empty>'}"`);
         await this.actions.fill(this.loginPage.usernameInput(), username);
