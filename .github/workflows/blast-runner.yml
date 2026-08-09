@@ -66,9 +66,9 @@ jobs:
         working-directory: .blast-engine/AI_Agents
         run: npm ci
 
-      # READ-BEFORE contract: .ai-memory/ is gitignored, so a fresh checkout has no reuse
-      # index. Build it from the checked-out src/ so generation can reuse existing
-      # Pages/Modules/Specs instead of re-creating them.
+      # READ-BEFORE contract: the reuse index IS committed, but rebuild it from the
+      # checked-out src/ so it self-heals if stale and newly generated artifacts get
+      # registered into the manifest/shards that land in the PR (add-paths includes it).
       - name: Build reuse index (capabilities.json)
         run: node scripts/generate-capabilities.mjs
 
@@ -138,4 +138,5 @@ jobs:
             before merging — the framework's existing tests are protected.
           add-paths: |
             src/**
+            .ai-memory/**
           delete-branch: true

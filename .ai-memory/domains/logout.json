@@ -1,0 +1,17 @@
+{
+  "$schema": "reuse-capability-shard/v1",
+  "domain": "Logout",
+  "generatedAt": "2026-08-09T11:35:30.003Z",
+  "sourceHash": "sha1:f1bb8583d85d54b2d9674849997e73129186182e",
+  "pages": [],
+  "modules": [
+    {
+      "file": "src/modules/LogoutModule.ts",
+      "class": "LogoutModule",
+      "methods": [
+        "logout"
+      ]
+    }
+  ],
+  "specs": []
+}

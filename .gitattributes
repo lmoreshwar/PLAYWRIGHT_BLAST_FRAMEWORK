@@ -1,0 +1,4 @@
+# Keep the committed reuse index LF so Windows commits and Linux (CI) regeneration
+# don't produce spurious CRLF/LF diffs on every run.
+.ai-memory/** text eol=lf
+*.json text eol=lf

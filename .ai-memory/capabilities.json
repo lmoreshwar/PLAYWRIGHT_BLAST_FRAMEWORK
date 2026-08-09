@@ -1,0 +1,212 @@
+{
+  "$schema": "reuse-capability-index/v2-sharded",
+  "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
+  "generatedAt": "2026-08-09T11:35:30.008Z",
+  "regenerateWith": "npm run index",
+  "sourceHash": "sha1:f1bb8583d85d54b2d9674849997e73129186182e",
+  "shardDir": ".ai-memory/domains",
+  "counts": {
+    "pages": 3,
+    "modules": 3,
+    "specs": 3,
+    "tests": 21,
+    "domains": 6
+  },
+  "fixtures": [
+    "actions",
+    "inventoryModule",
+    "inventoryPage",
+    "loginModule",
+    "loginPage",
+    "workflowActions"
+  ],
+  "utils": [
+    "Actions",
+    "AiDebugReporter",
+    "DatePickerHelper",
+    "Logger",
+    "RecoveryConsole",
+    "SmartLocator",
+    "StepsReporter",
+    "WaitHelper",
+    "WorkflowActions",
+    "constants",
+    "paths",
+    "types",
+    "visual"
+  ],
+  "domains": [
+    {
+      "domain": "Header",
+      "shard": ".ai-memory/domains/header.json",
+      "pages": [
+        "src/pages/HeaderPage.ts"
+      ],
+      "modules": [],
+      "specs": [],
+      "counts": {
+        "locators": 2,
+        "methods": 0,
+        "tests": 0
+      }
+    },
+    {
+      "domain": "Inventory",
+      "shard": ".ai-memory/domains/inventory.json",
+      "pages": [
+        "src/pages/InventoryPage.ts"
+      ],
+      "modules": [
+        "src/modules/InventoryModule.ts"
+      ],
+      "specs": [],
+      "counts": {
+        "locators": 11,
+        "methods": 5,
+        "tests": 0
+      }
+    },
+    {
+      "domain": "InventoryAccess",
+      "shard": ".ai-memory/domains/inventoryaccess.json",
+      "pages": [],
+      "modules": [],
+      "specs": [
+        "src/tests/InventoryAccess.spec.ts"
+      ],
+      "counts": {
+        "locators": 0,
+        "methods": 0,
+        "tests": 1
+      }
+    },
+    {
+      "domain": "Login",
+      "shard": ".ai-memory/domains/login.json",
+      "pages": [
+        "src/pages/LoginPage.ts"
+      ],
+      "modules": [
+        "src/modules/LoginModule.ts"
+      ],
+      "specs": [
+        "src/tests/login.spec.ts"
+      ],
+      "counts": {
+        "locators": 6,
+        "methods": 6,
+        "tests": 15
+      }
+    },
+    {
+      "domain": "Logout",
+      "shard": ".ai-memory/domains/logout.json",
+      "pages": [],
+      "modules": [
+        "src/modules/LogoutModule.ts"
+      ],
+      "specs": [],
+      "counts": {
+        "locators": 0,
+        "methods": 1,
+        "tests": 0
+      }
+    },
+    {
+      "domain": "Product-detail",
+      "shard": ".ai-memory/domains/product-detail.json",
+      "pages": [],
+      "modules": [],
+      "specs": [
+        "src/tests/product-detail.spec.ts"
+      ],
+      "counts": {
+        "locators": 0,
+        "methods": 0,
+        "tests": 5
+      }
+    }
+  ],
+  "testIndex": {
+    "TC_016": {
+      "domain": "InventoryAccess",
+      "spec": "src/tests/InventoryAccess.spec.ts",
+      "title": "TC_016 Direct access to inventory page without authentication"
+    },
+    "TC_001": {
+      "domain": "Product-detail",
+      "spec": "src/tests/product-detail.spec.ts",
+      "title": "TC_001 Click Product Opens Detail Page @ProductDetailPage"
+    },
+    "TC_002": {
+      "domain": "Product-detail",
+      "spec": "src/tests/product-detail.spec.ts",
+      "title": "TC_002 Detail Page Shows Product Information @ProductDetailPage"
+    },
+    "TC_003": {
+      "domain": "Product-detail",
+      "spec": "src/tests/product-detail.spec.ts",
+      "title": "TC_003 Add to Cart Button Works @ProductDetailPage @Cart"
+    },
+    "TC_004": {
+      "domain": "Product-detail",
+      "spec": "src/tests/product-detail.spec.ts",
+      "title": "TC_004 Remove from Cart Button Works @ProductDetailPage @Cart"
+    },
+    "TC_005": {
+      "domain": "Product-detail",
+      "spec": "src/tests/product-detail.spec.ts",
+      "title": "TC_005 Back to Products Button Works @ProductDetailPage @Navigation"
+    },
+    "TC_006": {
+      "domain": "Login",
+      "spec": "src/tests/login.spec.ts",
+      "title": "TC_006 Boundary Login - SQL Injection Attempt @Regression @Automation @Critical"
+    },
+    "TC_007": {
+      "domain": "Login",
+      "spec": "src/tests/login.spec.ts",
+      "title": "TC_007 Session Expiration After Logout @Regression @Automation @High"
+    },
+    "TC_008": {
+      "domain": "Login",
+      "spec": "src/tests/login.spec.ts",
+      "title": "TC_008 Multiple Login Attempts with Invalid Credentials @Regression @Automation @Critical"
+    },
+    "TC_009": {
+      "domain": "Login",
+      "spec": "src/tests/login.spec.ts",
+      "title": "TC_009 UI Validation - Login Page @Sanity @Regression @Automation @Critical"
+    },
+    "TC_010": {
+      "domain": "Login",
+      "spec": "src/tests/login.spec.ts",
+      "title": "TC_010 Error Handling - Invalid Credentials @Regression @Automation @High"
+    },
+    "TC_011": {
+      "domain": "Login",
+      "spec": "src/tests/login.spec.ts",
+      "title": "TC_011 Verify post‑login redirection to inventory page @Login @Redirection @Regression @Automation @Critical"
+    },
+    "TC_012": {
+      "domain": "Login",
+      "spec": "src/tests/login.spec.ts",
+      "title": "TC_012 Password field masks input @Regression @Automation @Critical"
+    },
+    "TC_013": {
+      "domain": "Login",
+      "spec": "src/tests/login.spec.ts",
+      "title": "TC_013 Error message clears after correcting credentials @Regression @Automation @High"
+    },
+    "TC_014": {
+      "domain": "Login",
+      "spec": "src/tests/login.spec.ts",
+      "title": "TC_014 Security: SQL Injection attempt on username field @Login @Authentication @Security"
+    },
+    "TC_015": {
+      "domain": "Login",
+      "spec": "src/tests/login.spec.ts",
+      "title": "TC_015 Security: XSS attempt on username field @Login @Authentication @Security"
+    }
+  }
+}

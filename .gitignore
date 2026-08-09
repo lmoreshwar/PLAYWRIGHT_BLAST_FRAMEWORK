@@ -9,8 +9,12 @@ tta-report/
 Thumbs.db
 .playwright-cli/
 
-# AI Memory System — local context store, never commit
-.ai-memory/
+# AI Memory System — COMMIT the reuse index (root manifest + per-domain shards) so a
+# fresh checkout reads it instantly; ignore any other transient files under .ai-memory/.
+.ai-memory/*
+!.ai-memory/capabilities.json
+!.ai-memory/domains
+!.ai-memory/domains/*
 
 # Security — environment files with real credentials (NEVER commit).
 # Only the .env.example template is tracked.

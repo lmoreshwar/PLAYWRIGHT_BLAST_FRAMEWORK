@@ -1,0 +1,18 @@
+{
+  "$schema": "reuse-capability-shard/v1",
+  "domain": "Header",
+  "generatedAt": "2026-08-09T11:35:29.989Z",
+  "sourceHash": "sha1:f1bb8583d85d54b2d9674849997e73129186182e",
+  "pages": [
+    {
+      "file": "src/pages/HeaderPage.ts",
+      "class": "HeaderPage",
+      "methods": [
+        "logoutLink",
+        "menuButton"
+      ]
+    }
+  ],
+  "modules": [],
+  "specs": []
+}

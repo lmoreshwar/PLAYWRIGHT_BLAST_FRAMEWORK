@@ -16,15 +16,17 @@
  * Zero runtime dependencies — pure Node fs + regex (no parser, no install).
  */
 
-import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'node:fs';
 import { join, relative, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const ROOT = join(__dirname, '..');
 const SRC = join(ROOT, 'src');
 const OUT_DIR = join(ROOT, '.ai-memory');
 const OUT_FILE = join(OUT_DIR, 'capabilities.json');
+const SHARD_DIR = join(OUT_DIR, 'domains');
 
 /**
  * Recursively list *.ts files under a directory (skips .d.ts).
@@ -167,9 +169,67 @@ function extractReuses(src) {
 }
 
 /**
- * Build a {file, describe, tags, reuses} record for a spec file.
+ * Normalize a raw test-case id (TC1, tc-12, TC_007) to canonical `TC_0NN`.
+ * @param {string} raw
+ * @returns {string}
+ */
+function normalizeTcId(raw) {
+    const m = String(raw).match(/TC[_-]?0*(\d+)/i);
+    return m ? 'TC_' + m[1].padStart(3, '0') : '';
+}
+
+/**
+ * Extract each test's {id, title} from a spec (test / test.only / test.skip / test.fixme).
+ * @param {string} src
+ * @returns {{ id: string, title: string }[]}
+ */
+function extractTests(src) {
+    /** @type {{ id: string, title: string }[]} */
+    const out = [];
+    const re = /\btest\s*(?:\.(?:only|skip|fixme))?\s*\(\s*['"`]([^'"`]+)['"`]/g;
+    let m;
+    while ((m = re.exec(src)) !== null) {
+        const title = m[1].trim();
+        out.push({ id: normalizeTcId(title), title });
+    }
+    return out;
+}
+
+/**
+ * Canonical domain key for a source file (groups page/module/spec of one feature).
+ * `LoginPage.ts`→Login, `InventoryModule.ts`→Inventory, `login.spec.ts`→Login,
+ * `InventoryAccess.spec.ts`→InventoryAccess.
  * @param {string} file
- * @returns {{ file: string, describes: string[], tags: string[], reuses: string[] }}
+ * @param {'page'|'module'|'spec'} kind
+ * @returns {string}
+ */
+function domainKey(file, kind) {
+    let base = basename(file).replace(/\.ts$/, '').replace(/\.spec$/, '');
+    if (kind === 'page') base = base.replace(/Page$/, '');
+    if (kind === 'module') base = base.replace(/Module$/, '');
+    return base.charAt(0).toUpperCase() + base.slice(1);
+}
+
+/**
+ * Deterministic content hash of every src *.ts file (path + content). Lets a run
+ * skip a rewrite when nothing changed, and lets consumers detect a stale index.
+ * @returns {string}
+ */
+function hashSources() {
+    const h = createHash('sha1');
+    for (const f of listTsFiles(SRC)) {
+        h.update(rel(f));
+        h.update('\0');
+        h.update(readFileSync(f, 'utf-8'));
+        h.update('\0');
+    }
+    return 'sha1:' + h.digest('hex');
+}
+
+/**
+ * Build a {file, describe, tags, reuses, tests} record for a spec file.
+ * @param {string} file
+ * @returns {{ file: string, describes: string[], tags: string[], reuses: string[], tests: { id: string, title: string }[] }}
  */
 function describeSpecFile(file) {
     const src = readFileSync(file, 'utf-8');
@@ -178,6 +238,7 @@ function describeSpecFile(file) {
         describes: extractDescribes(src),
         tags: extractTags(src),
         reuses: extractReuses(src),
+        tests: extractTests(src),
     };
 }
 
@@ -206,34 +267,126 @@ function extractUtils() {
 function main() {
     const pages = listTsFiles(join(SRC, 'pages'))
         .filter((f) => !f.endsWith('index.ts'))
-        .map(describeClassFile);
+        .map((f) => ({ ...describeClassFile(f), _domain: domainKey(f, 'page') }));
 
     const modules = listTsFiles(join(SRC, 'modules'))
         .filter((f) => !f.endsWith('index.ts'))
-        .map(describeClassFile);
+        .map((f) => ({ ...describeClassFile(f), _domain: domainKey(f, 'module') }));
 
-    const specs = listTsFiles(join(SRC, 'tests')).map(describeSpecFile);
+    const specs = listTsFiles(join(SRC, 'tests'))
+        .map((f) => ({ ...describeSpecFile(f), _domain: domainKey(f, 'spec') }));
 
-    const index = {
-        $schema: 'reuse-capability-index/v1',
+    // Group page/module/spec of one feature into a single domain shard (case-insensitive key).
+    /** @type {Map<string, { domain: string, pages: any[], modules: any[], specs: any[] }>} */
+    const domains = new Map();
+    const bucket = (/** @type {string} */ name) => {
+        const key = name.toLowerCase();
+        let d = domains.get(key);
+        if (!d) { d = { domain: name, pages: [], modules: [], specs: [] }; domains.set(key, d); }
+        return d;
+    };
+    pages.forEach((p) => { const { _domain, ...rest } = p; bucket(_domain).pages.push(rest); });
+    modules.forEach((mo) => { const { _domain, ...rest } = mo; bucket(_domain).modules.push(rest); });
+    specs.forEach((s) => { const { _domain, ...rest } = s; bucket(_domain).specs.push(rest); });
+
+    const sourceHash = hashSources();
+
+    // Skip-guard: if nothing in src/ changed and the shards already exist, do not rewrite
+    // (keeps diffs clean and makes `npm run index` a near no-op on unchanged trees).
+    if (existsSync(OUT_FILE)) {
+        try {
+            const prev = JSON.parse(readFileSync(OUT_FILE, 'utf-8'));
+            const shardsOk = [...domains.keys()].every((k) => existsSync(join(SHARD_DIR, `${k}.json`)));
+            if (prev.sourceHash === sourceHash && shardsOk) {
+                console.log(`= ${rel(OUT_FILE)} unchanged (sourceHash match) — skipped rebuild.`);
+                return;
+            }
+        } catch { /* fall through to full rebuild */ }
+    }
+
+    // Build the global test index (TC id → domain/spec/title) for O(1) cross-domain dedup.
+    /** @type {Record<string, { domain: string, spec: string, title: string }>} */
+    const testIndex = {};
+    let totalTests = 0;
+    const domainSummaries = [];
+    const sortedKeys = [...domains.keys()].sort();
+
+    for (const key of sortedKeys) {
+        const d = domains.get(key);
+        if (!d) continue;
+        const shardRel = `.ai-memory/domains/${key}.json`;
+        let locatorCount = 0;
+        let methodCount = 0;
+        let testCount = 0;
+        d.pages.forEach((p) => { locatorCount += (p.methods || []).length; });
+        d.modules.forEach((mo) => { methodCount += (mo.methods || []).length; });
+        d.specs.forEach((s) => {
+            testCount += (s.tests || []).length;
+            (s.tests || []).forEach((/** @type {{ id: string, title: string }} */ t) => {
+                if (t.id) testIndex[t.id] = { domain: d.domain, spec: s.file, title: t.title };
+            });
+        });
+        totalTests += testCount;
+        domainSummaries.push({
+            domain: d.domain,
+            shard: shardRel,
+            pages: d.pages.map((p) => p.file),
+            modules: d.modules.map((mo) => mo.file),
+            specs: d.specs.map((s) => s.file),
+            counts: { locators: locatorCount, methods: methodCount, tests: testCount },
+        });
+
+        const shard = {
+            $schema: 'reuse-capability-shard/v1',
+            domain: d.domain,
+            generatedAt: new Date().toISOString(),
+            sourceHash,
+            pages: d.pages,
+            modules: d.modules,
+            specs: d.specs,
+        };
+        if (!existsSync(SHARD_DIR)) mkdirSync(SHARD_DIR, { recursive: true });
+        writeFileSync(join(SHARD_DIR, `${key}.json`), JSON.stringify(shard, null, 2) + '\n', 'utf-8');
+    }
+
+    // Remove stale shards for domains that no longer exist.
+    if (existsSync(SHARD_DIR)) {
+        for (const f of readdirSync(SHARD_DIR)) {
+            if (f.endsWith('.json') && !sortedKeys.includes(f.replace(/\.json$/, ''))) {
+                rmSync(join(SHARD_DIR, f));
+            }
+        }
+    }
+
+    const manifest = {
+        $schema: 'reuse-capability-index/v2-sharded',
         purpose:
-            'Authoritative reuse map. READ THIS FIRST before writing locators or methods. ' +
-            'If an asset is listed here it ALREADY EXISTS — reuse it; do not re-derive or re-capture it.',
+            'Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). ' +
+            'It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are ' +
+            'caught across ALL domains without loading every shard. For a domain\u2019s locators/methods/tests, ' +
+            'load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).',
         generatedAt: new Date().toISOString(),
         regenerateWith: 'npm run index',
-        counts: { pages: pages.length, modules: modules.length, specs: specs.length },
+        sourceHash,
+        shardDir: '.ai-memory/domains',
+        counts: {
+            pages: pages.length,
+            modules: modules.length,
+            specs: specs.length,
+            tests: totalTests,
+            domains: sortedKeys.length,
+        },
         fixtures: extractFixtures(),
         utils: extractUtils(),
-        pages,
-        modules,
-        specs,
+        domains: domainSummaries,
+        testIndex,
     };
 
     if (!existsSync(OUT_DIR)) mkdirSync(OUT_DIR, { recursive: true });
-    writeFileSync(OUT_FILE, JSON.stringify(index, null, 2) + '\n', 'utf-8');
+    writeFileSync(OUT_FILE, JSON.stringify(manifest, null, 2) + '\n', 'utf-8');
 
-    console.log(`✅ Wrote ${rel(OUT_FILE)}`);
-    console.log(`   pages=${pages.length} modules=${modules.length} specs=${specs.length}`);
+    console.log(`✅ Wrote ${rel(OUT_FILE)} + ${sortedKeys.length} domain shard(s)`);
+    console.log(`   pages=${pages.length} modules=${modules.length} specs=${specs.length} tests=${totalTests} domains=${sortedKeys.length}`);
 }
 
 main();
