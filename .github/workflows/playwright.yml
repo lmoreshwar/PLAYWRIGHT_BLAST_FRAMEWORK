@@ -41,6 +41,9 @@ on:
 
 jobs:
   test:
+    # BLAST PRs (branch blast/auto-*) are already validated by blast-runner.yml — skip the
+    # full-suite re-run so they don't sit on GitHub's "Approve and run" gate.
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'blast/auto-') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
