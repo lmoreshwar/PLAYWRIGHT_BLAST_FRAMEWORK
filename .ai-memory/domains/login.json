@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Login",
-  "generatedAt": "2026-08-09T19:09:35.553Z",
-  "sourceHash": "sha1:e5357e49afbd05c8ed5e673b4b2e8791fcdf6cc6",
+  "generatedAt": "2026-08-09T20:17:16.702Z",
+  "sourceHash": "sha1:7d78a7efdab0963b1516406e9867eb2cc5c11d66",
   "pages": [
     {
       "file": "src/pages/LoginPage.ts",
@@ -26,6 +26,7 @@
         "goto",
         "login",
         "logout",
+        "navigateToLoginPage",
         "openProtectedPage",
         "submitEmpty"
       ]
@@ -54,6 +55,7 @@
         "@Automation",
         "@Critical",
         "@High",
+        "@Locked",
         "@Login",
         "@Regression",
         "@Sanity",
@@ -108,6 +110,14 @@
         {
           "id": "TC_015",
           "title": "TC_015 Security: XSS attempt on username field @Login @Authentication @Security"
+        },
+        {
+          "id": "TC_017",
+          "title": "TC_017 Prevent locked user login with valid credentials @Authentication @Locked User Validation"
+        },
+        {
+          "id": "TC_019",
+          "title": "TC_019 Reject locked user with an incorrect password @Authentication @Locked User Validation"
         }
       ]
     }

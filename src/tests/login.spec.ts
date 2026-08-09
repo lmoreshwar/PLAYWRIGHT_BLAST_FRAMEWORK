@@ -84,8 +84,6 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.loginButton()).toBeEnabled();
     });
 
-    // New test cases
-
     test('TC_012 Password field masks input @Regression @Automation @Critical', async ({ loginPage }) => {
         // Verify that the password input uses the password type, which masks entered characters.
         await expect(loginPage.passwordInput()).toHaveAttribute('type', 'password');
@@ -106,9 +104,33 @@ test.describe('Authentication — Login & Session', () => {
 
         await expect(loginPage.errorMessage()).toBeVisible();
         await expect(page).not.toHaveURL(/inventory\.html/);
-        // Optionally, verify the error message content if it's specific to XSS or invalid characters.
-        // For SauceDemo, it's likely the generic "Username and password do not match" or "Username is required"
-        // if the payload is treated as an empty/invalid username.
+        // For SauceDemo, the payload is rejected as invalid credentials.
         await expect(loginPage.errorMessage()).toContainText('do not match any user');
+    });
+
+    test('TC_017 Prevent locked user login with valid credentials @Authentication @Locked User Validation', async ({
+        loginModule,
+        loginPage,
+    }) => {
+        const lockedUser = testData.invalidLogins[0];
+
+        await loginModule.navigateToLoginPage();
+        await loginModule.login(lockedUser.username, lockedUser.password);
+
+        await expect(loginPage.errorMessage()).toBeVisible();
+        await expect(loginPage.errorMessage()).toHaveText(lockedUser.expectedError);
+    });
+
+    test('TC_019 Reject locked user with an incorrect password @Authentication @Locked User Validation', async ({
+        loginModule,
+        loginPage,
+    }) => {
+        const lockedUser = testData.invalidLogins.find((login) => login.username === 'locked_out_user')!;
+        const incorrectPassword = testData.invalidLogins.find((login) => login.username === 'standard_user')!;
+
+        await loginModule.login(lockedUser.username, incorrectPassword.password);
+
+        await expect(loginPage.errorMessage()).toBeVisible();
+        await expect(loginPage.errorMessage()).toHaveText(incorrectPassword.expectedError);
     });
 });
