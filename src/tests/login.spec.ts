@@ -120,4 +120,35 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.errorMessage()).toBeVisible();
         await expect(loginPage.errorMessage()).toHaveText(incorrectPassword.expectedError);
     });
+
+    test('TC_020 Reject locked user when the username is submitted without a password @Authentication @Locked User Validation @Validation', async ({
+        loginModule,
+        loginPage,
+    }) => {
+        await loginModule.login(locked.username, '');
+
+        await expect(loginPage.errorMessage()).toBeVisible();
+        await expect(loginPage.errorMessage()).toHaveText(testData.messages.passwordRequired);
+    });
+
+    test('TC_021 Reject locked user when the username is submitted without a username value @Authentication @Locked User Validation @Validation', async ({
+        loginModule,
+        loginPage,
+    }) => {
+        await loginModule.login('', locked.password);
+
+        await expect(loginPage.errorMessage()).toBeVisible();
+        await expect(loginPage.errorMessage()).toHaveText(testData.messages.usernameRequired);
+    });
+
+    test('TC_022 Verify locked-user rejection after refreshing the login page @Authentication @Locked User Validation @Access Control', async ({
+        loginModule,
+        loginPage,
+    }) => {
+        await loginModule.refreshLoginPage();
+        await loginModule.login(locked.username, locked.password);
+
+        await expect(loginPage.errorMessage()).toBeVisible();
+        await expect(loginPage.errorMessage()).toHaveText(locked.expectedError);
+    });
 });

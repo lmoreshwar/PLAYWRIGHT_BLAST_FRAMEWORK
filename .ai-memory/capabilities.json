@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-10T01:39:00.711Z",
+  "generatedAt": "2026-08-10T01:44:33.448Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:702ff1d778695e2aebcb284673fb4499462e29f9",
+  "sourceHash": "sha1:c2e2ba04ece755fd898c5b5e02f3932982660a48",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 3,
     "modules": 3,
     "specs": 3,
-    "tests": 19,
+    "tests": 22,
     "domains": 4
   },
   "fixtures": [
@@ -83,8 +83,8 @@
       ],
       "counts": {
         "locators": 6,
-        "methods": 6,
-        "tests": 14
+        "methods": 7,
+        "tests": 17
       }
     },
     {
@@ -224,6 +224,27 @@
         "domain": "Login",
         "spec": "src/tests/login.spec.ts",
         "title": "TC_019 Reject locked user with an incorrect password @Authentication @Locked User Validation"
+      }
+    ],
+    "TC_020": [
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_020 Reject locked user when the username is submitted without a password @Authentication @Locked User Validation @Validation"
+      }
+    ],
+    "TC_021": [
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_021 Reject locked user when the username is submitted without a username value @Authentication @Locked User Validation @Validation"
+      }
+    ],
+    "TC_022": [
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_022 Verify locked-user rejection after refreshing the login page @Authentication @Locked User Validation @Access Control"
       }
     ]
   }

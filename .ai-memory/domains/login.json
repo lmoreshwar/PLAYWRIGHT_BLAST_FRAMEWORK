@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Login",
-  "generatedAt": "2026-08-10T01:39:00.709Z",
-  "sourceHash": "sha1:702ff1d778695e2aebcb284673fb4499462e29f9",
+  "generatedAt": "2026-08-10T01:44:33.448Z",
+  "sourceHash": "sha1:c2e2ba04ece755fd898c5b5e02f3932982660a48",
   "pages": [
     {
       "file": "src/pages/LoginPage.ts",
@@ -27,6 +27,7 @@
         "login",
         "logout",
         "openProtectedPage",
+        "refreshLoginPage",
         "submitEmpty"
       ]
     }
@@ -50,6 +51,7 @@
         "Authentication — Login & Session"
       ],
       "tags": [
+        "@Access",
         "@Authentication",
         "@Automation",
         "@Critical",
@@ -58,7 +60,8 @@
         "@Login",
         "@Regression",
         "@Sanity",
-        "@Security"
+        "@Security",
+        "@Validation"
       ],
       "reuses": [],
       "tests": [
@@ -113,6 +116,18 @@
         {
           "id": "TC_019",
           "title": "TC_019 Reject locked user with an incorrect password @Authentication @Locked User Validation"
+        },
+        {
+          "id": "TC_020",
+          "title": "TC_020 Reject locked user when the username is submitted without a password @Authentication @Locked User Validation @Validation"
+        },
+        {
+          "id": "TC_021",
+          "title": "TC_021 Reject locked user when the username is submitted without a username value @Authentication @Locked User Validation @Validation"
+        },
+        {
+          "id": "TC_022",
+          "title": "TC_022 Verify locked-user rejection after refreshing the login page @Authentication @Locked User Validation @Access Control"
         }
       ]
     }
