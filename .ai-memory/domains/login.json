@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Login",
-  "generatedAt": "2026-08-10T01:44:33.448Z",
-  "sourceHash": "sha1:c2e2ba04ece755fd898c5b5e02f3932982660a48",
+  "generatedAt": "2026-08-10T02:46:41.007Z",
+  "sourceHash": "sha1:e7137be8ea831a72268f35bd4845ecdf9a1c4f86",
   "pages": [
     {
       "file": "src/pages/LoginPage.ts",
@@ -42,6 +42,36 @@
         {
           "id": "TC_016",
           "title": "TC_016 Direct access to inventory page without authentication"
+        }
+      ]
+    },
+    {
+      "file": "src/tests/checkout.spec.ts",
+      "describes": [
+        "Checkout"
+      ],
+      "tags": [
+        "@Checkout",
+        "@Negative",
+        "@Positive"
+      ],
+      "reuses": [],
+      "tests": [
+        {
+          "id": "TC_023",
+          "title": "TC_023 Logged-in user accesses checkout page and sees the information header"
+        },
+        {
+          "id": "TC_024",
+          "title": "TC_024 Unauthenticated user is blocked from checkout page"
+        },
+        {
+          "id": "TC_025",
+          "title": "TC_025 User skips checkout step one and attempts to load step two"
+        },
+        {
+          "id": "TC_026",
+          "title": "TC_026 Attempt to finish checkout with an empty cart"
         }
       ]
     },

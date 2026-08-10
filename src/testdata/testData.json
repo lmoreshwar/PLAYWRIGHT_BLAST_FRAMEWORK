@@ -48,6 +48,7 @@
     "inventoryUrl": "/inventory.html",
     "cartUrl": "/cart.html",
     "checkoutStepOneUrl": "/checkout-step-one.html",
+    "checkoutStepTwoUrl": "/checkout-step-two.html",
     "checkoutCompleteUrl": "/checkout-complete.html"
   }
 }
