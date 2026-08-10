@@ -54,4 +54,10 @@ export class LoginModule {
         this.logger.step(4, `Attempt direct access to protected page: ${path}`);
         await this.page.goto(path);
     }
+
+    async refreshLoginPage(): Promise<void> {
+        this.logger.step(5, 'Refresh the SauceDemo login page');
+        await this.page.reload();
+        await this.actions.waitForVisible(this.loginPage.loginButton());
+    }
 }
