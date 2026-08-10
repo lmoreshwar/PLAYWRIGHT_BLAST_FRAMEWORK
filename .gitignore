@@ -47,3 +47,4 @@ ai-debug-report/
 .blast-tmp/
 .blast-jobs/
 .blast-runs/
+.blast-cli-state.json
