@@ -87,4 +87,44 @@ test.describe('Checkout — Required-Field Recovery and Order Completion', () =>
         await expect(page).toHaveURL(/inventory\.html/);
         await expect(inventoryPage.productsTitle()).toBeVisible();
     });
+
+    test('TC_025 Add Sauce Labs Backpack and complete the order successfully @AddAProductToTheCartFromTheInventoryPage @Positive', async ({
+        inventoryModule,
+        inventoryPage,
+        cartModule,
+        cartPage,
+        checkoutModule,
+        checkoutPage,
+        page,
+    }) => {
+        await inventoryModule.addProductToCartFromInventory(productName);
+
+        await expect(inventoryPage.removeFromCartButton()).toBeVisible();
+
+        await cartModule.goto(`${testData.urls.baseUrl}${testData.urls.cartUrl}`);
+        await expect(cartPage.productLink(productName)).toBeVisible();
+
+        await cartModule.checkout();
+        await expect(page).toHaveURL(/checkout-step-one\.html/);
+
+        await checkoutModule.enterCustomerInformation(
+            testData.tc025CheckoutInfo.firstName,
+            testData.tc025CheckoutInfo.lastName,
+            testData.tc025CheckoutInfo.postalCode,
+        );
+        await checkoutModule.continue();
+
+        await expect(page).toHaveURL(/checkout-step-two\.html/);
+        await expect(checkoutPage.summaryProductLink(productName)).toBeVisible();
+
+        await checkoutModule.finish();
+
+        await expect(page).toHaveURL(/checkout-complete\.html/);
+        await expect(checkoutPage.orderCompleteMessage()).toHaveText(
+            testData.messages.orderComplete,
+        );
+        await expect(checkoutPage.orderDispatchedMessage()).toHaveText(
+            testData.messages.orderDispatched,
+        );
+    });
 });

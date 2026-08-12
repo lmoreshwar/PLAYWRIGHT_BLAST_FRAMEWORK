@@ -53,4 +53,11 @@ export class InventoryModule {
         }
         return 0;
     }
+
+    async addProductToCartFromInventory(productName: string): Promise<void> {
+        this.logger.step(6, `Add "${productName}" to the cart from the inventory page`);
+        await this.actions.click(
+            this.inventoryPage.addToCartButtonOnList(productName),
+        );
+    }
 }
