@@ -17,6 +17,32 @@
     "lastName": "User",
     "postalCode": "12345"
   },
+  "tc026CheckoutInfo": {
+    "firstNameCore": "A",
+    "firstNameCoreLength": 30,
+    "lastName": "Boundary",
+    "postalCode": "10101"
+  },
+  "tc027CheckoutInfo": {
+    "firstName": "Boundary",
+    "lastNameCoreLength": 30,
+    "postalCode": "10101"
+  },
+  "tc028CheckoutInfo": {
+    "firstName": "Boundary",
+    "lastName": "Boundary",
+    "postalCodeCoreLength": 10
+  },
+  "tc030CheckoutInfo": {
+    "firstName": "Complete",
+    "lastName": "Checkout",
+    "postalCode": "10101"
+  },
+  "tc031CheckoutInfo": {
+    "firstName": "",
+    "lastName": "Lovelace",
+    "postalCode": "10101"
+  },
   "invalidLogins": [
     {
       "description": "Locked out user",

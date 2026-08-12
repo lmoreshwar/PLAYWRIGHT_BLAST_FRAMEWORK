@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-12T20:08:10.655Z",
+  "generatedAt": "2026-08-12T20:40:26.628Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:a39f3b29ec510dba35503696cb1a8f2dcec11e37",
+  "sourceHash": "sha1:dfd225b724baa6218f9c3908f3164142397cc6e2",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 5,
     "modules": 5,
     "specs": 4,
-    "tests": 25,
+    "tests": 33,
     "domains": 6
   },
   "fixtures": [
@@ -55,7 +55,7 @@
       "counts": {
         "locators": 3,
         "methods": 2,
-        "tests": 3
+        "tests": 11
       }
     },
     {
@@ -69,8 +69,8 @@
       ],
       "specs": [],
       "counts": {
-        "locators": 11,
-        "methods": 4,
+        "locators": 14,
+        "methods": 7,
         "tests": 0
       }
     },
@@ -160,6 +160,62 @@
         "domain": "Cart",
         "spec": "src/tests/checkout.spec.ts",
         "title": "TC_025 Add Sauce Labs Backpack and complete the order successfully @AddAProductToTheCartFromTheInventoryPage @Positive"
+      }
+    ],
+    "TC_026": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_026 Checkout customer information: First Name boundary (whitespace & max length) @CheckoutCustomerInformation @Boundary"
+      }
+    ],
+    "TC_027": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_027 Checkout customer information: Last Name boundary (whitespace & max length) @CheckoutCustomerInformation @Boundary"
+      }
+    ],
+    "TC_028": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_028 Checkout customer information: Zip/Postal Code boundary (whitespace & max length) @CheckoutCustomerInformation @Boundary"
+      }
+    ],
+    "TC_029": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_029 Checkout customer information:"
+      }
+    ],
+    "TC_030": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_030 Complete checkout customer information and place order @CheckoutCustomerInformation @Positive"
+      }
+    ],
+    "TC_031": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_031 Reject an empty First Name @CheckoutCustomerInformation @Negative"
+      }
+    ],
+    "TC_034": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_034 Reject submission when all customer information is empty @CheckoutCustomerInformation @Negative"
+      }
+    ],
+    "TC_010": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_010 Recover from missing First Name and continue @CheckoutCustomerInformation @Negative"
       }
     ],
     "TC_001": [

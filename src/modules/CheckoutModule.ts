@@ -47,4 +47,23 @@ export class CheckoutModule {
         await this.page.goBack();
         await this.inventoryModule.goBackToProducts();
     }
+
+    async cancelCustomerInformation(): Promise<void> {
+        this.logger.step(5, 'Click "Go back Cancel"');
+        await this.actions.click(this.checkoutPage.cancelButton());
+    }
+
+    async enterCustomerInformationWithoutFirstName(
+        lastName: string,
+        postalCode: string,
+    ): Promise<void> {
+        this.logger.step(6, 'Enter checkout information without First Name');
+        await this.actions.fill(this.checkoutPage.lastNameInput(), lastName);
+        await this.actions.fill(this.checkoutPage.postalCodeInput(), postalCode);
+    }
+
+    async enterFirstName(firstName: string): Promise<void> {
+        this.logger.step(7, 'Enter First Name');
+        await this.actions.fill(this.checkoutPage.firstNameInput(), firstName);
+    }
 }
