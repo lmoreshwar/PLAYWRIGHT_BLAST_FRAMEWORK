@@ -48,3 +48,8 @@ ai-debug-report/
 .blast-jobs/
 .blast-runs/
 .blast-cli-state.json
+
+# BLAST cloud-runner transient files (engine checkout + job payload/result)
+.blast-engine/
+blast-job.json
+blast-ci-result.json
