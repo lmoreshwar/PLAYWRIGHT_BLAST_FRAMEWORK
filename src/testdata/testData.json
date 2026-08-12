@@ -12,6 +12,11 @@
     "lastName": "User",
     "postalCode": "94105"
   },
+  "checkoutRecovery": {
+    "firstName": "Ada",
+    "lastName": "Lovelace",
+    "postalCode": "94043"
+  },
   "invalidLogins": [
     {
       "description": "Locked out user",
@@ -28,6 +33,7 @@
   ],
   "messages": {
     "orderComplete": "Thank you for your order!",
+    "firstNameRequired": "Error: First Name is required",
     "productsTitle": "Products",
     "usernameRequired": "Epic sadface: Username is required",
     "passwordRequired": "Epic sadface: Password is required",

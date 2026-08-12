@@ -1,19 +1,21 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-10T01:44:33.448Z",
+  "generatedAt": "2026-08-12T11:47:13.149Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:c2e2ba04ece755fd898c5b5e02f3932982660a48",
+  "sourceHash": "sha1:80e6bb929e80308e9f46da79c757591f6f283b91",
   "shardDir": ".ai-memory/domains",
   "counts": {
-    "pages": 3,
-    "modules": 3,
-    "specs": 3,
-    "tests": 22,
-    "domains": 4
+    "pages": 4,
+    "modules": 4,
+    "specs": 4,
+    "tests": 23,
+    "domains": 5
   },
   "fixtures": [
     "actions",
+    "cartModule",
+    "cartPage",
     "inventoryModule",
     "inventoryPage",
     "loginModule",
@@ -36,6 +38,24 @@
     "visual"
   ],
   "domains": [
+    {
+      "domain": "Cart",
+      "shard": ".ai-memory/domains/cart.json",
+      "pages": [
+        "src/pages/CartPage.ts"
+      ],
+      "modules": [
+        "src/modules/CartModule.ts"
+      ],
+      "specs": [
+        "src/tests/cart.spec.ts"
+      ],
+      "counts": {
+        "locators": 13,
+        "methods": 7,
+        "tests": 1
+      }
+    },
     {
       "domain": "Header",
       "shard": ".ai-memory/domains/header.json",
@@ -103,6 +123,13 @@
     }
   ],
   "testIndex": {
+    "TC_024": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/cart.spec.ts",
+        "title": "TC_024 Cart:"
+      }
+    ],
     "TC_001": [
       {
         "domain": "Inventory",

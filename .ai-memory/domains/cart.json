@@ -1,0 +1,62 @@
+{
+  "$schema": "reuse-capability-shard/v1",
+  "domain": "Cart",
+  "generatedAt": "2026-08-12T11:47:13.148Z",
+  "sourceHash": "sha1:80e6bb929e80308e9f46da79c757591f6f283b91",
+  "pages": [
+    {
+      "file": "src/pages/CartPage.ts",
+      "class": "CartPage",
+      "methods": [
+        "cartCheckoutButton",
+        "checkoutCompleteHeading",
+        "checkoutContinueButton",
+        "checkoutErrorMessage",
+        "checkoutInformationHeading",
+        "checkoutOverviewHeading",
+        "continueShoppingButton",
+        "finishButton",
+        "firstNameInput",
+        "lastNameInput",
+        "orderConfirmation",
+        "postalCodeInput",
+        "shoppingCartLink"
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "file": "src/modules/CartModule.ts",
+      "class": "CartModule",
+      "methods": [
+        "checkout",
+        "continueShopping",
+        "continueToOverview",
+        "enterCheckoutInformation",
+        "establishCartPrecondition",
+        "finishOrder",
+        "submitEmptyCheckout"
+      ]
+    }
+  ],
+  "specs": [
+    {
+      "file": "src/tests/cart.spec.ts",
+      "describes": [
+        "Cart — Checkout Recovery and Order Completion"
+      ],
+      "tags": [
+        "@Automation",
+        "@Cart",
+        "@Negative"
+      ],
+      "reuses": [],
+      "tests": [
+        {
+          "id": "TC_024",
+          "title": "TC_024 Cart:"
+        }
+      ]
+    }
+  ]
+}

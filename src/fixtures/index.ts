@@ -6,12 +6,16 @@ import { InventoryPage } from '../pages/InventoryPage';
 import { InventoryModule } from '../modules/InventoryModule';
 import { Actions } from '../utils/Actions';
 import { WorkflowActions } from '../utils/WorkflowActions';
+import { CartPage } from '../pages/CartPage';
+import { CartModule } from '../modules/CartModule';
 
 // ===================================================================
 // Fixtures — Add new Page & Module fixtures here as you build them
 // ===================================================================
 
 export type TestFixtures = {
+    cartModule: CartModule;
+    cartPage: CartPage;
     loginPage: LoginPage;
     loginModule: LoginModule;
     inventoryPage: InventoryPage;
@@ -21,6 +25,12 @@ export type TestFixtures = {
 };
 
 export const test = base.extend<TestFixtures>({
+    cartModule: async ({ page }, use) => {
+        await use(new CartModule(page));
+    },
+    cartPage: async ({ page }, use) => {
+        await use(new CartPage(page));
+    },
     // Global popup/modal handlers
     page: async ({ page }, use, testInfo) => {
         const actions = new Actions(page);
