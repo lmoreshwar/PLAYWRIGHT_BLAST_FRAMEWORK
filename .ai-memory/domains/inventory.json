@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Inventory",
-  "generatedAt": "2026-08-12T14:14:23.877Z",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "generatedAt": "2026-08-12T17:20:19.612Z",
+  "sourceHash": "sha1:50739d78ac0ab5f441e197afdfadf5331468abc4",
   "pages": [
     {
       "file": "src/pages/InventoryPage.ts",
@@ -15,10 +15,12 @@
         "productDetailName",
         "productDetailPrice",
         "productItemByName",
+        "productLinks",
         "productsTitle",
         "removeFromCartButton",
         "shoppingCartBadge",
-        "shoppingCartLink"
+        "shoppingCartLink",
+        "sortControl"
       ]
     }
   ],
@@ -28,10 +30,14 @@
       "class": "InventoryModule",
       "methods": [
         "addProductToCartFromDetail",
+        "focusSortControlAndPressHome",
         "getCartItemCount",
         "goBackToProducts",
         "navigateToProductDetailPage",
-        "removeProductFromCartFromDetail"
+        "removeProductFromCartFromDetail",
+        "sortProductsByPriceAscendingByKeyboard",
+        "sortProductsByPriceDescendingByKeyboard",
+        "sortProductsDescendingByKeyboard"
       ]
     }
   ],
@@ -39,12 +45,15 @@
     {
       "file": "src/tests/product-detail.spec.ts",
       "describes": [
-        "Product Detail Page & Cart Interactions"
+        "Product Detail Page & Cart Interactions",
+        "Unauthenticated Inventory Access"
       ],
       "tags": [
         "@Cart",
         "@Navigation",
-        "@ProductDetailPage"
+        "@Negative",
+        "@ProductDetailPage",
+        "@ProductSortingOnTheInventoryPage"
       ],
       "reuses": [],
       "tests": [
@@ -67,6 +76,10 @@
         {
           "id": "TC_005",
           "title": "TC_005 Back to Products Button Works @ProductDetailPage @Navigation"
+        },
+        {
+          "id": "TC_029",
+          "title": "TC_029 Prevent unauthenticated access to inventory sorting @ProductSortingOnTheInventoryPage @Negative"
         }
       ]
     }

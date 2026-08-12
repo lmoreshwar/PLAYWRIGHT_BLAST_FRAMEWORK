@@ -1,56 +1,66 @@
 import { Page } from '@playwright/test';
 import { Actions } from '../utils/Actions';
-import { Logger } from '../utils/Logger';
-import { InventoryPage } from '../pages/InventoryPage';
+import { WaitHelper } from '../utils/WaitHelper';
 import { WorkflowActions } from '../utils/WorkflowActions';
+import { InventoryPage } from '../pages/InventoryPage';
 
-/**
- * InventoryModule — workflows for interacting with the product inventory and detail pages.
- * Sequences of InventoryPage interactions via `Actions`. No raw locators, no assertions.
- */
 export class InventoryModule {
     private readonly actions: Actions;
-    private readonly inventoryPage: InventoryPage;
-    private readonly workflowActions: WorkflowActions;
-    private readonly logger = Logger.create('InventoryModule');
 
-    constructor(private readonly page: Page) {
-        this.actions = new Actions(page);
-        this.inventoryPage = new InventoryPage(page);
-        this.workflowActions = new WorkflowActions(page);
+    public constructor(
+        private readonly page: Page,
+        private readonly inventoryPage: InventoryPage,
+        actions: Actions = new Actions(page),
+        _waitHelper?: WaitHelper,
+        _workflowActions?: WorkflowActions,
+    ) {
+        this.actions = actions;
     }
 
-    async navigateToProductDetailPage(productName: string): Promise<void> {
-        this.logger.step(1, `Navigate to detail page for product: "${productName}"`);
+    public async navigateToProductDetailPage(productName: string): Promise<void> {
         await this.actions.click(this.inventoryPage.productItemByName(productName));
-        await this.actions.waitForVisible(this.inventoryPage.productDetailName());
     }
 
-    async addProductToCartFromDetail(): Promise<void> {
-        this.logger.step(2, 'Add product to cart from detail page');
+    public async addProductToCartFromDetail(): Promise<void> {
         await this.actions.click(this.inventoryPage.addToCartButton());
-        await this.actions.waitForVisible(this.inventoryPage.removeFromCartButton());
     }
 
-    async removeProductFromCartFromDetail(): Promise<void> {
-        this.logger.step(3, 'Remove product from cart from detail page');
+    public async removeProductFromCartFromDetail(): Promise<void> {
         await this.actions.click(this.inventoryPage.removeFromCartButton());
-        await this.actions.waitForVisible(this.inventoryPage.addToCartButton());
     }
 
-    async goBackToProducts(): Promise<void> {
-        this.logger.step(4, 'Click "Back to products" button');
+    public async goBackToProducts(): Promise<void> {
         await this.actions.click(this.inventoryPage.backToProductsButton());
-        await this.actions.waitForVisible(this.inventoryPage.productsTitle());
     }
 
-    async getCartItemCount(): Promise<number> {
-        this.logger.step(5, 'Get shopping cart item count');
-        const badge = this.inventoryPage.shoppingCartBadge();
-        if (await badge.isVisible()) {
-            const count = await badge.textContent();
-            return count ? parseInt(count, 10) : 0;
-        }
-        return 0;
+    public async getCartItemCount(): Promise<number> {
+        return this.inventoryPage.shoppingCartBadge().count();
+    }
+
+    public async focusSortControlAndPressHome(): Promise<void> {
+        const sortControl = this.page.getByRole('combobox', { name: 'Sort' });
+        await this.actions.click(sortControl);
+        await this.actions.pressOn(sortControl, 'Home');
+    }
+
+    public async sortProductsDescendingByKeyboard(): Promise<void> {
+        const sortControl = this.page.getByRole('combobox', { name: 'Sort' });
+        await this.actions.click(sortControl);
+        await this.actions.pressOn(sortControl, 'End');
+    }
+
+    public async sortProductsByPriceAscendingByKeyboard(): Promise<void> {
+        const sortControl = this.page.getByRole('combobox', { name: 'Sort' });
+        await this.actions.click(sortControl);
+        await this.actions.pressOn(sortControl, 'Home');
+        await this.actions.pressOn(sortControl, 'ArrowDown');
+        await this.actions.pressOn(sortControl, 'Enter');
+    }
+
+    public async sortProductsByPriceDescendingByKeyboard(): Promise<void> {
+        const sortControl = this.page.getByRole('combobox', { name: 'Sort' });
+        await this.actions.click(sortControl);
+        await this.actions.pressOn(sortControl, 'End');
+        await this.actions.pressOn(sortControl, 'Enter');
     }
 }

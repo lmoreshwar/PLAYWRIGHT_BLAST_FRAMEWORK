@@ -8,11 +8,12 @@ import testData from '../testdata/testData.json';
  */
 test.describe('Product Detail Page & Cart Interactions', () => {
     const validUser = credentials('app');
-    const productName = testData.products.backpack; // Using a consistent product for tests
+    const productName = testData.products.backpack;
 
     test.beforeEach(async ({ loginModule, page }) => {
         await loginModule.goto();
         await loginModule.login(validUser.username, validUser.password);
+        await loginModule.openProtectedPage(testData.urls.inventoryUrl);
         await expect(page).toHaveURL(/inventory\.html/);
     });
 
@@ -57,11 +58,15 @@ test.describe('Product Detail Page & Cart Interactions', () => {
 
         await expect(inventoryPage.addToCartButton()).toBeVisible();
         await expect(inventoryPage.removeFromCartButton()).not.toBeVisible();
-        await expect(inventoryPage.shoppingCartBadge()).not.toBeVisible(); // Badge disappears when cart is empty
+        await expect(inventoryPage.shoppingCartBadge()).not.toBeVisible();
         await expect(inventoryModule.getCartItemCount()).resolves.toBe(0);
     });
 
-    test('TC_005 Back to Products Button Works @ProductDetailPage @Navigation', async ({ inventoryModule, inventoryPage, page }) => {
+    test('TC_005 Back to Products Button Works @ProductDetailPage @Navigation', async ({
+        inventoryModule,
+        inventoryPage,
+        page,
+    }) => {
         await inventoryModule.navigateToProductDetailPage(productName);
         await expect(page).toHaveURL(/inventory-item\.html/);
 
@@ -70,5 +75,26 @@ test.describe('Product Detail Page & Cart Interactions', () => {
         await expect(page).toHaveURL(/inventory\.html/);
         await expect(inventoryPage.productsTitle()).toBeVisible();
         await expect(inventoryPage.productItemByName(productName)).toBeVisible();
+    });
+
+    
+
+    
+
+    
+
+    
+});
+
+test.describe('Unauthenticated Inventory Access', () => {
+    test('TC_029 Prevent unauthenticated access to inventory sorting @ProductSortingOnTheInventoryPage @Negative', async ({
+        loginModule,
+        loginPage,
+        page,
+    }) => {
+        await loginModule.openProtectedPage(testData.urls.inventoryUrl);
+
+        await expect(page).toHaveURL(/\/(?:\?.*)?$/);
+        await expect(loginPage.errorMessage()).toHaveText(testData.messages.sessionRequired);
     });
 });
