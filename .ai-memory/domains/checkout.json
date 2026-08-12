@@ -1,0 +1,38 @@
+{
+  "$schema": "reuse-capability-shard/v1",
+  "domain": "Checkout",
+  "generatedAt": "2026-08-12T14:14:23.877Z",
+  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "pages": [
+    {
+      "file": "src/pages/CheckoutPage.ts",
+      "class": "CheckoutPage",
+      "methods": [
+        "checkoutCompleteTitle",
+        "checkoutOverviewTitle",
+        "continueButton",
+        "finishButton",
+        "firstNameInput",
+        "firstNameRequiredError",
+        "lastNameInput",
+        "orderCompleteMessage",
+        "orderDispatchedMessage",
+        "postalCodeInput",
+        "summaryProductLink"
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "file": "src/modules/CheckoutModule.ts",
+      "class": "CheckoutModule",
+      "methods": [
+        "abortWithContinueShopping",
+        "continue",
+        "enterCustomerInformation",
+        "finish"
+      ]
+    }
+  ],
+  "specs": []
+}

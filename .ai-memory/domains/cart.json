@@ -1,0 +1,51 @@
+{
+  "$schema": "reuse-capability-shard/v1",
+  "domain": "Cart",
+  "generatedAt": "2026-08-12T14:14:23.876Z",
+  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "pages": [
+    {
+      "file": "src/pages/CartPage.ts",
+      "class": "CartPage",
+      "methods": [
+        "cartTitle",
+        "checkoutButton",
+        "productLink"
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "file": "src/modules/CartModule.ts",
+      "class": "CartModule",
+      "methods": [
+        "checkout",
+        "goto"
+      ]
+    }
+  ],
+  "specs": [
+    {
+      "file": "src/tests/checkout.spec.ts",
+      "describes": [
+        "Checkout — Required-Field Recovery and Order Completion"
+      ],
+      "tags": [
+        "@AddProductToCart",
+        "@Negative",
+        "@Positive"
+      ],
+      "reuses": [],
+      "tests": [
+        {
+          "id": "TC_023",
+          "title": "TC_023 Add Sauce Labs Backpack and complete checkout after required-field recovery @AddProductToCart @Positive"
+        },
+        {
+          "id": "TC_024",
+          "title": "TC_024 Add product to cart:"
+        }
+      ]
+    }
+  ]
+}

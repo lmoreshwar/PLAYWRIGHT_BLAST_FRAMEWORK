@@ -28,6 +28,8 @@
   ],
   "messages": {
     "orderComplete": "Thank you for your order!",
+    "orderDispatched": "Your order has been dispatched, and will arrive just as fast as the pony can get there!",
+    "firstNameRequired": "Error: First Name is required",
     "productsTitle": "Products",
     "usernameRequired": "Epic sadface: Username is required",
     "passwordRequired": "Epic sadface: Password is required",
@@ -48,6 +50,7 @@
     "inventoryUrl": "/inventory.html",
     "cartUrl": "/cart.html",
     "checkoutStepOneUrl": "/checkout-step-one.html",
+    "checkoutStepTwoUrl": "/checkout-step-two.html",
     "checkoutCompleteUrl": "/checkout-complete.html"
   }
 }

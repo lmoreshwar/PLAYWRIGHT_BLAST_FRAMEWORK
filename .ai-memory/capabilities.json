@@ -1,19 +1,23 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-10T01:44:33.448Z",
+  "generatedAt": "2026-08-12T14:14:23.878Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:c2e2ba04ece755fd898c5b5e02f3932982660a48",
+  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
   "shardDir": ".ai-memory/domains",
   "counts": {
-    "pages": 3,
-    "modules": 3,
-    "specs": 3,
-    "tests": 22,
-    "domains": 4
+    "pages": 5,
+    "modules": 5,
+    "specs": 4,
+    "tests": 24,
+    "domains": 6
   },
   "fixtures": [
     "actions",
+    "cartModule",
+    "cartPage",
+    "checkoutModule",
+    "checkoutPage",
     "inventoryModule",
     "inventoryPage",
     "loginModule",
@@ -36,6 +40,40 @@
     "visual"
   ],
   "domains": [
+    {
+      "domain": "Cart",
+      "shard": ".ai-memory/domains/cart.json",
+      "pages": [
+        "src/pages/CartPage.ts"
+      ],
+      "modules": [
+        "src/modules/CartModule.ts"
+      ],
+      "specs": [
+        "src/tests/checkout.spec.ts"
+      ],
+      "counts": {
+        "locators": 3,
+        "methods": 2,
+        "tests": 2
+      }
+    },
+    {
+      "domain": "Checkout",
+      "shard": ".ai-memory/domains/checkout.json",
+      "pages": [
+        "src/pages/CheckoutPage.ts"
+      ],
+      "modules": [
+        "src/modules/CheckoutModule.ts"
+      ],
+      "specs": [],
+      "counts": {
+        "locators": 11,
+        "methods": 4,
+        "tests": 0
+      }
+    },
     {
       "domain": "Header",
       "shard": ".ai-memory/domains/header.json",
@@ -103,6 +141,20 @@
     }
   ],
   "testIndex": {
+    "TC_023": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_023 Add Sauce Labs Backpack and complete checkout after required-field recovery @AddProductToCart @Positive"
+      }
+    ],
+    "TC_024": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_024 Add product to cart:"
+      }
+    ],
     "TC_001": [
       {
         "domain": "Inventory",
