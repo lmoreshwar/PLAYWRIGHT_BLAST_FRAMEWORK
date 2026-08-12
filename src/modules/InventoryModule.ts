@@ -53,4 +53,27 @@ export class InventoryModule {
         }
         return 0;
     }
+
+    async keepSortingAtLastOptionBoundary(): Promise<void> {
+        await Logger.step(
+            'Keep inventory sorting at the last available option boundary',
+            async () => {
+                const sortingControl = this.inventoryPage.sortingControl();
+
+                await this.waitHelper.waitForVisible(sortingControl);
+                await this.actions.pressOn(sortingControl, 'End');
+                await this.actions.pressOn(sortingControl, 'ArrowDown');
+                await this.actions.pressOn(sortingControl, 'Enter');
+            },
+        );
+    }
+
+    public async goto(): Promise<void> {
+        await this.page.goto(
+            `${process.env.BASE_URL || ''}/inventory.html`,
+        );
+        await this.waitHelper.waitForPageLoadState('domcontentloaded', {
+            page: this.page,
+        });
+    }
 }

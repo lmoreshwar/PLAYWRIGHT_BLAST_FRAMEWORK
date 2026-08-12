@@ -1,24 +1,36 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Inventory",
-  "generatedAt": "2026-08-12T14:14:23.877Z",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "generatedAt": "2026-08-12T17:39:32.217Z",
+  "sourceHash": "sha1:bdc340118793e0bd24da5487354b829f95b5eefd",
   "pages": [
     {
       "file": "src/pages/InventoryPage.ts",
       "class": "InventoryPage",
       "methods": [
+        "addProductToCartFromDetail",
         "addToCartButton",
         "addToCartButtonOnList",
         "backToProductsButton",
+        "getCartItemCount",
+        "getDisplayedProductOrder",
+        "goBackToProducts",
+        "goto",
+        "navigateToProductDetailPage",
         "productDetailDescription",
         "productDetailName",
         "productDetailPrice",
         "productItemByName",
+        "productLinks",
         "productsTitle",
         "removeFromCartButton",
+        "removeProductFromCartFromDetail",
+        "selectedSortingOption",
         "shoppingCartBadge",
-        "shoppingCartLink"
+        "shoppingCartLink",
+        "sortDropdown",
+        "sortReverseAlphabetically",
+        "sortingControl"
       ]
     }
   ],
@@ -30,6 +42,8 @@
         "addProductToCartFromDetail",
         "getCartItemCount",
         "goBackToProducts",
+        "goto",
+        "keepSortingAtLastOptionBoundary",
         "navigateToProductDetailPage",
         "removeProductFromCartFromDetail"
       ]

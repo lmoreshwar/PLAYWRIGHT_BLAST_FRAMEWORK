@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-12T14:14:23.878Z",
+  "generatedAt": "2026-08-12T17:39:32.218Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "sourceHash": "sha1:bdc340118793e0bd24da5487354b829f95b5eefd",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 5,
     "modules": 5,
     "specs": 4,
-    "tests": 24,
+    "tests": 25,
     "domains": 6
   },
   "fixtures": [
@@ -101,8 +101,8 @@
         "src/tests/product-detail.spec.ts"
       ],
       "counts": {
-        "locators": 11,
-        "methods": 5,
+        "locators": 23,
+        "methods": 7,
         "tests": 5
       }
     },
@@ -122,7 +122,7 @@
       "counts": {
         "locators": 6,
         "methods": 7,
-        "tests": 17
+        "tests": 18
       }
     },
     {
@@ -220,6 +220,13 @@
         "domain": "Login",
         "spec": "src/tests/InventoryAccess.spec.ts",
         "title": "TC_016 Direct access to inventory page without authentication"
+      }
+    ],
+    "TC_026": [
+      {
+        "domain": "Login",
+        "spec": "src/tests/InventoryAccess.spec.ts",
+        "title": "TC_026 Reject unauthenticated direct access to the inventory sorting screen @ProductSortingOnTheInventoryPage @Negative"
       }
     ],
     "TC_006": [

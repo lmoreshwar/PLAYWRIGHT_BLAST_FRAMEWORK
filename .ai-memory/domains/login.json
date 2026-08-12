@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Login",
-  "generatedAt": "2026-08-12T14:14:23.877Z",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "generatedAt": "2026-08-12T17:39:32.217Z",
+  "sourceHash": "sha1:bdc340118793e0bd24da5487354b829f95b5eefd",
   "pages": [
     {
       "file": "src/pages/LoginPage.ts",
@@ -35,13 +35,22 @@
   "specs": [
     {
       "file": "src/tests/InventoryAccess.spec.ts",
-      "describes": [],
-      "tags": [],
+      "describes": [
+        "Inventory product sorting"
+      ],
+      "tags": [
+        "@Negative",
+        "@ProductSortingOnTheInventoryPage"
+      ],
       "reuses": [],
       "tests": [
         {
           "id": "TC_016",
           "title": "TC_016 Direct access to inventory page without authentication"
+        },
+        {
+          "id": "TC_026",
+          "title": "TC_026 Reject unauthenticated direct access to the inventory sorting screen @ProductSortingOnTheInventoryPage @Negative"
         }
       ]
     },
