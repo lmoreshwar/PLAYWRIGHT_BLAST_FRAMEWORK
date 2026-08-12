@@ -1,19 +1,21 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-10T01:44:33.448Z",
+  "generatedAt": "2026-08-12T13:56:03.665Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:c2e2ba04ece755fd898c5b5e02f3932982660a48",
+  "sourceHash": "sha1:cc755dacc72b20112aba234b6826bd5c7873cdc8",
   "shardDir": ".ai-memory/domains",
   "counts": {
-    "pages": 3,
-    "modules": 3,
-    "specs": 3,
-    "tests": 22,
-    "domains": 4
+    "pages": 4,
+    "modules": 4,
+    "specs": 4,
+    "tests": 23,
+    "domains": 5
   },
   "fixtures": [
     "actions",
+    "checkoutModule",
+    "checkoutPage",
     "inventoryModule",
     "inventoryPage",
     "loginModule",
@@ -36,6 +38,24 @@
     "visual"
   ],
   "domains": [
+    {
+      "domain": "Checkout",
+      "shard": ".ai-memory/domains/checkout.json",
+      "pages": [
+        "src/pages/CheckoutPage.ts"
+      ],
+      "modules": [
+        "src/modules/CheckoutModule.ts"
+      ],
+      "specs": [
+        "src/tests/checkout.spec.ts"
+      ],
+      "counts": {
+        "locators": 13,
+        "methods": 7,
+        "tests": 1
+      }
+    },
     {
       "domain": "Header",
       "shard": ".ai-memory/domains/header.json",
@@ -103,6 +123,13 @@
     }
   ],
   "testIndex": {
+    "TC_023": [
+      {
+        "domain": "Checkout",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_023 Add Sauce Labs Backpack and complete checkout successfully @AddProductToCart @Positive"
+      }
+    ],
     "TC_001": [
       {
         "domain": "Inventory",
