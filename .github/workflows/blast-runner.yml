@@ -19,6 +19,11 @@ on:
         required: false
         default: 'Chrome'
         type: string
+      level3:
+        description: 'Level 3 — LLM drives @playwright/cli live during generate (verify-before-write)'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -62,6 +67,16 @@ jobs:
           echo "Installing Playwright browser(s): $TARGETS"
           npx playwright install --with-deps $TARGETS
 
+      # Level 3 only: the Microsoft @playwright/cli binary (the agent "hands") + xvfb so the
+      # headless runner can start a real browser for the live verify-before-write drive.
+      - name: Install @playwright/cli + xvfb (Level 3)
+        if: ${{ inputs.level3 }}
+        shell: bash
+        run: |
+          npm install -g @playwright/cli@latest
+          sudo apt-get update && sudo apt-get install -y xvfb
+          echo "playwright-cli: $(which playwright-cli || echo 'NOT FOUND')"
+
       - name: Install engine dependencies
         working-directory: .blast-engine/AI_Agents
         run: npm ci
@@ -99,7 +114,11 @@ jobs:
           APP_USERNAME: ${{ secrets.APP_USERNAME }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
           BASE_URL: ${{ secrets.BASE_URL }}
-        run: node .blast-engine/AI_Agents/scripts/blast-ci-generate.js blast-job.json
+          # Level 3 flag: '1' turns on the live agentic drive; empty → the existing static path.
+          BLAST_LEVEL3: ${{ inputs.level3 && '1' || '' }}
+        # Under Level 3 the child playwright-cli spawns need a display — xvfb-run provides one
+        # for the whole generate process (harmless for the standard library-browser path too).
+        run: ${{ inputs.level3 && 'xvfb-run -a ' || '' }}node .blast-engine/AI_Agents/scripts/blast-ci-generate.js blast-job.json
 
       - name: Upload Playwright report
         if: always()
