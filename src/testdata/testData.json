@@ -10,7 +10,10 @@
   "checkoutInfo": {
     "firstName": "Demo",
     "lastName": "User",
-    "postalCode": "94105"
+    "postalCode": "94105",
+    "emptyFirstName": "",
+    "negativeLastName": "Lovelace",
+    "negativePostalCode": "12345"
   },
   "invalidLogins": [
     {

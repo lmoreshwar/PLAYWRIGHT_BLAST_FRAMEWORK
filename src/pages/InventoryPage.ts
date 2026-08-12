@@ -1,37 +1,47 @@
-import { Locator, Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 
-/**
- * InventoryPage — locators ONLY for the SauceDemo inventory list and product detail screens.
- * No workflows, no assertions.
- */
 export class InventoryPage {
-    constructor(private readonly page: Page) {}
+    readonly page: Page;
 
-    // --- Inventory List Page Locators ---
+    constructor(page: Page) {
+        this.page = page;
+    }
+
     productsTitle = (): Locator => this.page.getByText('Products', { exact: true });
 
+    sortDropdown = (): Locator => this.page.getByRole('combobox');
+
+    productLinks = (): Locator => this.page.locator('.inventory_item_name');
+
     productItemByName = (productName: string): Locator =>
-        this.page.getByRole('link', { name: productName }).first();
+        this.page.getByRole('link', { name: productName, exact: true }).last();
+
+    addToCartButton = (): Locator =>
+        this.page.getByRole('button', { name: 'Add to cart', exact: true });
 
     addToCartButtonOnList = (productName: string): Locator =>
-        this.page.locator('.inventory_item', { has: this.page.getByText(productName) })
-            .getByRole('button', { name: 'Add to cart' });
+        this.productItemByName(productName)
+            .locator('xpath=ancestor::div[contains(@class,"inventory_item")]')
+            .getByRole('button', { name: 'Add to cart', exact: true });
 
-    // --- Product Detail Page Locators ---
-    productDetailName = (): Locator => this.page.locator('.inventory_details_name');
+    removeFromCartButton = (): Locator =>
+        this.page.getByRole('button', { name: 'Remove', exact: true });
 
-    productDetailDescription = (): Locator => this.page.locator('.inventory_details_desc');
+    shoppingCartBadge = (): Locator =>
+        this.page.getByText(/^\d+$/, { exact: true });
 
-    productDetailPrice = (): Locator => this.page.locator('.inventory_details_price');
+    shoppingCartLink = (): Locator =>
+        this.page.getByRole('link', { name: /shopping cart/i });
 
-    addToCartButton = (): Locator => this.page.getByRole('button', { name: 'Add to cart' });
+    productDetailName = (): Locator =>
+        this.page.getByRole('heading', { level: 2 });
 
-    removeFromCartButton = (): Locator => this.page.getByRole('button', { name: 'Remove' });
+    productDetailDescription = (): Locator =>
+        this.page.locator('.inventory_details_desc');
 
-    backToProductsButton = (): Locator => this.page.getByRole('button', { name: 'Back to products' });
+    productDetailPrice = (): Locator =>
+        this.page.locator('.inventory_details_price');
 
-    // --- Common Locators (Inventory List & Detail) ---
-    shoppingCartLink = (): Locator => this.page.getByRole('link', { name: /shopping cart/i });
-
-    shoppingCartBadge = (): Locator => this.page.locator('.shopping_cart_badge');
+    backToProductsButton = (): Locator =>
+        this.page.getByRole('button', { name: 'Back to products', exact: true });
 }
