@@ -12,6 +12,11 @@
     "lastName": "User",
     "postalCode": "94105"
   },
+  "tc025CheckoutInfo": {
+    "firstName": "Test",
+    "lastName": "User",
+    "postalCode": "12345"
+  },
   "invalidLogins": [
     {
       "description": "Locked out user",
