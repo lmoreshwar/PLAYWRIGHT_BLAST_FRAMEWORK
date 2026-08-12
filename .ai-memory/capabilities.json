@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-12T14:14:23.878Z",
+  "generatedAt": "2026-08-12T19:46:47.707Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "sourceHash": "sha1:147442adff8c844b99cf60a65bac57bc70e4ddec",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 5,
     "modules": 5,
     "specs": 4,
-    "tests": 24,
+    "tests": 25,
     "domains": 6
   },
   "fixtures": [
@@ -55,7 +55,7 @@
       "counts": {
         "locators": 3,
         "methods": 2,
-        "tests": 2
+        "tests": 3
       }
     },
     {
@@ -102,7 +102,7 @@
       ],
       "counts": {
         "locators": 11,
-        "methods": 5,
+        "methods": 6,
         "tests": 5
       }
     },
@@ -153,6 +153,13 @@
         "domain": "Cart",
         "spec": "src/tests/checkout.spec.ts",
         "title": "TC_024 Add product to cart:"
+      }
+    ],
+    "TC_501": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_501 Add a product to the cart from the inventory page @smoke @AddProductToCart @Positive"
       }
     ],
     "TC_001": [

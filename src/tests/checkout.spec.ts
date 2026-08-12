@@ -87,4 +87,13 @@ test.describe('Checkout — Required-Field Recovery and Order Completion', () =>
         await expect(page).toHaveURL(/inventory\.html/);
         await expect(inventoryPage.productsTitle()).toBeVisible();
     });
+
+    test('TC_501 Add a product to the cart from the inventory page @smoke @AddProductToCart @Positive', async ({
+        inventoryModule,
+        inventoryPage,
+    }) => {
+        await inventoryModule.addProductToCartFromInventory(productName);
+
+        await expect(inventoryPage.shoppingCartBadge()).toHaveText('1');
+    });
 });

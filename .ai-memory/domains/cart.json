@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Cart",
-  "generatedAt": "2026-08-12T14:14:23.876Z",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "generatedAt": "2026-08-12T19:46:47.706Z",
+  "sourceHash": "sha1:147442adff8c844b99cf60a65bac57bc70e4ddec",
   "pages": [
     {
       "file": "src/pages/CartPage.ts",
@@ -33,7 +33,8 @@
       "tags": [
         "@AddProductToCart",
         "@Negative",
-        "@Positive"
+        "@Positive",
+        "@smoke"
       ],
       "reuses": [],
       "tests": [
@@ -44,6 +45,10 @@
         {
           "id": "TC_024",
           "title": "TC_024 Add product to cart:"
+        },
+        {
+          "id": "TC_501",
+          "title": "TC_501 Add a product to the cart from the inventory page @smoke @AddProductToCart @Positive"
         }
       ]
     }

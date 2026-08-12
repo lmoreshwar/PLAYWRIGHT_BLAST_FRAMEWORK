@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Inventory",
-  "generatedAt": "2026-08-12T14:14:23.877Z",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "generatedAt": "2026-08-12T19:46:47.706Z",
+  "sourceHash": "sha1:147442adff8c844b99cf60a65bac57bc70e4ddec",
   "pages": [
     {
       "file": "src/pages/InventoryPage.ts",
@@ -28,6 +28,7 @@
       "class": "InventoryModule",
       "methods": [
         "addProductToCartFromDetail",
+        "addProductToCartFromInventory",
         "getCartItemCount",
         "goBackToProducts",
         "navigateToProductDetailPage",
