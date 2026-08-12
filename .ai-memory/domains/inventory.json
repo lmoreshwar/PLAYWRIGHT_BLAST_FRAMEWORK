@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Inventory",
-  "generatedAt": "2026-08-12T14:14:23.877Z",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "generatedAt": "2026-08-12T18:03:27.651Z",
+  "sourceHash": "sha1:de8d88b78b6ae7cce0de0b3b79b721fecb75603a",
   "pages": [
     {
       "file": "src/pages/InventoryPage.ts",
@@ -15,10 +15,12 @@
         "productDetailName",
         "productDetailPrice",
         "productItemByName",
+        "productLinks",
         "productsTitle",
         "removeFromCartButton",
         "shoppingCartBadge",
-        "shoppingCartLink"
+        "shoppingCartLink",
+        "sortDropdown"
       ]
     }
   ],
@@ -27,11 +29,14 @@
       "file": "src/modules/InventoryModule.ts",
       "class": "InventoryModule",
       "methods": [
+        "addProductToCart",
         "addProductToCartFromDetail",
         "getCartItemCount",
         "goBackToProducts",
         "navigateToProductDetailPage",
-        "removeProductFromCartFromDetail"
+        "openCart",
+        "removeProductFromCartFromDetail",
+        "sortProductsInReverseNameOrder"
       ]
     }
   ],
@@ -39,12 +44,17 @@
     {
       "file": "src/tests/product-detail.spec.ts",
       "describes": [
-        "Product Detail Page & Cart Interactions"
+        "Product Detail Page & Cart Interactions",
+        "Inventory Access",
+        "Product Sorting On The Inventory Page"
       ],
       "tags": [
+        "@Boundary",
         "@Cart",
         "@Navigation",
-        "@ProductDetailPage"
+        "@Negative",
+        "@ProductDetailPage",
+        "@ProductSortingOnTheInventoryPage"
       ],
       "reuses": [],
       "tests": [
@@ -67,6 +77,18 @@
         {
           "id": "TC_005",
           "title": "TC_005 Back to Products Button Works @ProductDetailPage @Navigation"
+        },
+        {
+          "id": "TC_026",
+          "title": "TC_026 Unauthenticated direct access to inventory is blocked @ProductSortingOnTheInventoryPage @Negative"
+        },
+        {
+          "id": "TC_027",
+          "title": "TC_027 First sorting option produces the initial product order @ProductSortingOnTheInventoryPage @Boundary"
+        },
+        {
+          "id": "TC_028",
+          "title": "TC_028 Last sorting option produces descending price endpoints @ProductSortingOnTheInventoryPage @Boundary"
         }
       ]
     }

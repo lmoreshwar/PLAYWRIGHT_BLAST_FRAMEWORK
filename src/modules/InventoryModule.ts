@@ -53,4 +53,23 @@ export class InventoryModule {
         }
         return 0;
     }
+
+    async sortProductsInReverseNameOrder(): Promise<void> {
+        this.logger.step(6, 'Sort products by reverse name order');
+        await this.actions.pressOn(this.inventoryPage.sortDropdown(), 'Home');
+        await this.actions.pressOn(this.inventoryPage.sortDropdown(), 'ArrowDown');
+        await this.actions.pressOn(this.inventoryPage.sortDropdown(), 'Enter');
+    }
+
+    async addProductToCart(productName: string): Promise<void> {
+        this.logger.step(7, `Add "${productName}" to the cart`);
+        await this.actions.click(
+            this.inventoryPage.addToCartButtonOnList(productName),
+        );
+    }
+
+    async openCart(): Promise<void> {
+        this.logger.step(8, 'Open the shopping cart');
+        await this.actions.click(this.inventoryPage.shoppingCartLink());
+    }
 }

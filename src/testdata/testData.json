@@ -12,6 +12,11 @@
     "lastName": "User",
     "postalCode": "94105"
   },
+  "reverseSortCheckoutInfo": {
+    "firstName": "Ada",
+    "lastName": "Lovelace",
+    "postalCode": "12345"
+  },
   "invalidLogins": [
     {
       "description": "Locked out user",

@@ -34,4 +34,10 @@ export class InventoryPage {
     shoppingCartLink = (): Locator => this.page.getByRole('link', { name: /shopping cart/i });
 
     shoppingCartBadge = (): Locator => this.page.locator('.shopping_cart_badge');
+
+    sortDropdown = (): Locator =>
+        this.page.getByRole('combobox');
+
+    productLinks = (): Locator =>
+        this.page.locator('.inventory_item_name');
 }

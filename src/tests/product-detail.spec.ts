@@ -8,7 +8,7 @@ import testData from '../testdata/testData.json';
  */
 test.describe('Product Detail Page & Cart Interactions', () => {
     const validUser = credentials('app');
-    const productName = testData.products.backpack; // Using a consistent product for tests
+    const productName = testData.products.backpack;
 
     test.beforeEach(async ({ loginModule, page }) => {
         await loginModule.goto();
@@ -57,7 +57,7 @@ test.describe('Product Detail Page & Cart Interactions', () => {
 
         await expect(inventoryPage.addToCartButton()).toBeVisible();
         await expect(inventoryPage.removeFromCartButton()).not.toBeVisible();
-        await expect(inventoryPage.shoppingCartBadge()).not.toBeVisible(); // Badge disappears when cart is empty
+        await expect(inventoryPage.shoppingCartBadge()).not.toBeVisible();
         await expect(inventoryModule.getCartItemCount()).resolves.toBe(0);
     });
 
@@ -70,5 +70,58 @@ test.describe('Product Detail Page & Cart Interactions', () => {
         await expect(page).toHaveURL(/inventory\.html/);
         await expect(inventoryPage.productsTitle()).toBeVisible();
         await expect(inventoryPage.productItemByName(productName)).toBeVisible();
+    });
+
+    
+});
+
+test.describe('Inventory Access', () => {
+    test('TC_026 Unauthenticated direct access to inventory is blocked @ProductSortingOnTheInventoryPage @Negative', async ({
+        loginModule,
+        loginPage,
+        page,
+    }) => {
+        await loginModule.openProtectedPage(testData.urls.inventoryUrl);
+
+        await expect(page).not.toHaveURL(/inventory\.html/);
+        await expect(loginPage.errorMessage()).toHaveText(testData.messages.sessionRequired);
+    });
+});
+
+test.describe('Product Sorting On The Inventory Page', () => {
+    const validUser = credentials('app');
+
+    test.beforeEach(async ({ loginModule, page }) => {
+        await loginModule.goto();
+        await loginModule.login(validUser.username, validUser.password);
+        await expect(page).toHaveURL(/inventory\.html/);
+    });
+
+    test('TC_027 First sorting option produces the initial product order @ProductSortingOnTheInventoryPage @Boundary', async ({
+        inventoryPage,
+    }) => {
+        const expectedProductOrder = [
+            testData.products.backpack,
+            testData.products.bikeLight,
+            testData.products.boltTShirt,
+            testData.products.fleeceJacket,
+            testData.products.onesie,
+            testData.products.redTShirt,
+        ];
+
+        await expect(inventoryPage.productLinks()).toHaveText(expectedProductOrder);
+    });
+
+    test('TC_028 Last sorting option produces descending price endpoints @ProductSortingOnTheInventoryPage @Boundary', async ({
+        inventoryModule,
+        inventoryPage,
+    }) => {
+        await inventoryModule.sortProductsInReverseNameOrder();
+
+        await expect(inventoryPage.productLinks()).toHaveCount(6);
+        await expect(inventoryPage.productLinks().first()).toBeVisible();
+        await expect(inventoryPage.productLinks().last()).toHaveText(
+            testData.products.backpack,
+        );
     });
 });
