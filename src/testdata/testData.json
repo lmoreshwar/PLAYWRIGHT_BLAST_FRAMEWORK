@@ -38,7 +38,8 @@
     "productsTitle": "Products",
     "usernameRequired": "Epic sadface: Username is required",
     "passwordRequired": "Epic sadface: Password is required",
-    "sessionRequired": "Epic sadface: You can only access '/inventory.html' when you are logged in."
+    "sessionRequired": "Epic sadface: You can only access '/inventory.html' when you are logged in.",
+    "lastNameRequired": "Error: Last Name is required"
   },
   "sqlInjectionPayload": "' OR 1=1 --",
   "xssPayload": "<script>alert('XSS')</script>",
@@ -57,5 +58,38 @@
     "checkoutStepOneUrl": "/checkout-step-one.html",
     "checkoutStepTwoUrl": "/checkout-step-two.html",
     "checkoutCompleteUrl": "/checkout-complete.html"
+  },
+  "checkoutBoundary": {
+    "firstNameCharacter": "A",
+    "firstNameLength": 256,
+    "lastName": "User",
+    "postalCode": "12345",
+    "lastNameCharacter": "L",
+    "lastNameLength": 256,
+    "postalCodeCharacter": "1",
+    "postalCodeLength": 256
+  },
+  "tc030CheckoutInfo": {
+    "firstName": "Ava",
+    "lastName": "Stone",
+    "postalCode": "90210"
+  },
+  "tc031CheckoutInfo": {
+    "lastName": "Stone",
+    "postalCode": "90210"
+  },
+  "tc032CheckoutInfo": {
+    "firstName": "Ava",
+    "lastName": "",
+    "postalCode": "90210"
+  },
+  "tc033CheckoutInfo": {
+    "firstName": "Ava",
+    "lastName": "Stone"
+  },
+  "tc010CheckoutInfo": {
+    "firstName": "Ava",
+    "lastName": "Stone",
+    "postalCode": "ABC-12"
   }
 }

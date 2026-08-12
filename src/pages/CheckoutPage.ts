@@ -42,4 +42,10 @@ export class CheckoutPage {
             'Your order has been dispatched, and will arrive just as fast as the pony can get there!',
             { exact: true },
         );
+
+    cancelButton = (): Locator =>
+        this.page.getByRole('button', { name: 'Cancel' });
+
+    lastNameRequiredError = (): Locator =>
+        this.page.getByText('Error: Last Name is required', { exact: true });
 }

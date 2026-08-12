@@ -47,4 +47,27 @@ export class CheckoutModule {
         await this.page.goBack();
         await this.inventoryModule.goBackToProducts();
     }
+
+    async cancelCustomerInformation(): Promise<void> {
+        this.logger.step(5, 'Cancel checkout');
+        await this.actions.click(this.checkoutPage.cancelButton());
+    }
+
+    async enterCustomerInformationWithEmptyFirstName(
+        lastName: string,
+        postalCode: string,
+    ): Promise<void> {
+        this.logger.step(6, 'Enter checkout information with an empty First Name');
+        await this.actions.fill(this.checkoutPage.lastNameInput(), lastName);
+        await this.actions.fill(this.checkoutPage.postalCodeInput(), postalCode);
+    }
+
+    async enterCustomerInformationWithEmptyPostalCode(
+        firstName: string,
+        lastName: string,
+    ): Promise<void> {
+        this.logger.step(7, 'Enter checkout information with an empty Zip/Postal Code');
+        await this.actions.fill(this.checkoutPage.firstNameInput(), firstName);
+        await this.actions.fill(this.checkoutPage.lastNameInput(), lastName);
+    }
 }
