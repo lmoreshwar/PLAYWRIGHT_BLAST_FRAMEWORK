@@ -1,0 +1,51 @@
+# Level 3 feasibility proof: run Microsoft's @playwright/cli (the agent "hands")
+# HEADLESS on GitHub Actions against a PUBLIC url — no laptop, no tunnel.
+# If this prints a real page snapshot, Level 3 (LLM drives playwright-cli live in
+# the cloud) is feasible. Manual trigger only; does not touch the BLAST pipeline.
+name: Playwright CLI Smoke (Level 3 feasibility)
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Public URL to snapshot'
+        required: false
+        default: 'https://www.saucedemo.com'
+        type: string
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright browser + OS deps
+        run: npx playwright install --with-deps chromium
+
+      - name: Install @playwright/cli (Microsoft agent CLI)
+        run: npm install -g @playwright/cli@latest
+
+      - name: Install xvfb (virtual display, so a browser can start on a headless runner)
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      - name: Verify playwright-cli is on PATH
+        run: which playwright-cli && playwright-cli --version || true
+
+      - name: Smoke — open, goto, snapshot a public URL
+        run: |
+          xvfb-run -a bash -c '
+            set -e
+            SID="smoke-$RANDOM"
+            playwright-cli -s=$SID open
+            playwright-cli -s=$SID goto "${{ inputs.url }}"
+            echo "===SNAPSHOT START==="
+            playwright-cli -s=$SID snapshot | head -c 2500
+            echo ""
+            echo "===SNAPSHOT END==="
+            playwright-cli -s=$SID close
+          '
