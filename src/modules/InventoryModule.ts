@@ -1,56 +1,61 @@
 import { Page } from '@playwright/test';
 import { Actions } from '../utils/Actions';
-import { Logger } from '../utils/Logger';
+import { WaitHelper } from '../utils/WaitHelper';
 import { InventoryPage } from '../pages/InventoryPage';
-import { WorkflowActions } from '../utils/WorkflowActions';
 
-/**
- * InventoryModule — workflows for interacting with the product inventory and detail pages.
- * Sequences of InventoryPage interactions via `Actions`. No raw locators, no assertions.
- */
 export class InventoryModule {
-    private readonly actions: Actions;
     private readonly inventoryPage: InventoryPage;
-    private readonly workflowActions: WorkflowActions;
-    private readonly logger = Logger.create('InventoryModule');
+    private readonly actions: Actions;
+    private readonly waitHelper: WaitHelper;
 
-    constructor(private readonly page: Page) {
-        this.actions = new Actions(page);
-        this.inventoryPage = new InventoryPage(page);
-        this.workflowActions = new WorkflowActions(page);
+    constructor(
+        private readonly page: Page,
+        inventoryPage?: InventoryPage,
+        actions?: Actions,
+        waitHelper?: WaitHelper,
+    ) {
+        this.inventoryPage = inventoryPage ?? new InventoryPage(page);
+        this.actions = actions ?? new Actions(page);
+        this.waitHelper = waitHelper ?? new WaitHelper(page);
     }
 
     async navigateToProductDetailPage(productName: string): Promise<void> {
-        this.logger.step(1, `Navigate to detail page for product: "${productName}"`);
+        await this.waitHelper.waitForVisible(this.inventoryPage.productItemByName(productName));
         await this.actions.click(this.inventoryPage.productItemByName(productName));
-        await this.actions.waitForVisible(this.inventoryPage.productDetailName());
     }
 
     async addProductToCartFromDetail(): Promise<void> {
-        this.logger.step(2, 'Add product to cart from detail page');
         await this.actions.click(this.inventoryPage.addToCartButton());
-        await this.actions.waitForVisible(this.inventoryPage.removeFromCartButton());
     }
 
     async removeProductFromCartFromDetail(): Promise<void> {
-        this.logger.step(3, 'Remove product from cart from detail page');
         await this.actions.click(this.inventoryPage.removeFromCartButton());
-        await this.actions.waitForVisible(this.inventoryPage.addToCartButton());
     }
 
     async goBackToProducts(): Promise<void> {
-        this.logger.step(4, 'Click "Back to products" button');
         await this.actions.click(this.inventoryPage.backToProductsButton());
-        await this.actions.waitForVisible(this.inventoryPage.productsTitle());
     }
 
     async getCartItemCount(): Promise<number> {
-        this.logger.step(5, 'Get shopping cart item count');
         const badge = this.inventoryPage.shoppingCartBadge();
-        if (await badge.isVisible()) {
-            const count = await badge.textContent();
-            return count ? parseInt(count, 10) : 0;
+
+        if ((await badge.count()) === 0) {
+            return 0;
         }
-        return 0;
+
+        const badgeText = await badge.textContent();
+        return Number.parseInt(badgeText?.trim() ?? '0', 10);
+    }
+
+    async sortProducts(value: string): Promise<void> {
+        await this.actions.selectOption(this.inventoryPage.productSortDropdown(), value);
+    }
+
+    async addProductToCartFromList(productName: string): Promise<void> {
+        await this.actions.click(this.inventoryPage.addToCartButtonOnList(productName));
+    }
+
+    async openCart(): Promise<void> {
+        await this.actions.click(this.inventoryPage.shoppingCartLink());
     }
 }

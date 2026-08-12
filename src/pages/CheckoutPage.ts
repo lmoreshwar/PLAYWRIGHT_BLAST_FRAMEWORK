@@ -1,45 +1,53 @@
 import { Locator, Page } from '@playwright/test';
 
-/**
- * CheckoutPage — locators for checkout-step-one, checkout-step-two, and checkout-complete.
- * No workflows or assertions.
- */
 export class CheckoutPage {
-    constructor(private readonly page: Page) {}
+    public constructor(private readonly page: Page) {}
 
-    firstNameInput = (): Locator =>
-        this.page.getByPlaceholder('First Name');
+    public checkoutCompleteTitle(): Locator {
+        return this.page.getByRole('heading', { name: 'Checkout: Complete!' });
+    }
 
-    lastNameInput = (): Locator =>
-        this.page.getByPlaceholder('Last Name');
+    public checkoutOverviewTitle(): Locator {
+        return this.page.getByRole('heading', { name: 'Checkout: Overview' });
+    }
 
-    postalCodeInput = (): Locator =>
-        this.page.getByPlaceholder('Zip/Postal Code');
+    public continueButton(): Locator {
+        return this.page.getByRole('button', { name: 'Continue' });
+    }
 
-    continueButton = (): Locator =>
-        this.page.getByRole('button', { name: 'Continue' });
+    public finishButton(): Locator {
+        return this.page.getByRole('button', { name: 'Finish' });
+    }
 
-    summaryProductLink = (productName: string): Locator =>
-        this.page.getByRole('link', { name: productName });
+    public firstNameInput(): Locator {
+        return this.page.getByPlaceholder('First Name');
+    }
 
-    finishButton = (): Locator =>
-        this.page.getByRole('button', { name: 'Finish' });
+    public lastNameInput(): Locator {
+        return this.page.getByPlaceholder('Last Name');
+    }
 
-    checkoutOverviewTitle = (): Locator =>
-        this.page.getByText('Checkout: Overview', { exact: true });
+    public postalCodeInput(): Locator {
+        return this.page.getByPlaceholder('Zip/Postal Code');
+    }
 
-    checkoutCompleteTitle = (): Locator =>
-        this.page.getByText('Checkout: Complete!', { exact: true });
+    public firstNameRequiredError(): Locator {
+        return this.page.locator('[data-test="error"]');
+    }
 
-    firstNameRequiredError = (): Locator =>
-        this.page.getByText('Error: First Name is required', { exact: true });
+    public postalCodeRequiredError(): Locator {
+        return this.page.locator('[data-test="error"]');
+    }
 
-    orderCompleteMessage = (): Locator =>
-        this.page.getByText('Thank you for your order!', { exact: true });
+    public orderCompleteMessage(): Locator {
+        return this.page.getByRole('heading', { name: 'Thank you for your order!' });
+    }
 
-    orderDispatchedMessage = (): Locator =>
-        this.page.getByText(
-            'Your order has been dispatched, and will arrive just as fast as the pony can get there!',
-            { exact: true },
-        );
+    public orderDispatchedMessage(): Locator {
+        return this.page.getByText('Your order has been dispatched');
+    }
+
+    public summaryProductLink(productName: string): Locator {
+        return this.page.getByRole('link', { name: productName });
+    }
 }

@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Cart",
-  "generatedAt": "2026-08-12T14:14:23.876Z",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "generatedAt": "2026-08-12T16:40:14.983Z",
+  "sourceHash": "sha1:0554fe041daf998332b7c4273444230960add0ec",
   "pages": [
     {
       "file": "src/pages/CartPage.ts",
@@ -44,6 +44,59 @@
         {
           "id": "TC_024",
           "title": "TC_024 Add product to cart:"
+        }
+      ]
+    },
+    {
+      "file": "src/tests/product-detail.spec.ts",
+      "describes": [
+        "Product Detail Page & Cart Interactions"
+      ],
+      "tags": [
+        "@Boundary",
+        "@Cart",
+        "@Navigation",
+        "@Negative",
+        "@ProductDetailPage",
+        "@ProductSortingOnTheInventoryPage"
+      ],
+      "reuses": [],
+      "tests": [
+        {
+          "id": "TC_001",
+          "title": "TC_001 Click Product Opens Detail Page @ProductDetailPage"
+        },
+        {
+          "id": "TC_002",
+          "title": "TC_002 Detail Page Shows Product Information @ProductDetailPage"
+        },
+        {
+          "id": "TC_003",
+          "title": "TC_003 Add to Cart Button Works @ProductDetailPage @Cart"
+        },
+        {
+          "id": "TC_004",
+          "title": "TC_004 Remove from Cart Button Works @ProductDetailPage @Cart"
+        },
+        {
+          "id": "TC_005",
+          "title": "TC_005 Back to Products Button Works @ProductDetailPage @Navigation"
+        },
+        {
+          "id": "TC_025",
+          "title": "TC_025 Product sorting on the inventory page: First Name boundary (whitespace & max length) @ProductSortingOnTheInventoryPage @Boundary"
+        },
+        {
+          "id": "TC_026",
+          "title": "TC_026 Product sorting on the inventory page: Last Name boundary (whitespace & max length) @ProductSortingOnTheInventoryPage @Boundary"
+        },
+        {
+          "id": "TC_027",
+          "title": "TC_027 Product sorting on the inventory page: Zip/Postal Code boundary (whitespace & max length) @ProductSortingOnTheInventoryPage @Boundary"
+        },
+        {
+          "id": "TC_028",
+          "title": "TC_028 Product sorting on the inventory page:"
         }
       ]
     }

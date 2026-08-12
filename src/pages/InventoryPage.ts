@@ -1,37 +1,34 @@
-import { Locator, Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 
-/**
- * InventoryPage — locators ONLY for the SauceDemo inventory list and product detail screens.
- * No workflows, no assertions.
- */
 export class InventoryPage {
-    constructor(private readonly page: Page) {}
+    readonly page: Page;
 
-    // --- Inventory List Page Locators ---
+    constructor(page: Page) {
+        this.page = page;
+    }
+
     productsTitle = (): Locator => this.page.getByText('Products', { exact: true });
-
-    productItemByName = (productName: string): Locator =>
-        this.page.getByRole('link', { name: productName }).first();
-
-    addToCartButtonOnList = (productName: string): Locator =>
-        this.page.locator('.inventory_item', { has: this.page.getByText(productName) })
-            .getByRole('button', { name: 'Add to cart' });
-
-    // --- Product Detail Page Locators ---
-    productDetailName = (): Locator => this.page.locator('.inventory_details_name');
-
-    productDetailDescription = (): Locator => this.page.locator('.inventory_details_desc');
-
-    productDetailPrice = (): Locator => this.page.locator('.inventory_details_price');
-
-    addToCartButton = (): Locator => this.page.getByRole('button', { name: 'Add to cart' });
-
-    removeFromCartButton = (): Locator => this.page.getByRole('button', { name: 'Remove' });
-
-    backToProductsButton = (): Locator => this.page.getByRole('button', { name: 'Back to products' });
-
-    // --- Common Locators (Inventory List & Detail) ---
+    sortDropdown = (): Locator => this.page.getByRole('combobox');
     shoppingCartLink = (): Locator => this.page.getByRole('link', { name: /shopping cart/i });
-
-    shoppingCartBadge = (): Locator => this.page.locator('.shopping_cart_badge');
+    shoppingCartBadge = (): Locator => this.page.getByText(/^\d+$/);
+    productItemByName = (productName: string): Locator =>
+        this.page.getByRole('link', { name: productName }).last();
+    productImageLinks = (): Locator =>
+        this.page.getByRole('link').filter({ has: this.page.getByRole('img') });
+    addToCartButtonOnList = (productName: string): Locator =>
+        this.page
+            .locator('[data-test="inventory-item"]')
+            .filter({ hasText: productName })
+            .getByRole('button', { name: 'Add to cart' });
+    removeFromCartButtonOnList = (productName: string): Locator =>
+        this.page
+            .locator('[data-test="inventory-item"]')
+            .filter({ hasText: productName })
+            .getByRole('button', { name: 'Remove' });
+    addToCartButton = (): Locator => this.page.getByRole('button', { name: 'Add to cart' });
+    removeFromCartButton = (): Locator => this.page.getByRole('button', { name: 'Remove' });
+    productDetailName = (): Locator => this.page.getByTestId('inventory-item-name');
+    productDetailDescription = (): Locator => this.page.getByTestId('inventory-item-desc');
+    productDetailPrice = (): Locator => this.page.getByTestId('inventory-item-price');
+    backToProductsButton = (): Locator => this.page.getByRole('button', { name: 'Back to products' });
 }

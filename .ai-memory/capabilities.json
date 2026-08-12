@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-12T14:14:23.878Z",
+  "generatedAt": "2026-08-12T16:40:14.984Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "sourceHash": "sha1:0554fe041daf998332b7c4273444230960add0ec",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 5,
     "modules": 5,
     "specs": 4,
-    "tests": 24,
+    "tests": 28,
     "domains": 6
   },
   "fixtures": [
@@ -50,12 +50,13 @@
         "src/modules/CartModule.ts"
       ],
       "specs": [
-        "src/tests/checkout.spec.ts"
+        "src/tests/checkout.spec.ts",
+        "src/tests/product-detail.spec.ts"
       ],
       "counts": {
         "locators": 3,
         "methods": 2,
-        "tests": 2
+        "tests": 11
       }
     },
     {
@@ -69,7 +70,7 @@
       ],
       "specs": [],
       "counts": {
-        "locators": 11,
+        "locators": 12,
         "methods": 4,
         "tests": 0
       }
@@ -97,13 +98,11 @@
       "modules": [
         "src/modules/InventoryModule.ts"
       ],
-      "specs": [
-        "src/tests/product-detail.spec.ts"
-      ],
+      "specs": [],
       "counts": {
-        "locators": 11,
-        "methods": 5,
-        "tests": 5
+        "locators": 14,
+        "methods": 8,
+        "tests": 0
       }
     },
     {
@@ -157,7 +156,7 @@
     ],
     "TC_001": [
       {
-        "domain": "Inventory",
+        "domain": "Cart",
         "spec": "src/tests/product-detail.spec.ts",
         "title": "TC_001 Click Product Opens Detail Page @ProductDetailPage"
       },
@@ -169,7 +168,7 @@
     ],
     "TC_002": [
       {
-        "domain": "Inventory",
+        "domain": "Cart",
         "spec": "src/tests/product-detail.spec.ts",
         "title": "TC_002 Detail Page Shows Product Information @ProductDetailPage"
       },
@@ -181,7 +180,7 @@
     ],
     "TC_003": [
       {
-        "domain": "Inventory",
+        "domain": "Cart",
         "spec": "src/tests/product-detail.spec.ts",
         "title": "TC_003 Add to Cart Button Works @ProductDetailPage @Cart"
       },
@@ -193,7 +192,7 @@
     ],
     "TC_004": [
       {
-        "domain": "Inventory",
+        "domain": "Cart",
         "spec": "src/tests/product-detail.spec.ts",
         "title": "TC_004 Remove from Cart Button Works @ProductDetailPage @Cart"
       },
@@ -205,7 +204,7 @@
     ],
     "TC_005": [
       {
-        "domain": "Inventory",
+        "domain": "Cart",
         "spec": "src/tests/product-detail.spec.ts",
         "title": "TC_005 Back to Products Button Works @ProductDetailPage @Navigation"
       },
@@ -213,6 +212,34 @@
         "domain": "Login",
         "spec": "src/tests/login.spec.ts",
         "title": "TC_005 Locked User Login Attempt @Regression @Automation @Critical"
+      }
+    ],
+    "TC_025": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/product-detail.spec.ts",
+        "title": "TC_025 Product sorting on the inventory page: First Name boundary (whitespace & max length) @ProductSortingOnTheInventoryPage @Boundary"
+      }
+    ],
+    "TC_026": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/product-detail.spec.ts",
+        "title": "TC_026 Product sorting on the inventory page: Last Name boundary (whitespace & max length) @ProductSortingOnTheInventoryPage @Boundary"
+      }
+    ],
+    "TC_027": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/product-detail.spec.ts",
+        "title": "TC_027 Product sorting on the inventory page: Zip/Postal Code boundary (whitespace & max length) @ProductSortingOnTheInventoryPage @Boundary"
+      }
+    ],
+    "TC_028": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/product-detail.spec.ts",
+        "title": "TC_028 Product sorting on the inventory page:"
       }
     ],
     "TC_016": [

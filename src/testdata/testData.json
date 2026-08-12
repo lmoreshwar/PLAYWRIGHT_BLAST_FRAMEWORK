@@ -12,6 +12,13 @@
     "lastName": "User",
     "postalCode": "94105"
   },
+  "boundaryValues": {
+    "firstNameWithWhitespace": " Demo ",
+    "lastNameMaxLengthCore": "L",
+    "lastNameMaxLength": 256,
+    "postalCodeMaxLengthCore": "9",
+    "postalCodeMaxLength": 256
+  },
   "invalidLogins": [
     {
       "description": "Locked out user",
