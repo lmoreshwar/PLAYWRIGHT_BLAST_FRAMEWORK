@@ -1,0 +1,66 @@
+{
+  "$schema": "reuse-capability-shard/v1",
+  "domain": "Checkout",
+  "generatedAt": "2026-08-12T13:06:37.035Z",
+  "sourceHash": "sha1:e5ff7552ef00cc6a93093014b5584734b8ccdba4",
+  "pages": [
+    {
+      "file": "src/pages/CheckoutPage.ts",
+      "class": "CheckoutPage",
+      "methods": [
+        "backHomeButton",
+        "cartProductLink",
+        "cartTitle",
+        "checkoutButton",
+        "checkoutOverviewProductLink",
+        "checkoutStepOneTitle",
+        "checkoutStepTwoTitle",
+        "continueButton",
+        "finishButton",
+        "firstNameInput",
+        "goBackContinueShoppingButton",
+        "lastNameInput",
+        "orderConfirmation",
+        "postalCodeInput",
+        "shoppingCartLink"
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "file": "src/modules/CheckoutModule.ts",
+      "class": "CheckoutModule",
+      "methods": [
+        "addProductFromInventory",
+        "continueToOverview",
+        "enterCustomerInformation",
+        "finishCheckout",
+        "goBackContinueShopping",
+        "openCart",
+        "returnHome",
+        "selectCheckout"
+      ]
+    }
+  ],
+  "specs": [
+    {
+      "file": "src/tests/checkout.spec.ts",
+      "describes": [
+        "Checkout — Product Purchase"
+      ],
+      "tags": [
+        "@AddProductToCart",
+        "@Automation",
+        "@Positive",
+        "@Regression"
+      ],
+      "reuses": [],
+      "tests": [
+        {
+          "id": "TC_023",
+          "title": "TC_023 Add Sauce Labs Backpack and complete checkout successfully @AddProductToCart @Positive @Regression @Automation"
+        }
+      ]
+    }
+  ]
+}
