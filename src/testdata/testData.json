@@ -10,7 +10,12 @@
   "checkoutInfo": {
     "firstName": "Demo",
     "lastName": "User",
-    "postalCode": "94105"
+    "postalCode": "94105",
+    "tc032": {
+      "firstName": "",
+      "lastName": "Lovelace",
+      "postalCode": "12345"
+    }
   },
   "invalidLogins": [
     {

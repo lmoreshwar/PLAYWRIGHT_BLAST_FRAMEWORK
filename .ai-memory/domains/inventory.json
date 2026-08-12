@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Inventory",
-  "generatedAt": "2026-08-12T14:14:23.877Z",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "generatedAt": "2026-08-12T15:06:46.768Z",
+  "sourceHash": "sha1:c32a5dbce333a8e4ab04d382ccfccbda4050ec6a",
   "pages": [
     {
       "file": "src/pages/InventoryPage.ts",
@@ -15,10 +15,13 @@
         "productDetailName",
         "productDetailPrice",
         "productItemByName",
+        "productLinks",
+        "productPrices",
         "productsTitle",
         "removeFromCartButton",
         "shoppingCartBadge",
-        "shoppingCartLink"
+        "shoppingCartLink",
+        "sortCombobox"
       ]
     }
   ],
@@ -28,14 +31,41 @@
       "class": "InventoryModule",
       "methods": [
         "addProductToCartFromDetail",
+        "addProductToCartFromList",
         "getCartItemCount",
         "goBackToProducts",
         "navigateToProductDetailPage",
-        "removeProductFromCartFromDetail"
+        "observeProductNames",
+        "observeProductPrices",
+        "openCart",
+        "removeProductFromCartFromDetail",
+        "sortProducts"
       ]
     }
   ],
   "specs": [
+    {
+      "file": "src/tests/inventory.spec.ts",
+      "describes": [
+        "Inventory — Product Sorting Boundary Coverage"
+      ],
+      "tags": [
+        "@Boundary",
+        "@Positive",
+        "@ProductSortingOnTheInventoryPage"
+      ],
+      "reuses": [],
+      "tests": [
+        {
+          "id": "TC_029",
+          "title": "TC_029 Sort inventory products by name ascending @ProductSortingOnTheInventoryPage @Positive"
+        },
+        {
+          "id": "TC_031",
+          "title": "TC_031 Verify lowest and highest price sorting boundaries @ProductSortingOnTheInventoryPage @Boundary"
+        }
+      ]
+    },
     {
       "file": "src/tests/product-detail.spec.ts",
       "describes": [

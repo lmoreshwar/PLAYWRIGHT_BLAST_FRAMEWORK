@@ -2,22 +2,15 @@ import { Page } from '@playwright/test';
 import { Actions } from '../utils/Actions';
 import { Logger } from '../utils/Logger';
 import { CheckoutPage } from '../pages/CheckoutPage';
-import { InventoryModule } from './InventoryModule';
 
-/**
- * CheckoutModule — workflows for checkout form submission and order completion.
- * No assertions.
- */
 export class CheckoutModule {
     private readonly actions: Actions;
     private readonly checkoutPage: CheckoutPage;
-    private readonly inventoryModule: InventoryModule;
     private readonly logger = Logger.create('CheckoutModule');
 
     constructor(private readonly page: Page) {
         this.actions = new Actions(page);
         this.checkoutPage = new CheckoutPage(page);
-        this.inventoryModule = new InventoryModule(page);
     }
 
     async enterCustomerInformation(
@@ -32,19 +25,19 @@ export class CheckoutModule {
     }
 
     async continue(): Promise<void> {
-        this.logger.step(2, 'Click "Continue"');
+        this.logger.step(2, 'Continue to checkout overview');
         await this.actions.click(this.checkoutPage.continueButton());
+        await this.actions.waitForVisible(this.checkoutPage.checkoutOverviewTitle());
     }
 
     async finish(): Promise<void> {
-        this.logger.step(3, 'Click "Finish"');
+        this.logger.step(3, 'Finish checkout');
         await this.actions.click(this.checkoutPage.finishButton());
+        await this.actions.waitForVisible(this.checkoutPage.checkoutCompleteTitle());
     }
 
     async abortWithContinueShopping(): Promise<void> {
-        this.logger.step(4, 'Return to the products page');
-        await this.page.goBack();
-        await this.page.goBack();
-        await this.inventoryModule.goBackToProducts();
+        this.logger.step(4, 'Cancel checkout and return to inventory');
+        await this.actions.click(this.checkoutPage.cancelButton());
     }
 }

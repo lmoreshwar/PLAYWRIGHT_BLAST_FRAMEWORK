@@ -10,6 +10,12 @@ export class InventoryPage {
     // --- Inventory List Page Locators ---
     productsTitle = (): Locator => this.page.getByText('Products', { exact: true });
 
+    sortCombobox = (): Locator => this.page.getByRole('combobox');
+
+    productLinks = (): Locator => this.page.locator('.inventory_item_name');
+
+    productPrices = (): Locator => this.page.locator('.inventory_item_price');
+
     productItemByName = (productName: string): Locator =>
         this.page.getByRole('link', { name: productName }).first();
 

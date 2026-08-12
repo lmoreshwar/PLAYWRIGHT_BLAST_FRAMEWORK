@@ -53,4 +53,31 @@ export class InventoryModule {
         }
         return 0;
     }
+
+    async sortProducts(optionLabel: string): Promise<void> {
+        this.logger.step(6, `Sort inventory products by "${optionLabel}"`);
+        await this.actions.selectOption(this.inventoryPage.sortCombobox(), { label: optionLabel });
+        await this.actions.waitForVisible(this.inventoryPage.productsTitle());
+    }
+
+    async observeProductNames(): Promise<string[]> {
+        this.logger.step(7, 'Observe inventory product links from top to bottom');
+        return this.inventoryPage.productLinks().allTextContents();
+    }
+
+    async observeProductPrices(): Promise<string[]> {
+        this.logger.step(8, 'Observe inventory product prices from top to bottom');
+        return this.inventoryPage.productPrices().allTextContents();
+    }
+
+    async addProductToCartFromList(productName: string): Promise<void> {
+        this.logger.step(9, `Add product to cart from inventory list: "${productName}"`);
+        await this.actions.click(this.inventoryPage.addToCartButtonOnList(productName));
+        await this.actions.waitForVisible(this.inventoryPage.shoppingCartBadge());
+    }
+
+    async openCart(): Promise<void> {
+        this.logger.step(10, 'Open the shopping cart');
+        await this.actions.click(this.inventoryPage.shoppingCartLink());
+    }
 }

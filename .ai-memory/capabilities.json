@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-12T14:14:23.878Z",
+  "generatedAt": "2026-08-12T15:06:46.769Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:5433aa2e471754f37b1d815eab29157a322a04e2",
+  "sourceHash": "sha1:c32a5dbce333a8e4ab04d382ccfccbda4050ec6a",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 5,
     "modules": 5,
-    "specs": 4,
-    "tests": 24,
+    "specs": 5,
+    "tests": 26,
     "domains": 6
   },
   "fixtures": [
@@ -69,7 +69,7 @@
       ],
       "specs": [],
       "counts": {
-        "locators": 11,
+        "locators": 12,
         "methods": 4,
         "tests": 0
       }
@@ -98,12 +98,13 @@
         "src/modules/InventoryModule.ts"
       ],
       "specs": [
+        "src/tests/inventory.spec.ts",
         "src/tests/product-detail.spec.ts"
       ],
       "counts": {
-        "locators": 11,
-        "methods": 5,
-        "tests": 5
+        "locators": 14,
+        "methods": 10,
+        "tests": 7
       }
     },
     {
@@ -153,6 +154,20 @@
         "domain": "Cart",
         "spec": "src/tests/checkout.spec.ts",
         "title": "TC_024 Add product to cart:"
+      }
+    ],
+    "TC_029": [
+      {
+        "domain": "Inventory",
+        "spec": "src/tests/inventory.spec.ts",
+        "title": "TC_029 Sort inventory products by name ascending @ProductSortingOnTheInventoryPage @Positive"
+      }
+    ],
+    "TC_031": [
+      {
+        "domain": "Inventory",
+        "spec": "src/tests/inventory.spec.ts",
+        "title": "TC_031 Verify lowest and highest price sorting boundaries @ProductSortingOnTheInventoryPage @Boundary"
       }
     ],
     "TC_001": [
