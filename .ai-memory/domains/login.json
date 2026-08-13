@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Login",
-  "generatedAt": "2026-08-13T07:59:49.588Z",
-  "sourceHash": "sha1:6d8ecd42c53f85cb1b78516e51142545b3d4691e",
+  "generatedAt": "2026-08-13T11:46:37.684Z",
+  "sourceHash": "sha1:3f308f905f80b6e1fa3224c410a1606780a4190f",
   "pages": [
     {
       "file": "src/pages/LoginPage.ts",
@@ -128,6 +128,28 @@
         {
           "id": "TC_022",
           "title": "TC_022 Verify locked-user rejection after refreshing the login page @Authentication @Locked User Validation @Access Control"
+        }
+      ]
+    },
+    {
+      "file": "src/tests/logout.spec.ts",
+      "describes": [
+        "Logout"
+      ],
+      "tags": [
+        "@Authentication",
+        "@Logout",
+        "@UI"
+      ],
+      "reuses": [],
+      "tests": [
+        {
+          "id": "TC_001",
+          "title": "[TC_001] Logout through hamburger menu @Logout @Authentication @UI"
+        },
+        {
+          "id": "TC_002",
+          "title": "[TC_002] Verify hamburger menu provides logout option @Logout @Authentication @UI"
         }
       ]
     }
