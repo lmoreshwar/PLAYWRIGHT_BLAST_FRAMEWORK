@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Cart",
-  "generatedAt": "2026-08-13T11:46:37.684Z",
-  "sourceHash": "sha1:3f308f905f80b6e1fa3224c410a1606780a4190f",
+  "generatedAt": "2026-08-13T16:37:35.904Z",
+  "sourceHash": "sha1:2f87545cdbf02130b4bbeaff33f740cbde67eae7",
   "pages": [
     {
       "file": "src/pages/CartPage.ts",
@@ -36,6 +36,7 @@
         "@AddAProductToTheCartFromTheInventoryPage",
         "@AddProductToCart",
         "@Boundary",
+        "@CheckoutOverview",
         "@CompleteCheckoutOrderSummaryAndPriceTotalVerification",
         "@Negative",
         "@Positive"
@@ -81,6 +82,18 @@
         {
           "id": "TC_037",
           "title": "TC_037 Return home after a completed order @CompleteCheckoutOrderSummaryAndPriceTotalVerification @Positive"
+        },
+        {
+          "id": "TC_001",
+          "title": "TC_001 Finish completes a valid order from Checkout: Overview @CheckoutOverview @Positive"
+        },
+        {
+          "id": "TC_002",
+          "title": "TC_002 Go back Cancel returns to the previous checkout step without completing the order @CheckoutOverview @Positive"
+        },
+        {
+          "id": "TC_003",
+          "title": "TC_003 Open Menu opens navigation without changing the checkout overview @CheckoutOverview @Positive"
         }
       ]
     }

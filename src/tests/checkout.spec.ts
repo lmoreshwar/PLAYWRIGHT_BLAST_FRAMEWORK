@@ -121,6 +121,7 @@ test.describe('Checkout — Required-Field Recovery and Order Completion', () =>
         await checkoutModule.finish();
 
         await expect(page).toHaveURL(/checkout-complete\.html/);
+        await expect(checkoutPage.orderCompleteTitle()).toBeVisible();
         await expect(checkoutPage.orderCompleteMessage()).toHaveText(
             testData.messages.orderComplete,
         );
@@ -388,5 +389,120 @@ test.describe('Checkout — Required-Field Recovery and Order Completion', () =>
 
         await expect(page).toHaveURL(/inventory\.html/);
         await expect(inventoryPage.productsTitle()).toBeVisible();
+    });
+
+    test('TC_001 Finish completes a valid order from Checkout: Overview @CheckoutOverview @Positive', async ({
+        inventoryModule,
+        inventoryPage,
+        cartModule,
+        cartPage,
+        checkoutModule,
+        checkoutPage,
+        page,
+    }) => {
+        await inventoryModule.addProductToCartFromInventory(productName);
+        await expect(inventoryPage.removeFromCartButton()).toBeVisible();
+
+        await cartModule.goto(`${testData.urls.baseUrl}${testData.urls.cartUrl}`);
+        await expect(page).toHaveURL(/cart\.html/);
+        await expect(cartPage.productLink(productName)).toBeVisible();
+
+        await cartModule.checkout();
+        await expect(page).toHaveURL(/checkout-step-one\.html/);
+
+        await checkoutModule.enterCustomerInformation(
+            checkoutInfo.firstName,
+            checkoutInfo.lastName,
+            checkoutInfo.postalCode,
+        );
+        await checkoutModule.continue();
+
+        await expect(page).toHaveURL(/checkout-step-two\.html/);
+        await expect(checkoutPage.checkoutOverviewTitle()).toBeVisible();
+        await expect(checkoutPage.summaryProductLink(productName)).toBeVisible();
+        await expect(checkoutPage.itemTotal()).toHaveText(testData.orderSummary.itemTotal);
+        await expect(checkoutPage.tax()).toHaveText(testData.orderSummary.tax);
+        await expect(checkoutPage.total()).toHaveText(testData.orderSummary.total);
+
+        await checkoutModule.finish();
+
+        await expect(page).toHaveURL(/checkout-complete\.html/);
+        await expect(checkoutPage.orderCompleteTitle()).toBeVisible();
+    });
+
+    test('TC_002 Go back Cancel returns to the previous checkout step without completing the order @CheckoutOverview @Positive', async ({
+        inventoryModule,
+        inventoryPage,
+        cartModule,
+        cartPage,
+        checkoutModule,
+        checkoutPage,
+        page,
+    }) => {
+        await inventoryModule.addProductToCartFromInventory(productName);
+        await expect(inventoryPage.removeFromCartButton()).toBeVisible();
+
+        await cartModule.goto(`${testData.urls.baseUrl}${testData.urls.cartUrl}`);
+        await expect(page).toHaveURL(/cart\.html/);
+        await expect(cartPage.productLink(productName)).toBeVisible();
+
+        await cartModule.checkout();
+        await expect(page).toHaveURL(/checkout-step-one\.html/);
+
+        await checkoutModule.enterCustomerInformation(
+            checkoutInfo.firstName,
+            checkoutInfo.lastName,
+            checkoutInfo.postalCode,
+        );
+        await checkoutModule.continue();
+
+        await expect(page).toHaveURL(/checkout-step-two\.html/);
+        await expect(checkoutPage.checkoutOverviewTitle()).toBeVisible();
+        await expect(checkoutPage.summaryProductLink(productName)).toBeVisible();
+        await expect(checkoutPage.itemTotal()).toHaveText(testData.orderSummary.itemTotal);
+        await expect(checkoutPage.tax()).toHaveText(testData.orderSummary.tax);
+        await expect(checkoutPage.total()).toHaveText(testData.orderSummary.total);
+
+        await checkoutModule.cancelFromOrderSummary();
+
+        await expect(page).toHaveURL(/inventory\.html/);
+        await expect(inventoryPage.productsTitle()).toBeVisible();
+    });
+
+  test('TC_003 Open Menu opens navigation without changing the checkout overview @CheckoutOverview @Positive', async ({
+        inventoryModule,
+        inventoryPage,
+        cartModule,
+        cartPage,
+        checkoutModule,
+        checkoutPage,
+        page,
+    }) => {
+        await inventoryModule.addProductToCartFromInventory(productName);
+        await expect(inventoryPage.removeFromCartButton()).toBeVisible();
+
+        await cartModule.goto(`${testData.urls.baseUrl}${testData.urls.cartUrl}`);
+        await expect(cartPage.productLink(productName)).toBeVisible();
+
+        await cartModule.checkout();
+        await expect(page).toHaveURL(/checkout-step-one\.html/);
+
+        await checkoutModule.enterCustomerInformation(
+            checkoutInfo.firstName,
+            checkoutInfo.lastName,
+            checkoutInfo.postalCode,
+        );
+        await checkoutModule.continue();
+
+        await expect(page).toHaveURL(/checkout-step-two\.html/);
+        await expect(checkoutPage.checkoutOverviewTitle()).toBeVisible();
+
+        const checkoutOverviewUrl = page.url();
+
+        await checkoutModule.openMenu();
+
+        await expect(page).toHaveURL(checkoutOverviewUrl);
+        await expect(checkoutPage.checkoutOverviewTitle()).toBeVisible();
+        await expect(checkoutPage.logoutLink()).toBeVisible();
     });
 });

@@ -57,4 +57,13 @@ export class CheckoutPage {
 
     backHomeButton = (): Locator =>
         this.page.getByRole('button', { name: 'Back Home' });
+
+    menuButton = (): Locator =>
+        this.page.getByRole('button', { name: 'Open Menu' });
+
+    logoutLink = (): Locator =>
+        this.page.getByRole('link', { name: 'Logout' });
+
+    orderCompleteTitle = (): Locator =>
+        this.page.getByText('Checkout: Complete!', { exact: true });
 }

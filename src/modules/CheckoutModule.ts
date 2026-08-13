@@ -57,4 +57,9 @@ export class CheckoutModule {
         this.logger.step(6, 'Click "Back Home"');
         await this.actions.click(this.checkoutPage.backHomeButton());
     }
+
+    async openMenu(): Promise<void> {
+        this.logger.step(7, 'Click "Open Menu" from checkout overview');
+        await this.actions.click(this.checkoutPage.menuButton());
+    }
 }
