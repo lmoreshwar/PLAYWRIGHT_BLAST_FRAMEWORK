@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Logout",
-  "generatedAt": "2026-08-13T11:46:37.684Z",
-  "sourceHash": "sha1:3f308f905f80b6e1fa3224c410a1606780a4190f",
+  "generatedAt": "2026-08-13T12:03:19.162Z",
+  "sourceHash": "sha1:5f097372e674be65c2e4e21df37c1be625f00c94",
   "pages": [],
   "modules": [
     {

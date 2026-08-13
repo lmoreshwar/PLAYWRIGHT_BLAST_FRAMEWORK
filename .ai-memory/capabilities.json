@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-13T11:46:37.685Z",
+  "generatedAt": "2026-08-13T12:03:19.162Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:3f308f905f80b6e1fa3224c410a1606780a4190f",
+  "sourceHash": "sha1:5f097372e674be65c2e4e21df37c1be625f00c94",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 5,
     "modules": 5,
     "specs": 6,
-    "tests": 39,
+    "tests": 42,
     "domains": 6
   },
   "fixtures": [
@@ -55,7 +55,7 @@
       "counts": {
         "locators": 4,
         "methods": 3,
-        "tests": 10
+        "tests": 13
       }
     },
     {
@@ -69,8 +69,8 @@
       ],
       "specs": [],
       "counts": {
-        "locators": 16,
-        "methods": 6,
+        "locators": 17,
+        "methods": 7,
         "tests": 0
       }
     },
@@ -215,6 +215,11 @@
     ],
     "TC_001": [
       {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_001 Finish a valid checkout and reach order confirmation @CheckoutOverview @Positive"
+      },
+      {
         "domain": "Inventory",
         "spec": "src/tests/product-detail.spec.ts",
         "title": "TC_001 Click Product Opens Detail Page @ProductDetailPage"
@@ -232,6 +237,11 @@
     ],
     "TC_002": [
       {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_002 Cancel the overview without completing the order @CheckoutOverview @Positive"
+      },
+      {
         "domain": "Inventory",
         "spec": "src/tests/product-detail.spec.ts",
         "title": "TC_002 Detail Page Shows Product Information @ProductDetailPage"
@@ -248,6 +258,11 @@
       }
     ],
     "TC_003": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_003 Open the navigation menu from the overview @CheckoutOverview @Positive"
+      },
       {
         "domain": "Inventory",
         "spec": "src/tests/product-detail.spec.ts",

@@ -41,9 +41,9 @@ test.describe('Checkout — Required-Field Recovery and Order Completion', () =>
         );
 
         await checkoutModule.enterCustomerInformation(
-            testData.checkoutInfo.firstName,
-            testData.checkoutInfo.lastName,
-            testData.checkoutInfo.postalCode,
+            checkoutInfo.firstName,
+            checkoutInfo.lastName,
+            checkoutInfo.postalCode,
         );
         await checkoutModule.continue();
 
@@ -79,9 +79,9 @@ test.describe('Checkout — Required-Field Recovery and Order Completion', () =>
         await expect(page).toHaveURL(/checkout-step-one\.html/);
 
         await checkoutModule.enterCustomerInformation(
-            testData.checkoutInfo.firstName,
-            testData.checkoutInfo.lastName,
-            testData.checkoutInfo.postalCode,
+            checkoutInfo.firstName,
+            checkoutInfo.lastName,
+            checkoutInfo.postalCode,
         );
         await checkoutModule.abortWithContinueShopping();
 
@@ -151,9 +151,9 @@ test.describe('Checkout — Required-Field Recovery and Order Completion', () =>
         await expect(page).toHaveURL(/checkout-step-one\.html/);
 
         await checkoutModule.enterCustomerInformation(
-            checkoutInfo.firstName,
-            checkoutInfo.lastName,
-            checkoutInfo.postalCode,
+            testData.tc031CheckoutInfo.firstName,
+            testData.tc031CheckoutInfo.lastName,
+            testData.tc031CheckoutInfo.postalCode,
         );
         await checkoutModule.continue();
 
@@ -198,8 +198,8 @@ test.describe('Checkout — Required-Field Recovery and Order Completion', () =>
 
         await checkoutModule.enterCustomerInformation(
             '',
-            testData.checkoutInfo.lastName,
-            '12345',
+            checkoutInfo.lastName,
+            checkoutInfo.postalCode,
         );
         await checkoutModule.continue();
 
@@ -388,5 +388,114 @@ test.describe('Checkout — Required-Field Recovery and Order Completion', () =>
 
         await expect(page).toHaveURL(/inventory\.html/);
         await expect(inventoryPage.productsTitle()).toBeVisible();
+    });
+
+    test('TC_001 Finish a valid checkout and reach order confirmation @CheckoutOverview @Positive', async ({
+        inventoryModule,
+        inventoryPage,
+        cartModule,
+        cartPage,
+        checkoutModule,
+        checkoutPage,
+        page,
+    }) => {
+        await inventoryModule.addProductToCartFromInventory(productName);
+
+        await expect(inventoryPage.removeFromCartButton()).toBeVisible();
+
+        await cartModule.goto(`${testData.urls.baseUrl}${testData.urls.cartUrl}`);
+        await expect(page).toHaveURL(/cart\.html/);
+        await expect(cartPage.productLink(productName)).toBeVisible();
+
+        await cartModule.checkout();
+        await expect(page).toHaveURL(/checkout-step-one\.html/);
+
+        await checkoutModule.enterCustomerInformation(
+            checkoutInfo.firstName,
+            checkoutInfo.lastName,
+            checkoutInfo.postalCode,
+        );
+        await checkoutModule.continue();
+
+        await expect(page).toHaveURL(/checkout-step-two\.html/);
+        await expect(checkoutPage.checkoutOverviewTitle()).toBeVisible();
+
+        await checkoutModule.finish();
+
+        await expect(page).toHaveURL(/checkout-complete\.html/);
+        await expect(checkoutPage.orderCompleteMessage()).toHaveText(
+            testData.messages.orderComplete,
+        );
+    });
+
+    test('TC_002 Cancel the overview without completing the order @CheckoutOverview @Positive', async ({
+        inventoryModule,
+        inventoryPage,
+        cartModule,
+        cartPage,
+        checkoutModule,
+        checkoutPage,
+        page,
+    }) => {
+        await inventoryModule.addProductToCartFromInventory(productName);
+
+        await expect(inventoryPage.removeFromCartButton()).toBeVisible();
+
+        await cartModule.goto(`${testData.urls.baseUrl}${testData.urls.cartUrl}`);
+        await expect(page).toHaveURL(/cart\.html/);
+        await expect(cartPage.productLink(productName)).toBeVisible();
+
+        await cartModule.checkout();
+        await expect(page).toHaveURL(/checkout-step-one\.html/);
+
+        await checkoutModule.enterCustomerInformation(
+            checkoutInfo.firstName,
+            checkoutInfo.lastName,
+            checkoutInfo.postalCode,
+        );
+        await checkoutModule.continue();
+
+        await expect(page).toHaveURL(/checkout-step-two\.html/);
+        await expect(checkoutPage.checkoutOverviewTitle()).toBeVisible();
+        await expect(checkoutPage.summaryProductLink(productName)).toBeVisible();
+
+        await checkoutModule.cancelFromOrderSummary();
+
+        await expect(page).toHaveURL(/inventory\.html/);
+        await expect(inventoryPage.productsTitle()).toBeVisible();
+    });
+
+  test('TC_003 Open the navigation menu from the overview @CheckoutOverview @Positive', async ({
+        inventoryModule,
+        inventoryPage,
+        cartModule,
+        cartPage,
+        checkoutModule,
+        checkoutPage,
+        page,
+    }) => {
+        await inventoryModule.addProductToCartFromInventory(productName);
+        await expect(inventoryPage.removeFromCartButton()).toBeVisible();
+
+        await cartModule.goto(`${testData.urls.baseUrl}${testData.urls.cartUrl}`);
+        await expect(page).toHaveURL(/cart\.html/);
+        await expect(cartPage.productLink(productName)).toBeVisible();
+
+        await cartModule.checkout();
+        await expect(page).toHaveURL(/checkout-step-one\.html/);
+
+        await checkoutModule.enterCustomerInformation(
+            checkoutInfo.firstName,
+            checkoutInfo.lastName,
+            checkoutInfo.postalCode,
+        );
+        await checkoutModule.continue();
+
+        await expect(page).toHaveURL(/checkout-step-two\.html/);
+        await expect(checkoutPage.checkoutOverviewTitle()).toBeVisible();
+
+        await checkoutModule.openMenu();
+
+        await expect(page.getByRole('button', { name: 'Close Menu' })).toBeVisible();
     });
 });
