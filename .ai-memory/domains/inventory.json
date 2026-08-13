@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Inventory",
-  "generatedAt": "2026-08-12T20:08:10.654Z",
-  "sourceHash": "sha1:a39f3b29ec510dba35503696cb1a8f2dcec11e37",
+  "generatedAt": "2026-08-13T07:34:47.754Z",
+  "sourceHash": "sha1:b8a999dd7ae72df09b6f626590d35199da764dae",
   "pages": [
     {
       "file": "src/pages/InventoryPage.ts",
@@ -15,10 +15,12 @@
         "productDetailName",
         "productDetailPrice",
         "productItemByName",
+        "productLinks",
         "productsTitle",
         "removeFromCartButton",
         "shoppingCartBadge",
-        "shoppingCartLink"
+        "shoppingCartLink",
+        "sortDropdown"
       ]
     }
   ],
@@ -32,7 +34,8 @@
         "getCartItemCount",
         "goBackToProducts",
         "navigateToProductDetailPage",
-        "removeProductFromCartFromDetail"
+        "removeProductFromCartFromDetail",
+        "sortProductsBy"
       ]
     }
   ],
@@ -68,6 +71,40 @@
         {
           "id": "TC_005",
           "title": "TC_005 Back to Products Button Works @ProductDetailPage @Navigation"
+        }
+      ]
+    },
+    {
+      "file": "src/tests/product-sorting.spec.ts",
+      "describes": [
+        "Product Sorting by Name and Price"
+      ],
+      "tags": [
+        "@Negative",
+        "@Positive",
+        "@ProductSortingByNameAndPrice"
+      ],
+      "reuses": [],
+      "tests": [
+        {
+          "id": "TC_026",
+          "title": "TC_026 Sort products by name in ascending order @ProductSortingByNameAndPrice @Positive"
+        },
+        {
+          "id": "TC_027",
+          "title": "TC_027 Sort products by name in descending order @ProductSortingByNameAndPrice @Positive"
+        },
+        {
+          "id": "TC_028",
+          "title": "TC_028 Sort products by price from low to high @ProductSortingByNameAndPrice @Positive"
+        },
+        {
+          "id": "TC_029",
+          "title": "TC_029 Sort products by price from high to low @ProductSortingByNameAndPrice @Positive"
+        },
+        {
+          "id": "TC_030",
+          "title": "TC_030 Unauthenticated direct access to inventory is blocked @ProductSortingByNameAndPrice @Negative"
         }
       ]
     }

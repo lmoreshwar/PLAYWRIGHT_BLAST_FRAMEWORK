@@ -60,4 +60,8 @@ export class InventoryModule {
             this.inventoryPage.addToCartButtonOnList(productName),
         );
     }
+
+    public async sortProductsBy(sortOption: string): Promise<void> {
+        await this.actions.selectOption(this.inventoryPage.sortDropdown(), sortOption);
+    }
 }
