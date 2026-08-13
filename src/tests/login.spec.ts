@@ -151,4 +151,43 @@ test.describe('Authentication — Login & Session', () => {
         await expect(loginPage.errorMessage()).toBeVisible();
         await expect(loginPage.errorMessage()).toHaveText(locked.expectedError);
     });
+
+    test('TC_038 Attempt logout without an active session @Logout @Authentication @Session', async ({
+        loginModule,
+        loginPage,
+        page,
+    }) => {
+        await loginModule.attemptLogoutWithoutSession();
+
+        await expect(page).toHaveURL(/saucedemo\.com\/?$/);
+        await expect(loginPage.loginButton()).toBeVisible();
+        await expect(loginPage.menuButton()).not.toBeVisible();
+    });
+
+    test.describe('Authenticated session navigation', () => {
+        test.beforeEach(async ({ loginModule, loginPage, page }) => {
+            await loginModule.goto();
+            await loginModule.login(valid.username, valid.password);
+
+            await expect(page).toHaveURL(/inventory\.html/);
+            await expect(loginPage.menuButton()).toBeVisible();
+        });
+
+        test('TC_010 Verify session remains active when logout is not selected @Logout @Authentication @Session', async ({
+            loginModule,
+            inventoryModule,
+            inventoryPage,
+            loginPage,
+            page,
+        }) => {
+            await loginModule.openMenu();
+            await inventoryModule.navigateToProductDetailPage(testData.products.backpack);
+
+            await expect(page).toHaveURL(/inventory-item\.html/);
+            await expect(inventoryPage.productDetailName()).toHaveText(testData.products.backpack);
+            await expect(loginPage.menuButton()).toBeVisible();
+        });
+
+        
+    });
 });

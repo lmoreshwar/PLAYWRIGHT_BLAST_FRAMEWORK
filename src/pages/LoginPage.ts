@@ -21,4 +21,6 @@ export class LoginPage {
     menuButton = (): Locator => this.page.getByRole('button', { name: 'Open Menu' });
 
     logoutLink = (): Locator => this.page.getByRole('link', { name: 'Logout' });
+
+    sidebarLogoutLink = (): Locator => this.page.locator('[data-test="logout-sidebar-link"]');
 }

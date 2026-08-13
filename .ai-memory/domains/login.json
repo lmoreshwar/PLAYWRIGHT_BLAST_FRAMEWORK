@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Login",
-  "generatedAt": "2026-08-13T07:59:49.588Z",
-  "sourceHash": "sha1:6d8ecd42c53f85cb1b78516e51142545b3d4691e",
+  "generatedAt": "2026-08-13T10:51:10.748Z",
+  "sourceHash": "sha1:e19b588dcb28950e9db9e59e94e0d109a356931a",
   "pages": [
     {
       "file": "src/pages/LoginPage.ts",
@@ -13,6 +13,7 @@
         "logoutLink",
         "menuButton",
         "passwordInput",
+        "sidebarLogoutLink",
         "usernameInput"
       ]
     }
@@ -23,11 +24,15 @@
       "class": "LoginModule",
       "methods": [
         "attemptInvalidLogins",
+        "attemptLogoutWithoutSession",
+        "captureSessionCredential",
         "goto",
         "login",
         "logout",
+        "openMenu",
         "openProtectedPage",
         "refreshLoginPage",
+        "reuseSessionCredential",
         "submitEmpty"
       ]
     }
@@ -42,92 +47,6 @@
         {
           "id": "TC_016",
           "title": "TC_016 Direct access to inventory page without authentication"
-        }
-      ]
-    },
-    {
-      "file": "src/tests/login.spec.ts",
-      "describes": [
-        "Authentication — Login & Session"
-      ],
-      "tags": [
-        "@Access",
-        "@Authentication",
-        "@Automation",
-        "@Critical",
-        "@High",
-        "@Locked",
-        "@Login",
-        "@Regression",
-        "@Sanity",
-        "@Security",
-        "@Validation"
-      ],
-      "reuses": [],
-      "tests": [
-        {
-          "id": "TC_001",
-          "title": "TC_001 Valid Login @Sanity @Regression @Automation @Critical"
-        },
-        {
-          "id": "TC_002",
-          "title": "TC_002 Invalid Login - Wrong Credentials @Regression @Automation @Critical"
-        },
-        {
-          "id": "TC_003",
-          "title": "TC_003 Invalid Login - Empty Fields @Regression @Automation @Critical"
-        },
-        {
-          "id": "TC_004",
-          "title": "TC_004 Logout Functionality @Sanity @Regression @Automation @Critical"
-        },
-        {
-          "id": "TC_005",
-          "title": "TC_005 Locked User Login Attempt @Regression @Automation @Critical"
-        },
-        {
-          "id": "TC_006",
-          "title": "TC_006 Boundary Login - SQL Injection Attempt @Regression @Automation @Critical"
-        },
-        {
-          "id": "TC_007",
-          "title": "TC_007 Session Expiration After Logout @Regression @Automation @High"
-        },
-        {
-          "id": "TC_008",
-          "title": "TC_008 Multiple Login Attempts with Invalid Credentials @Regression @Automation @Critical"
-        },
-        {
-          "id": "TC_009",
-          "title": "TC_009 UI Validation - Login Page @Sanity @Regression @Automation @Critical"
-        },
-        {
-          "id": "TC_012",
-          "title": "TC_012 Password field masks input @Regression @Automation @Critical"
-        },
-        {
-          "id": "TC_013",
-          "title": "TC_013 Error message clears after correcting credentials @Regression @Automation @High"
-        },
-        {
-          "id": "TC_015",
-          "title": "TC_015 Security: XSS attempt on username field @Login @Authentication @Security"
-        },
-        {
-          "id": "TC_019",
-          "title": "TC_019 Reject locked user with an incorrect password @Authentication @Locked User Validation"
-        },
-        {
-          "id": "TC_020",
-          "title": "TC_020 Reject locked user when the username is submitted without a password @Authentication @Locked User Validation @Validation"
-        },
-        {
-          "id": "TC_021",
-          "title": "TC_021 Reject locked user when the username is submitted without a username value @Authentication @Locked User Validation @Validation"
-        },
-        {
-          "id": "TC_022",
-          "title": "TC_022 Verify locked-user rejection after refreshing the login page @Authentication @Locked User Validation @Access Control"
         }
       ]
     }
