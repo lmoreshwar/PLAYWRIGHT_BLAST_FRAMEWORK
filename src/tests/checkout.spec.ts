@@ -389,4 +389,43 @@ test.describe('Checkout — Required-Field Recovery and Order Completion', () =>
         await expect(page).toHaveURL(/inventory\.html/);
         await expect(inventoryPage.productsTitle()).toBeVisible();
     });
+
+    test('TC_001 Complete checkout from a reviewed cart item @CartReview @Positive', async ({
+        inventoryModule,
+        inventoryPage,
+        cartModule,
+        cartPage,
+        checkoutModule,
+        checkoutPage,
+        page,
+    }) => {
+        await expect(page).toHaveURL(/inventory\.html/);
+        await expect(inventoryPage.productsTitle()).toBeVisible();
+
+        await inventoryModule.addProductToCartFromInventory(productName);
+
+        await cartModule.goto(`${testData.urls.baseUrl}${testData.urls.cartUrl}`);
+        await expect(page).toHaveURL(/cart\.html/);
+        await expect(cartPage.productLink(productName)).toBeVisible();
+
+        await cartModule.checkout();
+        await expect(page).toHaveURL(/checkout-step-one\.html/);
+
+        await checkoutModule.enterCustomerInformation(
+            testData.tc031CheckoutInfo.firstName,
+            testData.tc031CheckoutInfo.lastName,
+            testData.tc031CheckoutInfo.postalCode,
+        );
+        await checkoutModule.continue();
+
+        await expect(page).toHaveURL(/checkout-step-two\.html/);
+        await expect(checkoutPage.summaryProductLink(productName)).toBeVisible();
+
+        await checkoutModule.finish();
+
+        await expect(page).toHaveURL(/checkout-complete\.html/);
+        await expect(checkoutPage.orderCompleteMessage()).toHaveText(
+            testData.messages.orderComplete,
+        );
+    });
 });

@@ -1,8 +1,8 @@
 {
   "$schema": "reuse-capability-shard/v1",
   "domain": "Cart",
-  "generatedAt": "2026-08-13T11:46:37.684Z",
-  "sourceHash": "sha1:3f308f905f80b6e1fa3224c410a1606780a4190f",
+  "generatedAt": "2026-08-13T17:48:18.330Z",
+  "sourceHash": "sha1:83705cb103e6f104f9540f86dd9d0c53d68b1ec9",
   "pages": [
     {
       "file": "src/pages/CartPage.ts",
@@ -11,7 +11,8 @@
         "cartTitle",
         "checkoutButton",
         "continueShoppingButton",
-        "productLink"
+        "productLink",
+        "removeButton"
       ]
     }
   ],
@@ -22,11 +23,38 @@
       "methods": [
         "checkout",
         "continueShopping",
-        "goto"
+        "goto",
+        "removeProductFromCart"
       ]
     }
   ],
   "specs": [
+    {
+      "file": "src/tests/cart-review.spec.ts",
+      "describes": [
+        "Cart Review"
+      ],
+      "tags": [
+        "@CartReview",
+        "@Negative",
+        "@Positive"
+      ],
+      "reuses": [],
+      "tests": [
+        {
+          "id": "TC_002",
+          "title": "TC_002 Return from cart review without changing the cart @CartReview @Positive"
+        },
+        {
+          "id": "TC_003",
+          "title": "TC_003 Remove the reviewed item from the cart @CartReview @Negative"
+        },
+        {
+          "id": "TC_005",
+          "title": "TC_005 Checkout from an empty cart does not complete an order @CartReview @Negative"
+        }
+      ]
+    },
     {
       "file": "src/tests/checkout.spec.ts",
       "describes": [
@@ -36,6 +64,7 @@
         "@AddAProductToTheCartFromTheInventoryPage",
         "@AddProductToCart",
         "@Boundary",
+        "@CartReview",
         "@CompleteCheckoutOrderSummaryAndPriceTotalVerification",
         "@Negative",
         "@Positive"
@@ -81,6 +110,10 @@
         {
           "id": "TC_037",
           "title": "TC_037 Return home after a completed order @CompleteCheckoutOrderSummaryAndPriceTotalVerification @Positive"
+        },
+        {
+          "id": "TC_001",
+          "title": "TC_001 Complete checkout from a reviewed cart item @CartReview @Positive"
         }
       ]
     }

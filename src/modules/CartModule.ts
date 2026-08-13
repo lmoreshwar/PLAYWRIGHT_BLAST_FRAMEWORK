@@ -32,4 +32,9 @@ export class CartModule {
         this.logger.step(3, 'Click "Go back Continue Shopping"');
         await this.actions.click(this.cartPage.continueShoppingButton());
     }
+
+    async removeProductFromCart(productName: string): Promise<void> {
+        this.logger.info(`Remove product from cart: ${productName}`);
+        await this.actions.click(this.cartPage.removeButton(productName));
+    }
 }

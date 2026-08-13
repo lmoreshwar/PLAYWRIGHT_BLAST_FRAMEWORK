@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-13T11:46:37.685Z",
+  "generatedAt": "2026-08-13T17:48:18.332Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:3f308f905f80b6e1fa3224c410a1606780a4190f",
+  "sourceHash": "sha1:83705cb103e6f104f9540f86dd9d0c53d68b1ec9",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 5,
     "modules": 5,
-    "specs": 6,
-    "tests": 39,
+    "specs": 7,
+    "tests": 43,
     "domains": 6
   },
   "fixtures": [
@@ -50,12 +50,13 @@
         "src/modules/CartModule.ts"
       ],
       "specs": [
+        "src/tests/cart-review.spec.ts",
         "src/tests/checkout.spec.ts"
       ],
       "counts": {
-        "locators": 4,
-        "methods": 3,
-        "tests": 10
+        "locators": 5,
+        "methods": 4,
+        "tests": 14
       }
     },
     {
@@ -143,6 +144,62 @@
     }
   ],
   "testIndex": {
+    "TC_002": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/cart-review.spec.ts",
+        "title": "TC_002 Return from cart review without changing the cart @CartReview @Positive"
+      },
+      {
+        "domain": "Inventory",
+        "spec": "src/tests/product-detail.spec.ts",
+        "title": "TC_002 Detail Page Shows Product Information @ProductDetailPage"
+      },
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_002 Invalid Login - Wrong Credentials @Regression @Automation @Critical"
+      },
+      {
+        "domain": "Login",
+        "spec": "src/tests/logout.spec.ts",
+        "title": "[TC_002] Verify hamburger menu provides logout option @Logout @Authentication @UI"
+      }
+    ],
+    "TC_003": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/cart-review.spec.ts",
+        "title": "TC_003 Remove the reviewed item from the cart @CartReview @Negative"
+      },
+      {
+        "domain": "Inventory",
+        "spec": "src/tests/product-detail.spec.ts",
+        "title": "TC_003 Add to Cart Button Works @ProductDetailPage @Cart"
+      },
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_003 Invalid Login - Empty Fields @Regression @Automation @Critical"
+      }
+    ],
+    "TC_005": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/cart-review.spec.ts",
+        "title": "TC_005 Checkout from an empty cart does not complete an order @CartReview @Negative"
+      },
+      {
+        "domain": "Inventory",
+        "spec": "src/tests/product-detail.spec.ts",
+        "title": "TC_005 Back to Products Button Works @ProductDetailPage @Navigation"
+      },
+      {
+        "domain": "Login",
+        "spec": "src/tests/login.spec.ts",
+        "title": "TC_005 Locked User Login Attempt @Regression @Automation @Critical"
+      }
+    ],
     "TC_023": [
       {
         "domain": "Cart",
@@ -215,6 +272,11 @@
     ],
     "TC_001": [
       {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_001 Complete checkout from a reviewed cart item @CartReview @Positive"
+      },
+      {
         "domain": "Inventory",
         "spec": "src/tests/product-detail.spec.ts",
         "title": "TC_001 Click Product Opens Detail Page @ProductDetailPage"
@@ -230,35 +292,6 @@
         "title": "[TC_001] Logout through hamburger menu @Logout @Authentication @UI"
       }
     ],
-    "TC_002": [
-      {
-        "domain": "Inventory",
-        "spec": "src/tests/product-detail.spec.ts",
-        "title": "TC_002 Detail Page Shows Product Information @ProductDetailPage"
-      },
-      {
-        "domain": "Login",
-        "spec": "src/tests/login.spec.ts",
-        "title": "TC_002 Invalid Login - Wrong Credentials @Regression @Automation @Critical"
-      },
-      {
-        "domain": "Login",
-        "spec": "src/tests/logout.spec.ts",
-        "title": "[TC_002] Verify hamburger menu provides logout option @Logout @Authentication @UI"
-      }
-    ],
-    "TC_003": [
-      {
-        "domain": "Inventory",
-        "spec": "src/tests/product-detail.spec.ts",
-        "title": "TC_003 Add to Cart Button Works @ProductDetailPage @Cart"
-      },
-      {
-        "domain": "Login",
-        "spec": "src/tests/login.spec.ts",
-        "title": "TC_003 Invalid Login - Empty Fields @Regression @Automation @Critical"
-      }
-    ],
     "TC_004": [
       {
         "domain": "Inventory",
@@ -269,18 +302,6 @@
         "domain": "Login",
         "spec": "src/tests/login.spec.ts",
         "title": "TC_004 Logout Functionality @Sanity @Regression @Automation @Critical"
-      }
-    ],
-    "TC_005": [
-      {
-        "domain": "Inventory",
-        "spec": "src/tests/product-detail.spec.ts",
-        "title": "TC_005 Back to Products Button Works @ProductDetailPage @Navigation"
-      },
-      {
-        "domain": "Login",
-        "spec": "src/tests/login.spec.ts",
-        "title": "TC_005 Locked User Login Attempt @Regression @Automation @Critical"
       }
     ],
     "TC_026": [

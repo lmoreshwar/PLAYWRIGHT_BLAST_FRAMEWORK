@@ -18,4 +18,10 @@ export class CartPage {
 
     continueShoppingButton = (): Locator =>
         this.page.getByRole('button', { name: 'Go back Continue Shopping' });
+
+    readonly removeButton = (productName: string): Locator =>
+        this.page
+            .locator('.cart_item')
+            .filter({ has: this.productLink(productName) })
+            .getByRole('button', { name: 'Remove', exact: true });
 }
