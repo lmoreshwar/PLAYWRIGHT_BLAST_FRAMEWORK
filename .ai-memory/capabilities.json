@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-13T07:34:47.755Z",
+  "generatedAt": "2026-08-13T07:59:49.588Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:b8a999dd7ae72df09b6f626590d35199da764dae",
+  "sourceHash": "sha1:6d8ecd42c53f85cb1b78516e51142545b3d4691e",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 5,
     "modules": 5,
     "specs": 5,
-    "tests": 30,
+    "tests": 37,
     "domains": 6
   },
   "fixtures": [
@@ -53,9 +53,9 @@
         "src/tests/checkout.spec.ts"
       ],
       "counts": {
-        "locators": 3,
-        "methods": 2,
-        "tests": 3
+        "locators": 4,
+        "methods": 3,
+        "tests": 10
       }
     },
     {
@@ -69,8 +69,8 @@
       ],
       "specs": [],
       "counts": {
-        "locators": 11,
-        "methods": 4,
+        "locators": 16,
+        "methods": 6,
         "tests": 0
       }
     },
@@ -161,6 +161,55 @@
         "domain": "Cart",
         "spec": "src/tests/checkout.spec.ts",
         "title": "TC_025 Add Sauce Labs Backpack and complete the order successfully @AddAProductToTheCartFromTheInventoryPage @Positive"
+      }
+    ],
+    "TC_031": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_031 Complete checkout with one item and verify order summary totals @CompleteCheckoutOrderSummaryAndPriceTotalVerification @Positive"
+      }
+    ],
+    "TC_032": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_032 Reject checkout when First Name is empty @CompleteCheckoutOrderSummaryAndPriceTotalVerification @Boundary"
+      }
+    ],
+    "TC_033": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_033 Accept minimum single-character checkout values @CompleteCheckoutOrderSummaryAndPriceTotalVerification @Boundary"
+      }
+    ],
+    "TC_034": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_034 Accept leading and trailing whitespace around checkout values @CompleteCheckoutOrderSummaryAndPriceTotalVerification @Boundary"
+      }
+    ],
+    "TC_035": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_035 Return from cart without changing the selected item @CompleteCheckoutOrderSummaryAndPriceTotalVerification @Positive"
+      }
+    ],
+    "TC_036": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_036 Cancel from the order summary without completing the order @CompleteCheckoutOrderSummaryAndPriceTotalVerification @Positive"
+      }
+    ],
+    "TC_037": [
+      {
+        "domain": "Cart",
+        "spec": "src/tests/checkout.spec.ts",
+        "title": "TC_037 Return home after a completed order @CompleteCheckoutOrderSummaryAndPriceTotalVerification @Positive"
       }
     ],
     "TC_001": [

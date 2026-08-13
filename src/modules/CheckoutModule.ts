@@ -47,4 +47,14 @@ export class CheckoutModule {
         await this.page.goBack();
         await this.inventoryModule.goBackToProducts();
     }
+
+    async cancelFromOrderSummary(): Promise<void> {
+        this.logger.step(5, 'Click "Go back Cancel" from the order summary');
+        await this.actions.click(this.checkoutPage.cancelButton());
+    }
+
+    async backHome(): Promise<void> {
+        this.logger.step(6, 'Click "Back Home"');
+        await this.actions.click(this.checkoutPage.backHomeButton());
+    }
 }

@@ -57,5 +57,35 @@
     "checkoutStepOneUrl": "/checkout-step-one.html",
     "checkoutStepTwoUrl": "/checkout-step-two.html",
     "checkoutCompleteUrl": "/checkout-complete.html"
+  },
+  "tc031CheckoutInfo": {
+    "firstName": "Ada",
+    "lastName": "Lovelace",
+    "postalCode": "12345"
+  },
+  "orderSummary": {
+    "itemTotal": "Item total: $29.99",
+    "tax": "Tax: $2.40",
+    "total": "Total: $32.39"
+  },
+  "tc033CheckoutInfo": {
+    "firstName": "A",
+    "lastName": "B",
+    "postalCode": "1"
+  },
+  "tc034CheckoutInfo": {
+    "firstName": " Ada ",
+    "lastName": " Lovelace ",
+    "postalCode": " 12345 "
+  },
+  "tc036CheckoutInfo": {
+    "firstName": "Ada",
+    "lastName": "Lovelace",
+    "postalCode": "12345"
+  },
+  "tc037CheckoutInfo": {
+    "firstName": "Ada",
+    "lastName": "Lovelace",
+    "postalCode": "12345"
   }
 }

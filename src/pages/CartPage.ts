@@ -15,4 +15,7 @@ export class CartPage {
 
     cartTitle = (): Locator =>
         this.page.getByText('Your Cart', { exact: true });
+
+    continueShoppingButton = (): Locator =>
+        this.page.getByRole('button', { name: 'Go back Continue Shopping' });
 }
