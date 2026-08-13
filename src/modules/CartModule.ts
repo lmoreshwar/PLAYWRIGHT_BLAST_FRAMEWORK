@@ -27,4 +27,9 @@ export class CartModule {
         this.logger.step(2, 'Click "Checkout"');
         await this.actions.click(this.cartPage.checkoutButton());
     }
+
+    async continueShopping(): Promise<void> {
+        this.logger.step(3, 'Click "Go back Continue Shopping"');
+        await this.actions.click(this.cartPage.continueShoppingButton());
+    }
 }

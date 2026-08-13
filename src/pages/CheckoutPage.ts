@@ -42,4 +42,19 @@ export class CheckoutPage {
             'Your order has been dispatched, and will arrive just as fast as the pony can get there!',
             { exact: true },
         );
+
+    itemTotal = (): Locator =>
+        this.page.getByText('Item total: $29.99', { exact: true });
+
+    tax = (): Locator =>
+        this.page.getByText('Tax: $2.40', { exact: true });
+
+    total = (): Locator =>
+        this.page.getByText('Total: $32.39', { exact: true });
+
+    cancelButton = (): Locator =>
+        this.page.getByRole('button', { name: 'Go back Cancel' });
+
+    backHomeButton = (): Locator =>
+        this.page.getByRole('button', { name: 'Back Home' });
 }
