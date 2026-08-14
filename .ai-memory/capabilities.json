@@ -1,15 +1,15 @@
 {
   "$schema": "reuse-capability-index/v2-sharded",
   "purpose": "Root manifest — READ THIS FIRST for EVERY skill (new, modify, debug, delete). It lists all domains and a global testIndex (TC id → domain/spec) so duplicates are caught across ALL domains without loading every shard. For a domain’s locators/methods/tests, load its shard from `shardDir` (load ONLY the domain you are working on — keeps it fast at scale).",
-  "generatedAt": "2026-08-13T11:46:37.685Z",
+  "generatedAt": "2026-08-14T03:40:47.795Z",
   "regenerateWith": "npm run index",
-  "sourceHash": "sha1:3f308f905f80b6e1fa3224c410a1606780a4190f",
+  "sourceHash": "sha1:5cd18bbac1b8207dd091ea406e622a9fb212f624",
   "shardDir": ".ai-memory/domains",
   "counts": {
     "pages": 5,
     "modules": 5,
-    "specs": 6,
-    "tests": 39,
+    "specs": 7,
+    "tests": 41,
     "domains": 6
   },
   "fixtures": [
@@ -99,12 +99,13 @@
       ],
       "specs": [
         "src/tests/product-detail.spec.ts",
+        "src/tests/product-list.spec.ts",
         "src/tests/product-sorting.spec.ts"
       ],
       "counts": {
         "locators": 13,
         "methods": 7,
-        "tests": 10
+        "tests": 12
       }
     },
     {
@@ -220,6 +221,11 @@
         "title": "TC_001 Click Product Opens Detail Page @ProductDetailPage"
       },
       {
+        "domain": "Inventory",
+        "spec": "src/tests/product-list.spec.ts",
+        "title": "TC_001 Display all six products @ProductList @Validation"
+      },
+      {
         "domain": "Login",
         "spec": "src/tests/login.spec.ts",
         "title": "TC_001 Valid Login @Sanity @Regression @Automation @Critical"
@@ -235,6 +241,11 @@
         "domain": "Inventory",
         "spec": "src/tests/product-detail.spec.ts",
         "title": "TC_002 Detail Page Shows Product Information @ProductDetailPage"
+      },
+      {
+        "domain": "Inventory",
+        "spec": "src/tests/product-list.spec.ts",
+        "title": "TC_002 Verify product count below required boundary @ProductList @Validation"
       },
       {
         "domain": "Login",
