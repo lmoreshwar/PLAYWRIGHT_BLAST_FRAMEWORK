@@ -37,7 +37,7 @@ export default defineConfig({
                 suiteTitle: true,
                 environmentInfo: {
                     Environment: testEnv,
-                    Base_URL: process.env.BASE_URL || 'https://www.saucedemo.com',
+                    Base_URL: process.env.BASE_URL || '',
                     Node: process.version,
                     CI: process.env.CI ? 'true' : 'false',
                 },
@@ -47,7 +47,7 @@ export default defineConfig({
     ],
 
     use: {
-        baseURL: process.env.BASE_URL || 'https://www.saucedemo.com',
+        baseURL: process.env.BASE_URL || '',
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
         trace: 'retain-on-failure',

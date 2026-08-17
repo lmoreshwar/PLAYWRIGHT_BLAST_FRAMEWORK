@@ -41,19 +41,11 @@ on:
         default: true
         type: boolean
 
-  # Also run on push to main
-  push:
-    branches: [main]
-
-  # Also run on PRs
-  pull_request:
-    branches: [main]
+  # NOTE: push/pull_request triggers are intentionally removed — the BLAST website drives all runs
+  # via workflow_dispatch (opening a Blast PR must NOT auto-run the full suite).
 
 jobs:
   test:
-    # BLAST PRs (branch blast/auto-*) are already validated by blast-runner.yml — skip the
-    # full-suite re-run so they don't sit on GitHub's "Approve and run" gate.
-    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'blast/auto-') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
 

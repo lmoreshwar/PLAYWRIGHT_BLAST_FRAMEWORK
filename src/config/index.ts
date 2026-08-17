@@ -25,7 +25,7 @@ export interface AppConfig {
 }
 
 export const config: AppConfig = {
-    baseUrl: process.env.BASE_URL || 'https://www.saucedemo.com',
+    baseUrl: process.env.BASE_URL || '',
     defaultTimeout: parseInt(process.env.DEFAULT_TIMEOUT || '30000', 10),
     navigationTimeout: parseInt(process.env.NAVIGATION_TIMEOUT || '90000', 10),
     logLevel: process.env.LOG_LEVEL || 'INFO',
@@ -39,8 +39,8 @@ export const config: AppConfig = {
  * Just add the key to .env and call env('KEY_NAME') anywhere in code.
  *
  * @example
- *   env('APP_USERNAME')       → 'standard_user'
- *   env('BASE_URL')           → 'https://www.saucedemo.com'
+ *   env('APP_USERNAME')       → your app's login user
+ *   env('BASE_URL')           → your app's base URL
  *   env('SAUCE_USERNAME')     → your Sauce Labs user
  *   env('MY_NEW_API_TOKEN')   → reads from .env — no index.ts update needed!
  *
